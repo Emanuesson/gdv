@@ -1,0 +1,177 @@
+* {
+    background-color: #ffffff;
+    color: #000000;
+
+    -GdvAxis-scale-limits-automatic: FALSE;
+    -GdvAxis-scale-auto-increment: TRUE;
+    -GdvAxis-tics-automatic: TRUE;
+
+    /* These are just used as fallback */
+    -GdvIndicator-color: #000000;
+    -GdvIndicator-line-width: 3.0px;
+
+    -GdvLayerContent-point-color: #000000;
+    -GdvLayerContent-point-width: 0.0;
+
+    -GdvLayerContent-line-color: #000000;
+    -GdvLayerContent-line-width: 1.2;
+
+    -GdvTic-line-width: 1.0px;
+    -GdvTic-color: #000000;
+    -GdvAxis-color: #000000;
+    -GdvIndicator-color: #000000;
+}
+
+legend {
+  border-color: #000000;
+  border-width: 1.0px;
+  border-style: solid;
+}
+
+mtic {
+    -GdvTic-tics-in-length: 3.0;
+    -GdvTic-tics-out-length: 0.0;
+    -GdvTic-show-label: FALSE;
+}
+
+tic {
+    -GdvTic-tics-in-length: 6.0;
+    -GdvTic-tics-out-length: 6.0;
+    -GdvTic-show-label: TRUE;
+}
+
+
+layertwod > *#x2-axis > tic {
+    -GdvTic-tics-in-length: 6.0;
+    -GdvTic-tics-out-length: 0.0;
+    -GdvTic-show-label: FALSE;
+}
+
+layertwod > *#y2-axis > tic {
+    -GdvTic-tics-in-length: 6.0;
+    -GdvTic-tics-out-length: 0.0;
+    -GdvTic-show-label: FALSE;
+}
+
+/* indicators */
+indicator:nth-child(1)
+{
+    -GdvIndicator-color: #0000ff;
+}
+
+indicator:nth-child(2)
+{
+    -GdvIndicator-color: #ff0000;
+}
+
+indicator:nth-child(3)
+{
+    -GdvIndicator-color: #00ff00;
+}
+
+indicator:nth-child(4)
+{
+    -GdvIndicator-color: #ff00ff;
+}
+
+indicator:nth-child(5)
+{
+    -GdvIndicator-color: #ffff00;
+}
+
+indicator:nth-child(6)
+{
+    -GdvIndicator-color: #0ffff0;
+}
+
+indicator:nth-child(7)
+{
+    -GdvIndicator-color: #0ff0ff;
+}
+
+indicator:nth-child(8)
+{
+    -GdvIndicator-color: #0fff0f;
+}
+
+indicator:nth-child(9)
+{
+    -GdvIndicator-color: #0f0ff0;
+}
+
+indicator:nth-child(10)
+{
+    -GdvIndicator-color: #f0fff0;
+}
+
+/* templates for the normal layer-contents */
+layercontent:nth-child(1)
+{
+    -GdvLayerContent-line-color: #0000ff;
+    -GdvLayerContent-point-color: #0000ff;
+    -GdvLayerContent-line-dash-portion: 1.0;
+    -GdvLayerContent-line-secondary-dash-portion: 0.0;
+}
+
+layercontent:nth-child(2)
+{
+    -GdvLayerContent-line-color: #ff0000;
+    -GdvLayerContent-point-color: #ff0000;
+    -GdvLayerContent-line-dash-portion: 1.0;
+    -GdvLayerContent-line-secondary-dash-portion: 0.0;
+}
+
+layercontent:nth-child(3)
+{
+    -GdvLayerContent-line-color: #00ff00;
+    -GdvLayerContent-point-color: #00ff00;
+    -GdvLayerContent-line-dash-portion: 1.0;
+    -GdvLayerContent-line-secondary-dash-portion: 0.0;
+}
+
+layercontent:nth-child(4)
+{
+    -GdvLayerContent-line-color: #ff00ff;
+    -GdvLayerContent-point-color: #ff00ff;
+    -GdvLayerContent-line-dash-portion: 1.0;
+    -GdvLayerContent-line-secondary-dash-portion: 0.0;
+}
+
+layercontent:nth-child(5)
+{
+    -GdvLayerContent-line-color: #ffff00;
+    -GdvLayerContent-point-color: #ffff00;
+    -GdvLayerContent-line-dash-portion: 1.0;
+    -GdvLayerContent-line-secondary-dash-portion: 0.0;
+}
+
+layercontent:nth-child(6)
+{
+    -GdvLayerContent-line-color: #0ffff0;
+    -GdvLayerContent-point-color: #0ffff0;
+}
+
+layercontent:nth-child(7)
+{
+    -GdvLayerContent-line-color: #0ff0ff;
+    -GdvLayerContent-point-color: #0ff0ff;
+}
+
+layercontent:nth-child(8)
+{
+    -GdvLayerContent-line-color: #0fff0f;
+    -GdvLayerContent-point-color: #0fff0f;
+}
+
+layercontent:nth-child(9)
+{
+    -GdvLayerContent-line-color: #0f0ff0;
+    -GdvLayerContent-point-color: #0f0ff0;
+}
+
+layercontent:nth-child(10)
+{
+    -GdvLayerContent-line-color: #f0fff0;
+    -GdvLayerContent-point-color: #f0fff0;
+}
+

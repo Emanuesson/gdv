@@ -1,0 +1,21 @@
+Overview of changes Gdv 0.7.1
+=============================
+
+* autogen.sh: write the bash-script
+
+* INSTALL: add instructions: write installation procedure, requirements,
+  library-specific installation-problems
+
+* rework the gnu automake-chain for a correct installation under different
+  OS' and environment-conditions
+
+* Check the possibility to integrade gdv into glade catalog
+
+Overview of changes from Gdv 0.0.0 to Gdv 0.7.0
+===============================================
+
+* initial commit of a very first funcitoning version
+
+* provide a very first API
+
+* provide a very first Documentation

@@ -1,0 +1,542 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>GdvLayerContent: GDV Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="GDV Reference Manual">
+<link rel="up" href="refman.html" title="Part II. API reference">
+<link rel="prev" href="GdvLayer.html" title="GdvLayer">
+<link rel="next" href="GdvAxis.html" title="GdvAxis">
+<meta name="generator" content="GTK-Doc V1.25.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#GdvLayerContent.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#GdvLayerContent.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_interfaces">  <span class="dim">|</span> 
+                  <a href="#GdvLayerContent.implemented-interfaces" class="shortcut">Implemented Interfaces</a></span><span id="nav_properties">  <span class="dim">|</span> 
+                  <a href="#GdvLayerContent.properties" class="shortcut">Properties</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="refman.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="GdvLayer.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="GdvAxis.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="GdvLayerContent"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="GdvLayerContent.top_of_page"></a>GdvLayerContent</span></h2>
+<p>GdvLayerContent — plotting a set of data</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="GdvLayerContent.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="returnvalue">GdvLayerContent</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="GdvLayerContent.html#gdv-layer-content-new" title="gdv_layer_content_new ()">gdv_layer_content_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GdvLayerContent.html#gdv-layer-content-add-data-point" title="gdv_layer_content_add_data_point ()">gdv_layer_content_add_data_point</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GdvLayerContent.html#gdv-layer-content-remove-data-point-by-index" title="gdv_layer_content_remove_data_point_by_index ()">gdv_layer_content_remove_data_point_by_index</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="GdvLayerContent.html#gdv-layer-content-get-content" title="gdv_layer_content_get_content ()">gdv_layer_content_get_content</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GdvLayerContent.html#gdv-layer-content-get-min-max-x" title="gdv_layer_content_get_min_max_x ()">gdv_layer_content_get_min_max_x</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GdvLayerContent.html#gdv-layer-content-get-min-max-y" title="gdv_layer_content_get_min_max_y ()">gdv_layer_content_get_min_max_y</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GdvLayerContent.html#gdv-layer-content-get-min-max-z" title="gdv_layer_content_get_min_max_z ()">gdv_layer_content_get_min_max_z</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GdvLayerContent.html#gdv-layer-content-reset" title="gdv_layer_content_reset ()">gdv_layer_content_reset</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="GdvLayerContent.properties"></a><h2>Properties</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="properties_type">
+<col width="300px" class="properties_name">
+<col width="200px" class="properties_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="property_type">
+<span class="type">GdvDataPoint</span> *</td>
+<td class="property_name"><a class="link" href="GdvLayerContent.html#GdvLayerContent--data-point" title="The “data-point” property">data-point</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a></td>
+<td class="property_name"><a class="link" href="GdvLayerContent.html#GdvLayerContent--line-style" title="The “line-style” property">line-style</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
+<td class="property_name"><a class="link" href="GdvLayerContent.html#GdvLayerContent--point-line-width" title="The “point-line-width” property">point-line-width</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a></td>
+<td class="property_name"><a class="link" href="GdvLayerContent.html#GdvLayerContent--point-type" title="The “point-type” property">point-type</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
+<td class="property_name"><a class="link" href="GdvLayerContent.html#GdvLayerContent--show-in-legend" title="The “show-in-legend” property">show-in-legend</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
+<td class="property_name"><a class="link" href="GdvLayerContent.html#GdvLayerContent--title" title="The “title” property">title</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="GdvLayerContent.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="GdvLayerContent.html#GdvLayerContent-struct" title="struct GdvLayerContent">GdvLayerContent</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="GdvLayerContent.html#GdvLayerContentClass" title="struct GdvLayerContentClass">GdvLayerContentClass</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="GdvLayerContent.html#GdvLayerContentPrivate" title="GdvLayerContentPrivate">GdvLayerContentPrivate</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="GdvLayerContent.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+    <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+        <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gtk3/GtkWidget.html#GtkWidget-struct">GtkWidget</a>
+            <span class="lineart">╰──</span> GdvLayerContent
+</pre>
+</div>
+<div class="refsect1">
+<a name="GdvLayerContent.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
+<p>
+GdvLayerContent implements
+ AtkImplementorIface and  <a href="/usr/share/gtk-doc/html/gtk3/GtkBuildable.html#GtkBuildable-struct">GtkBuildable</a>.</p>
+</div>
+<div class="refsect1">
+<a name="GdvLayerContent.description"></a><h2>Description</h2>
+<p><a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="type">GdvLayerContent</span></a> is a object-class, thats intention is to basically contain 
+all the information, that will be plotted in a single data-series of a plot.</p>
+</div>
+<div class="refsect1">
+<a name="GdvLayerContent.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="gdv-layer-content-new"></a><h3>gdv_layer_content_new ()</h3>
+<pre class="programlisting"><a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="returnvalue">GdvLayerContent</span></a> *
+gdv_layer_content_new (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Just a common constructor.</p>
+<div class="refsect3">
+<a name="gdv-layer-content-new.returns"></a><h4>Returns</h4>
+<p> a new <a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="type">GdvLayerContent</span></a></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdv-layer-content-add-data-point"></a><h3>gdv_layer_content_add_data_point ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gdv_layer_content_add_data_point (<em class="parameter"><code><a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="type">GdvLayerContent</span></a> *layer_content</code></em>,
+                                  <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x_value</code></em>,
+                                  <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y_value</code></em>,
+                                  <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> z_value</code></em>);</pre>
+<p>Just add a new cartesian point to the <span class="type">layer_content</span>.</p>
+<div class="refsect3">
+<a name="gdv-layer-content-add-data-point.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>layer_content</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="type">GdvLayerContent</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x_value</p></td>
+<td class="parameter_description"><p>the x value of the new data-point</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y_value</p></td>
+<td class="parameter_description"><p>the y value of the new data-point</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>z_value</p></td>
+<td class="parameter_description"><p>the z value of the new data-point</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdv-layer-content-remove-data-point-by-index"></a><h3>gdv_layer_content_remove_data_point_by_index ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gdv_layer_content_remove_data_point_by_index
+                               (<em class="parameter"><code><a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="type">GdvLayerContent</span></a> *layer_content</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> index</code></em>);</pre>
+<p>Removes the data-point from <span class="type">layer_content</span> that is stored under the <span class="type">index</span>
+position (counted from the one added last to the one added first).</p>
+<p>A negative <span class="type">index</span> removes the point that was added first to the layer.</p>
+<div class="refsect3">
+<a name="gdv-layer-content-remove-data-point-by-index.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>layer_content</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="type">GdvLayerContent</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>index</p></td>
+<td class="parameter_description"><p>The index of the point that should be removed</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gdv-layer-content-remove-data-point-by-index.returns"></a><h4>Returns</h4>
+<p> <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the data-point could be removed and <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdv-layer-content-get-content"></a><h3>gdv_layer_content_get_content ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
+gdv_layer_content_get_content (<em class="parameter"><code><a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="type">GdvLayerContent</span></a> *content</code></em>);</pre>
+<p>Returns a newly allocated list of the content of the gdvlayercontent-object</p>
+<div class="refsect3">
+<a name="gdv-layer-content-get-content.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>content</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="type">GdvLayerContent</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gdv-layer-content-get-content.returns"></a><h4>Returns</h4>
+<p> a newly allocated
+copy of the content-list. </p>
+<p><span class="annotation">[<a href="http://foldoc.org/element-type"><span class="acronym">element-type</span></a> GdvDataPoint][<a href="http://foldoc.org/transfer%20container"><span class="acronym">transfer container</span></a>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdv-layer-content-get-min-max-x"></a><h3>gdv_layer_content_get_min_max_x ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gdv_layer_content_get_min_max_x (<em class="parameter"><code><a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="type">GdvLayerContent</span></a> *content</code></em>,
+                                 <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *min_x</code></em>,
+                                 <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *max_x</code></em>);</pre>
+<p>Convenient function to get the minimum and maximum value of the layer-content.</p>
+<p>This function should not be used for now, as it will give wrong results
+after data-points were removed from the <span class="type">content</span>.</p>
+<div class="refsect3">
+<a name="gdv-layer-content-get-min-max-x.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>content</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="type">GdvLayerContent</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>min_x</p></td>
+<td class="parameter_description"><p>The place to store the minimum x-value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>max_x</p></td>
+<td class="parameter_description"><p>The place to store the maximum x-value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdv-layer-content-get-min-max-y"></a><h3>gdv_layer_content_get_min_max_y ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gdv_layer_content_get_min_max_y (<em class="parameter"><code><a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="type">GdvLayerContent</span></a> *content</code></em>,
+                                 <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *min_y</code></em>,
+                                 <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *max_y</code></em>);</pre>
+<p>Convenient function to get the minimum and maximum value of the layer-content.</p>
+<p>This function should not be used for now, as it will give wrong results
+after data-points were removed from the <span class="type">content</span>.</p>
+<div class="refsect3">
+<a name="gdv-layer-content-get-min-max-y.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>content</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="type">GdvLayerContent</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>min_y</p></td>
+<td class="parameter_description"><p>The place to store the minimum y-value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>max_y</p></td>
+<td class="parameter_description"><p>The place to store the maximum y-value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdv-layer-content-get-min-max-z"></a><h3>gdv_layer_content_get_min_max_z ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gdv_layer_content_get_min_max_z (<em class="parameter"><code><a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="type">GdvLayerContent</span></a> *content</code></em>,
+                                 <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *min_z</code></em>,
+                                 <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *max_z</code></em>);</pre>
+<p>Convenient function to get the minimum and maximum value of the layer-content.</p>
+<p>This function should not be used for now, as it will give wrong results
+after data-points were removed from the <span class="type">content</span>.</p>
+<div class="refsect3">
+<a name="gdv-layer-content-get-min-max-z.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>content</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="type">GdvLayerContent</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>min_z</p></td>
+<td class="parameter_description"><p>The place to store the minimum z-value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>max_z</p></td>
+<td class="parameter_description"><p>The place to store the maximum z-value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdv-layer-content-reset"></a><h3>gdv_layer_content_reset ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gdv_layer_content_reset (<em class="parameter"><code><a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="type">GdvLayerContent</span></a> *layer_content</code></em>);</pre>
+<p>Resets the <span class="type">layer_content</span>.</p>
+<div class="refsect3">
+<a name="gdv-layer-content-reset.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>layer_content</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="type">GdvLayerContent</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="GdvLayerContent.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="GdvLayerContent-struct"></a><h3>struct GdvLayerContent</h3>
+<pre class="programlisting">struct GdvLayerContent;</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvLayerContentClass"></a><h3>struct GdvLayerContentClass</h3>
+<pre class="programlisting">struct GdvLayerContentClass {
+  GtkWidgetClass parent_class;
+};
+</pre>
+<div class="refsect3">
+<a name="GdvLayerContentClass.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
+</colgroup>
+<tbody></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvLayerContentPrivate"></a><h3>GdvLayerContentPrivate</h3>
+<pre class="programlisting">typedef struct _GdvLayerContentPrivate GdvLayerContentPrivate;</pre>
+</div>
+</div>
+<div class="refsect1">
+<a name="GdvLayerContent.property-details"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="GdvLayerContent--data-point"></a><h3>The <code class="literal">“data-point”</code> property</h3>
+<pre class="programlisting">  “data-point”               <span class="type">GdvDataPoint</span> *</pre>
+<p>Gives the data-point that was added last to the layer-content or makes it
+possible to add a new data-point.</p>
+<p>Flags: Read / Write</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvLayerContent--line-style"></a><h3>The <code class="literal">“line-style”</code> property</h3>
+<pre class="programlisting">  “line-style”               <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a></pre>
+<p>The style-type to plot a line.</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &lt;= 50</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvLayerContent--point-line-width"></a><h3>The <code class="literal">“point-line-width”</code> property</h3>
+<pre class="programlisting">  “point-line-width”         <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></pre>
+<p>The line-width to plot a point.</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= 0</p>
+<p>Default value: 2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvLayerContent--point-type"></a><h3>The <code class="literal">“point-type”</code> property</h3>
+<pre class="programlisting">  “point-type”               <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a></pre>
+<p>The style-type to plot a point.</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &lt;= 50</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvLayerContent--show-in-legend"></a><h3>The <code class="literal">“show-in-legend”</code> property</h3>
+<pre class="programlisting">  “show-in-legend”           <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
+<p>Determines if the layer-content should be listed in the legend.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvLayerContent--title"></a><h3>The <code class="literal">“title”</code> property</h3>
+<pre class="programlisting">  “title”                    <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
+<p>The title of the layer-content.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: "new content"</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25.1</div>
+</body>
+</html>

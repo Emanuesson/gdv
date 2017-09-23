@@ -1,0 +1,51 @@
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Libraries
+*.lib
+*.a
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+*.gdm
+
+# Build-directory
+build/*
+test/testing_bin_subclass/build/*
+test/testing_bin_subclass/COPYING
+test/testing_bin_subclass/INSTALL
+test/testing_bin_subclass/autom4te.cache/*
+test/testing_bin_subclass/aux-build
+test/testing_bin_subclass/m4macros/*
+
+# macros - systemspecific
+m4macros/*
+
+# Relicts of the build-process
+*Makefile.in
+*h.in
+aux-build/*
+autom4te.cache/*
+m4/*
+aclocal.m4
+configure
+
+# Temporary files
+*~
+
+#some additional infos:
+'add_info/possibleApplications/Network Flow Analysis.pdf'

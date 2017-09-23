@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <!-- interface-requires gtk+ 3.8 -->
+  <!--  <requires lib="gtk+" version="3.14"/> -->
+
+  <template class="GdvInspectorAppWindow" parent="GtkApplicationWindow">
+    <property name="title" translatable="yes">Gdv Inspector</property>
+    <property name="window_position">center</property>
+    <property name="hide-titlebar-when-maximized">FALSE</property>
+    <property name="default_width">500</property>
+    <property name="default_height">300</property>
+    <child>
+      <object class="GtkNotebook" id="notebook">
+        <property name="visible">True</property>
+        <property name="tab-pos">GTK_POS_LEFT</property>
+
+        <child>
+<!--          <object class="GdvOnedLayer" id="onedlayer">-->
+          <object class="GdvSpecialDrumDisplay" id="onedlayer">
+            <property name="visible">True</property>
+            <property name="margin">10</property>
+          </object>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel" id="1dLayer-tab">
+            <property name="label">1D-Layer</property>
+            <property name="visible">True</property>
+          </object>
+        </child>
+
+        <child>
+          <object class="GdvOnedLayer" id="loglayer">
+            <property name="visible">True</property>
+          </object>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel" id="1dLayer-log-tab">
+            <property name="label">1D-Layer (log)</property>
+            <property name="visible">True</property>
+          </object>
+        </child>
+
+        <child>
+          <object class="GdvTwodLayer" id="twodlayer">
+<!--          <object class="GtkLabel" id="test-label">
+            <property name="label">Hello World</property>-->
+            <property name="visible">True</property>
+<!--            <property name="no-show-all">True</property>-->
+          </object>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel" id="2dLayer-tab">
+            <property name="label">2D-Layer</property>
+            <property name="visible">True</property>
+          </object>
+        </child>
+<!--
+        <child>
+          <object class="GdvSpecialDrumDisplay" id="drumlayer">
+            <property name="visible">True</property>
+            <property name="margin">10</property>
+          </object>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel" id="DrumLayer-tab">
+            <property name="label">Drum-display</property>
+            <property name="visible">True</property>
+          </object>
+        </child>
+-->
+      </object>
+    </child>
+
+  </template>
+</interface>

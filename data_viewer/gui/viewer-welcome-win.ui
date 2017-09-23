@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <!-- interface-requires gtk+ 3.8 -->
+  <template class="GdvViewerWelcomeWindow" parent="GtkApplicationWindow">
+    <property name="title" translatable="yes">GDV data viewer</property>
+    <property name="default-width">600</property>
+    <property name="default-height">400</property>
+    <child>
+      <object class="GtkBox" id="content_box">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+<!--        <child>
+          <object class="Gdv2dView" id="header">
+            <property name="visible">True</property>
+          </object>
+        </child>-->
+      </object>
+    </child>
+  </template>
+</interface>

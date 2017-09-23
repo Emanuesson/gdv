@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding="ISO-8859-1"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+]>
+  <chapter id="roadmap">
+    <title>Description of open work</title>
+      <para>
+        The project is in an early state. Therefor this site is a list of all the features, 
+        that are planned for a release version. Furthermore possible ideas and solutions
+        for future problems are also collected on this place.
+      </para>
+      <para>
+       Problems about the general structur:
+      </para>
+      <itemizedlist>
+        <listitem><para>
+       There is an unanswered question, wether everything should be organised top-down or buttom-up. Maybe the most usefull solution is to divide all the instances in a "original" and a "specific" part. I.e. the "original" classes are more specific in describing every object from the general layer-object to every single tic. That will make it possible to let the user and/or developer organise and indivudualise the plots and visualisation, while the "specific" instances and classes would be more focused on design rather than customisation, meaning that these are fully functional layers or axes with own style-properties and an encapsulated drawing and geometry-handling process. These more "specific"-instances could for example include something as a gdv_specific_linear_circle_axis or gdv_specific_log_circle_axis, which would plot a scale-graph-like axis.
+        </para></listitem>
+        <listitem><para>
+      Some of the API-descriptions are neither complete nor correct. E.g. it should be eplicitely clarified which properties will be chosen as a normal GObject-property and which one can be made a style-property. These definitions are uncertain at the moment, as there might be some differences for the applications in which gdv is used (e.g. the tic-in-length).
+        </para></listitem>
+     </itemizedlist>
+      <para>
+       More specific problems:
+      </para>
+<!--    <listitem>-->
+     <itemizedlist>
+       <listitem><para>
+         The geometry-handling and drawing-process of gtk+ is a very useful and well designed piece of software engineering, however it is also as complex and fragile as the aerodynamics of a butterfly. Gdv is even in this early stage overstretching the geometry-handling. The vast problem is the question how to implement a correct geometry-management for a plot, that hasn't yet be drawn and therfor has no current information about the number of tics nor there values (as in the very common case of automatic scale-handling, which should be the default behaviour of a normal axis/layer).
+       </para></listitem>
+       <listitem><para>
+         Update: Currently this is solved by multiple private methods within the GdvAxis- and GdvTic-classes that measure the objects with respect to specific points (e.g. the GdvTic-point on the specific value or the environment of the begin- and end-point of some linear axis, etc.). These functions are rather complex and excessively difficult. The situation could be more relaxed if something like 2d-_with_basepoint-functions would be available and not onlye the _with_baseline-functions within the widget-implementation of gtk+. However these would require to rethink most of the geometry-APIs of gtk+ and may not be satisfying in e.g. the case of GdvAxis-objects.
+       </para></listitem>
+       <listitem><para>
+         In the current apporach the layer and axes will get in a first step the usual gtk+-signals such as the size-allocation, realization, geometry-requests, again size-allocation and finally the drawing. The scale- and tic-settings are set during the size-allocation-signal, as there is no earlier time to be fully sure, what the final geometrical dimensions of the layer i.e. the axes are. However that leads usually to some additional tics and therefor tic-labels, wich again requires a new geometry and therfor again a new size-allocation. It may be possible to implement all of this process in the widget-drawing-proces of gtk+ however the whole thing is extremelly dangerous, as it may lead to a geometry-request/size-allocation-loop!
+       </para></listitem>
+       <listitem><para>
+         Update: The current approach makes exactly this. This behaviour is intentionally prohibited by GTK+. However gdv circumvents this prohibition in the case of GdvAxis-instances with a resize_during_redraw-private property. This is necessary to get really the correct size in any case. Even if this means that multiple resize-events occur after allocation.
+       </para></listitem>
+       <listitem><para>
+        The integration and application of style-properties and the style-context rendering is highly anticipated, as it would be great to use the effects, that are already common for the other gtk+-widgets. However in many cases as in the drawing of layer-contents or axes these are still missing.
+       </para></listitem>
+     </itemizedlist>
+
+    <note>
+     <para>
+       Next development-steps:
+     </para>
+     <itemizedlist>
+
+       <listitem>
+       <para>
+         Rework the styles that are used for plotting GdvLayerContent-objects or indicators.
+       </para>
+       </listitem>
+
+       <listitem>
+       <para>
+         Rework the widget initialization. E.g. 2d-layer starts with a single x-axis... why?
+       </para>
+       </listitem>
+
+       <listitem>
+       <para>
+         Work on the size-problems within the Tic, Axis-class and more specifically within the TowdLayer-classes (some windows and sizes are larger or smaller than required, mostly just within single pixels; However this is quite annoying and looks unprofessional).
+       </para>
+       </listitem>
+
+       <listitem>
+       <para>
+         Implement a GdvMarker-Class, that is hold within a GdvLayer and connects to two GdvAxis-Instances. The aim is to provide something larger and more dimensional than the simple GdvIndicator, that works only on one single axis. The Marker should plot some sort of line between two values of two axes.
+       </para>
+       </listitem>
+
+       <listitem>
+       <para>
+         Implement an ArrowClass, similar to arrows in gnuplot.
+       </para>
+       </listitem>
+
+       <listitem>
+       <para>
+         With the use of these GdvMarker-objects it should be possible to plot frames within the plots. Therefor we should add some specific lists, Style-definitions and properties within the LayerClasses (e.g. withing GdvTwodLayer something for x and y Frames at the major- and minor-tics).
+       </para>
+       </listitem>
+
+       <listitem>
+       <para>
+         Write some more specific plot-types, such as a radar-plots (with an angle-axis and an radial-axis), that implements other more specific types such as radial frames/markers and radial-axes.
+       </para>
+       </listitem>
+
+       <listitem>
+       <para>
+         Other more specific classes such as errorbars, histogramm-bars and fillings beneath plotted lines, etc..
+       </para>
+       </listitem>
+
+     </itemizedlist>
+    </note>
+
+  </chapter>
+

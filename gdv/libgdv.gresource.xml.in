@@ -1,0 +1,6 @@
+<?xml version="1.0"? encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/net/gdv/libgdv">
+    <file>themes/default_general.css</file>
+  </gresource>
+</gresources>

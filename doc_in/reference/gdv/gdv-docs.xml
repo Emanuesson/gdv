@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+<!ENTITY version SYSTEM "version.xml">
+]>
+<book lang="en" id="gdv" xmlns:xi="http://www.w3.org/2003/XInclude">
+  <bookinfo>
+    <title>GDV Reference Manual</title>
+    <releaseinfo>
+      Documentation for LibGdv, version &version;.
+<!--      The latest version of this documentation can be found on-line at
+      <ulink role="online-location" url="http://library.gnome.org/devel/glib/unstable/">http://library.gnome.org/devel/glib/unstable/</ulink>.-->
+    </releaseinfo>
+  </bookinfo>
+
+  <part id="gdv">
+    <title>LibGdv Overview and introduction</title>
+    <para>
+      The GDV-library tries to provide a simple data-visualization-library in 
+      the gtk+-framework. It is the attempt to use the powerful programming-features 
+      of the glib- and gtk+-libraries such as object-oriented programming, 
+      theme-settings by CSS-files, referencing, introspection and widget-based geometry 
+      management in a professional data-visualization-library. It works 
+      on many UNIX-like platforms, as well as Windows and OS X. LibGDV is released 
+      under the terms and conditions of the GNU Lesser General Public License (GNU LGPL).
+    </para>
+    <xi:include href="tut_intro.xml" />
+  </part>
+
+  <part id="refman">
+    <title>Core API reference</title>
+    <xi:include href="xml/gdvlayer.xml"/>
+    <xi:include href="xml/gdvlayercontent.xml"/>
+    <xi:include href="xml/gdvaxis.xml"/>
+    <xi:include href="xml/gdvlinearaxis.xml"/>
+    <xi:include href="xml/gdvlogaxis.xml"/>
+    <xi:include href="xml/gdvindicator.xml"/>
+    <xi:include href="xml/gdvonedlayer.xml"/>
+    <xi:include href="xml/gdvtwodlayer.xml"/>
+    <xi:include href="xml/gdvtic.xml"/>
+    <xi:include href="xml/gdvmtic.xml"/>
+    <xi:include href="xml/gdvlegend.xml"/>
+    <xi:include href="xml/gdvlegendelement.xml"/>
+  </part>
+
+  <part>
+    <title>Specialized widgets</title>
+    <xi:include href="xml/gdvspecialdrumdisplay.xml"/>
+    <xi:include href="xml/gdvspecialcheckedindicator.xml"/>
+  </part>
+
+  <part>
+    <title>Development-info</title>
+    <xi:include href="dev_todo.xml" />
+    <xi:include href="dev_probs.xml" />
+  </part>
+
+</book>

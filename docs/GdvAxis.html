@@ -1,0 +1,1123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>GdvAxis: GDV Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="GDV Reference Manual">
+<link rel="up" href="refman.html" title="Part II. API reference">
+<link rel="prev" href="GdvLayerContent.html" title="GdvLayerContent">
+<link rel="next" href="GdvLinearAxis.html" title="GdvLinearAxis">
+<meta name="generator" content="GTK-Doc V1.25.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#GdvAxis.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#GdvAxis.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_properties">  <span class="dim">|</span> 
+                  <a href="#GdvAxis.properties" class="shortcut">Properties</a></span><span id="nav_signals">  <span class="dim">|</span> 
+                  <a href="#GdvAxis.signals" class="shortcut">Signals</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="refman.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="GdvLayerContent.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="GdvLinearAxis.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="GdvAxis"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="GdvAxis.top_of_page"></a>GdvAxis</span></h2>
+<p>GdvAxis — an axis widget</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="GdvAxis.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="GdvAxis.html" title="GdvAxis"><span class="returnvalue">GdvAxis</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="GdvAxis.html#gdv-axis-new" title="gdv_axis_new ()">gdv_axis_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="GdvTic.html" title="GdvTic"><span class="returnvalue">GdvTic</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="GdvAxis.html#gdv-axis-get-tic-for-value" title="gdv_axis_get_tic_for_value ()">gdv_axis_get_tic_for_value</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="GdvAxis.html#gdv-axis-get-tic-list" title="gdv_axis_get_tic_list ()">gdv_axis_get_tic_list</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="GdvAxis.html#gdv-axis-get-mtic-list" title="gdv_axis_get_mtic_list ()">gdv_axis_get_mtic_list</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="GdvAxis.html#gdv-axis-get-indicator-list" title="gdv_axis_get_indicator_list ()">gdv_axis_get_indicator_list</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GdvAxis.html#gdv-axis-title-set-markup" title="gdv_axis_title_set_markup ()">gdv_axis_title_set_markup</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="GdvAxis.html#gdv-axis-get-title" title="gdv_axis_get_title ()">gdv_axis_get_title</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GdvAxis.html#gdv-axis-set-title-widget" title="gdv_axis_set_title_widget ()">gdv_axis_set_title_widget</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GdvAxis.html#gdv-axis-get-show-title" title="gdv_axis_get_show_title ()">gdv_axis_get_show_title</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GdvAxis.html#gdv-axis-get-borders" title="gdv_axis_get_borders ()">gdv_axis_get_borders</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GdvAxis.html#gdv-axis-queue-value-interval" title="gdv_axis_queue_value_interval ()">gdv_axis_queue_value_interval</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="GdvAxis.properties"></a><h2>Properties</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="properties_type">
+<col width="300px" class="properties_name">
+<col width="200px" class="properties_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--axis-beg-at-screen-x" title="The “axis-beg-at-screen-x” property">axis-beg-at-screen-x</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--axis-beg-at-screen-y" title="The “axis-beg-at-screen-y” property">axis-beg-at-screen-y</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--axis-beg-pix-x" title="The “axis-beg-pix-x” property">axis-beg-pix-x</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--axis-beg-pix-y" title="The “axis-beg-pix-y” property">axis-beg-pix-y</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--axis-direction-outside" title="The “axis-direction-outside” property">axis-direction-outside</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--axis-end-at-screen-x" title="The “axis-end-at-screen-x” property">axis-end-at-screen-x</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--axis-end-at-screen-y" title="The “axis-end-at-screen-y” property">axis-end-at-screen-y</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--axis-end-pix-x" title="The “axis-end-pix-x” property">axis-end-pix-x</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--axis-end-pix-y" title="The “axis-end-pix-y” property">axis-end-pix-y</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--axis-orientation" title="The “axis-orientation” property">axis-orientation</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--force-beg-end" title="The “force-beg-end” property">force-beg-end</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--mtics" title="The “mtics” property">mtics</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--mtics-automatic" title="The “mtics-automatic” property">mtics-automatic</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--mtics-beg-val" title="The “mtics-beg-val” property">mtics-beg-val</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--mtics-end-val" title="The “mtics-end-val” property">mtics-end-val</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--resize-during-redraw" title="The “resize-during-redraw” property">resize-during-redraw</a></td>
+<td class="property_flags">Read</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--scale-auto-increment" title="The “scale-auto-increment” property">scale-auto-increment</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--scale-beg-val" title="The “scale-beg-val” property">scale-beg-val</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--scale-end-val" title="The “scale-end-val” property">scale-end-val</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--scale-increment-val" title="The “scale-increment-val” property">scale-increment-val</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--scale-limits-automatic" title="The “scale-limits-automatic” property">scale-limits-automatic</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--tics-automatic" title="The “tics-automatic” property">tics-automatic</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--tics-beg-val" title="The “tics-beg-val” property">tics-beg-val</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--tics-end-val" title="The “tics-end-val” property">tics-end-val</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--title" title="The “title” property">title</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<a href="/usr/share/gtk-doc/html/gtk3/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> *</td>
+<td class="property_name"><a class="link" href="GdvAxis.html#GdvAxis--title-widget" title="The “title-widget” property">title-widget</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="GdvAxis.signals"></a><h2>Signals</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="signals_return">
+<col width="300px" class="signals_name">
+<col width="200px" class="signals_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="signal_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a></td>
+<td class="signal_name"><a class="link" href="GdvAxis.html#GdvAxis-get-inner-dir" title="The “get-inner-dir” signal">get-inner-dir</a></td>
+<td class="signal_flags"><a href="/usr/share/gtk-doc/html/gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
+</tr>
+<tr>
+<td class="signal_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a></td>
+<td class="signal_name"><a class="link" href="GdvAxis.html#GdvAxis-get-point" title="The “get-point” signal">get-point</a></td>
+<td class="signal_flags"><a href="/usr/share/gtk-doc/html/gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
+</tr>
+<tr>
+<td class="signal_type">
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a>*</td>
+<td class="signal_name"><a class="link" href="GdvAxis.html#GdvAxis-make-tic-label-markup" title="The “make-tic-label-markup” signal">make-tic-label-markup</a></td>
+<td class="signal_flags"><a href="/usr/share/gtk-doc/html/gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="GdvAxis.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody><tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="GdvAxis.html#GdvAxisClass" title="struct GdvAxisClass">GdvAxisClass</a></td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="GdvAxis.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+    <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+        <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gtk3/GtkWidget.html#GtkWidget-struct">GtkWidget</a>
+            <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gtk3/GtkContainer.html#GtkContainer-struct">GtkContainer</a>
+                <span class="lineart">╰──</span> GdvAxis
+                    <span class="lineart">├──</span> <a class="link" href="GdvLinearAxis.html" title="GdvLinearAxis">GdvLinearAxis</a>
+                    <span class="lineart">╰──</span> <a class="link" href="GdvLogAxis.html" title="GdvLogAxis">GdvLogAxis</a>
+</pre>
+</div>
+<div class="refsect1">
+<a name="GdvAxis.description"></a><h2>Description</h2>
+<p><a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a> is the base class of all single-dimensional axes. It is an
+container for the affiliated tics and indicators. The exact appearance of
+the axis is delegated to inherited class-definittions. However the
+implemented geometry handling can be used for any axis, that is a basically
+a straight line.</p>
+<div class="refsect2">
+<a name="id-1.3.4.8.3"></a><h3>CSS nodes</h3>
+<p>GdvAxis uses a single CSS node with name axis.</p>
+</div>
+</div>
+<div class="refsect1">
+<a name="GdvAxis.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="gdv-axis-new"></a><h3>gdv_axis_new ()</h3>
+<pre class="programlisting"><a class="link" href="GdvAxis.html" title="GdvAxis"><span class="returnvalue">GdvAxis</span></a> *
+gdv_axis_new (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Just a common constructor.</p>
+<div class="refsect3">
+<a name="gdv-axis-new.returns"></a><h4>Returns</h4>
+<p> a new <a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdv-axis-get-tic-for-value"></a><h3>gdv_axis_get_tic_for_value ()</h3>
+<pre class="programlisting"><a class="link" href="GdvTic.html" title="GdvTic"><span class="returnvalue">GdvTic</span></a> *
+gdv_axis_get_tic_for_value (<em class="parameter"><code><a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a> *axis</code></em>,
+                            <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> value</code></em>);</pre>
+<p>Returns a <a class="link" href="GdvTic.html" title="GdvTic"><span class="type">GdvTic</span></a> assigned to the axis with given value.</p>
+<p>This function should be used carefully. It is usual difficult to use due to
+problems with the precision of Tic-valus and rounding-issues. Most of the
+time it will be a better solution to use <a class="link" href="GdvAxis.html#gdv-axis-get-tic-list" title="gdv_axis_get_tic_list ()"><code class="function">gdv_axis_get_tic_list()</code></a> and compare
+the tic-values to a specific precision-criteria.</p>
+<div class="refsect3">
+<a name="gdv-axis-get-tic-for-value.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>axis</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>value</p></td>
+<td class="parameter_description"><p>a given tic-value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gdv-axis-get-tic-for-value.returns"></a><h4>Returns</h4>
+<p> The <a class="link" href="GdvTic.html" title="GdvTic"><span class="type">GdvTic</span></a> with the given Tic-value. </p>
+<p><span class="annotation">[<a href="http://foldoc.org/nullable"><span class="acronym">nullable</span></a>][<a href="http://foldoc.org/transfer%20none"><span class="acronym">transfer none</span></a>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdv-axis-get-tic-list"></a><h3>gdv_axis_get_tic_list ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
+gdv_axis_get_tic_list (<em class="parameter"><code><a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a> *axis</code></em>);</pre>
+<p>Lists the tics used by <em class="parameter"><code>axis</code></em>
+.</p>
+<div class="refsect3">
+<a name="gdv-axis-get-tic-list.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>axis</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gdv-axis-get-tic-list.returns"></a><h4>Returns</h4>
+<p>    a newly allocated <a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> of tics. </p>
+<p><span class="annotation">[<a href="http://foldoc.org/transfer%20container"><span class="acronym">transfer container</span></a>][<a href="http://foldoc.org/element-type"><span class="acronym">element-type</span></a> GdvTic]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdv-axis-get-mtic-list"></a><h3>gdv_axis_get_mtic_list ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
+gdv_axis_get_mtic_list (<em class="parameter"><code><a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a> *axis</code></em>);</pre>
+<p>Lists the minor tics used by <em class="parameter"><code>axis</code></em>
+.</p>
+<div class="refsect3">
+<a name="gdv-axis-get-mtic-list.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>axis</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gdv-axis-get-mtic-list.returns"></a><h4>Returns</h4>
+<p>    a newly allocated <a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> of mtics. </p>
+<p><span class="annotation">[<a href="http://foldoc.org/transfer%20container"><span class="acronym">transfer container</span></a>][<a href="http://foldoc.org/element-type"><span class="acronym">element-type</span></a> GdvMtic]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdv-axis-get-indicator-list"></a><h3>gdv_axis_get_indicator_list ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
+gdv_axis_get_indicator_list (<em class="parameter"><code><a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a> *axis</code></em>);</pre>
+<p>Lists the indicators used by <em class="parameter"><code>axis</code></em>
+.</p>
+<div class="refsect3">
+<a name="gdv-axis-get-indicator-list.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>axis</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gdv-axis-get-indicator-list.returns"></a><h4>Returns</h4>
+<p>    a newly allocated <a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> of indicators. </p>
+<p><span class="annotation">[<a href="http://foldoc.org/transfer%20container"><span class="acronym">transfer container</span></a>][<a href="http://foldoc.org/element-type"><span class="acronym">element-type</span></a> GdvIndicator]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdv-axis-title-set-markup"></a><h3>gdv_axis_title_set_markup ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gdv_axis_title_set_markup (<em class="parameter"><code><a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a> *axis</code></em>,
+                           <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *markup</code></em>);</pre>
+<p>Sets the text of the title. If <em class="parameter"><code>markup</code></em>
+ is <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>,
+the current title is removed.</p>
+<div class="refsect3">
+<a name="gdv-axis-title-set-markup.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>axis</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>markup</p></td>
+<td class="parameter_description"><p> the text to use as the title of the axis. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<a href="http://foldoc.org/allow-none"><span class="acronym">allow-none</span></a>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdv-axis-get-title"></a><h3>gdv_axis_get_title ()</h3>
+<pre class="programlisting">const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+gdv_axis_get_title (<em class="parameter"><code><a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a> *axis</code></em>);</pre>
+<p>If the axis’ title widget is a <a href="/usr/share/gtk-doc/html/gtk3/GtkLabel.html#GtkLabel-struct"><span class="type">GtkLabel</span></a>, returns the
+text in the label widget. (The frame will have a <a href="/usr/share/gtk-doc/html/gtk3/GtkLabel.html#GtkLabel-struct"><span class="type">GtkLabel</span></a>
+for the title widget if a non-<a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> argument was passed
+to <a href="/usr/share/gtk-doc/html/gtk3/GtkFrame.html#gtk-frame-new"><code class="function">gtk_frame_new()</code></a>.)</p>
+<div class="refsect3">
+<a name="gdv-axis-get-title.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>axis</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gdv-axis-get-title.returns"></a><h4>Returns</h4>
+<p> the text in the title, or <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if there
+was no title widget or the lable widget was not
+a <a href="/usr/share/gtk-doc/html/gtk3/GtkLabel.html#GtkLabel-struct"><span class="type">GtkLabel</span></a>. This string is owned by GTK+ and
+must not be modified or freed. </p>
+<p><span class="annotation">[<a href="http://foldoc.org/nullable"><span class="acronym">nullable</span></a>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdv-axis-set-title-widget"></a><h3>gdv_axis_set_title_widget ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gdv_axis_set_title_widget (<em class="parameter"><code><a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a> *axis</code></em>,
+                           <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk3/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> *title_widget</code></em>);</pre>
+<p>Sets the title widget for the axis. This is the widget that
+will appear next to the axis as additional information.</p>
+<div class="refsect3">
+<a name="gdv-axis-set-title-widget.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>axis</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>title_widget</p></td>
+<td class="parameter_description"><p> the <a href="/usr/share/gtk-doc/html/gtk3/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> that should be used as new title. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<a href="http://foldoc.org/nullable"><span class="acronym">nullable</span></a>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdv-axis-get-show-title"></a><h3>gdv_axis_get_show_title ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gdv_axis_get_show_title (<em class="parameter"><code><a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a> *axis</code></em>);</pre>
+<div class="refsect3">
+<a name="gdv-axis-get-show-title.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>axis</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gdv-axis-get-show-title.returns"></a><h4>Returns</h4>
+<p> <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the title should be shown</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdv-axis-get-borders"></a><h3>gdv_axis_get_borders ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gdv_axis_get_borders (<em class="parameter"><code><a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a> *axis</code></em>,
+                      <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *max_val</code></em>,
+                      <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *min_val</code></em>,
+                      <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *max_pix_x</code></em>,
+                      <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *min_pix_x</code></em>,
+                      <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *max_pix_y</code></em>,
+                      <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *min_pix_y</code></em>);</pre>
+<div class="refsect3">
+<a name="gdv-axis-get-borders.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>axis</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>max_val</p></td>
+<td class="parameter_description"><p>the maximum scale-value of the axis</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>min_val</p></td>
+<td class="parameter_description"><p>the minimum scale-value of the axis</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>max_pix_x</p></td>
+<td class="parameter_description"><p>the maximum x-value of the axis</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>min_pix_x</p></td>
+<td class="parameter_description"><p>the minimum x-value of the axis</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>max_pix_y</p></td>
+<td class="parameter_description"><p>the maximum y-value of the axis</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>min_pix_y</p></td>
+<td class="parameter_description"><p>the minimum y-value of the axis</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdv-axis-queue-value-interval"></a><h3>gdv_axis_queue_value_interval ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gdv_axis_queue_value_interval (<em class="parameter"><code><a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a> *axis</code></em>,
+                               <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> value</code></em>);</pre>
+<p>The function compares the <span class="type">value</span> against the scale-begin and -end. If the
+value is outside the <span class="type">axis</span> range, the <span class="type">axis</span> scale-beg-val or scale-end-val
+will be adjusted to the value.</p>
+<p>This function is in particular usefull to update an axis for new values.</p>
+<div class="refsect3">
+<a name="gdv-axis-queue-value-interval.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>axis</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>value</p></td>
+<td class="parameter_description"><p>an new value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gdv-axis-queue-value-interval.returns"></a><h4>Returns</h4>
+<p> <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the point is oudside the range of the layer-axes and <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>
+otherwise</p>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="GdvAxis.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="GdvAxisClass"></a><h3>struct GdvAxisClass</h3>
+<pre class="programlisting">struct GdvAxisClass {
+  GtkContainerClass parent_class;
+
+  gboolean (*get_point)       (GdvAxis            *axis,
+                               gdouble             value,
+                               gdouble            *pos_x,
+                               gdouble            *pos_y);
+
+  gboolean (*get_inner_dir)   (GdvAxis            *axis,
+                               gdouble             value,
+                               gdouble            *pos_x,
+                               gdouble            *pos_y);
+
+  gchar *(*make_tic_label_markup)       (GdvAxis            *axis,
+                                         gdouble             value);
+};
+</pre>
+<div class="refsect3">
+<a name="GdvAxisClass.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="GdvAxisClass.get-point"></a>get_point</code></em> ()</p></td>
+<td class="struct_member_description"><p>The signal used to derive the screen position of a value on the
+axis. It is essential for calculating the point-position of any axes.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="GdvAxisClass.get-inner-dir"></a>get_inner_dir</code></em> ()</p></td>
+<td class="struct_member_description"><p>The signal used to derive the inner direction of a value on
+the axis. It is essential for calculating the tic-appearance on the axis.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="GdvAxisClass.make-tic-label-markup"></a>make_tic_label_markup</code></em> ()</p></td>
+<td class="struct_member_description"><p>Signal that is used to create a tic-label for any
+given function value.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="GdvAxis.property-details"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="GdvAxis--axis-beg-at-screen-x"></a><h3>The <code class="literal">“axis-beg-at-screen-x”</code> property</h3>
+<pre class="programlisting">  “axis-beg-at-screen-x”     <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></pre>
+<p>Determines the x-value origin point of the axis relative to the layer-area.</p>
+<p>See the GdvAxis:axis-beg-pix-x property</p>
+<p>Flags: Read / Write</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--axis-beg-at-screen-y"></a><h3>The <code class="literal">“axis-beg-at-screen-y”</code> property</h3>
+<pre class="programlisting">  “axis-beg-at-screen-y”     <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></pre>
+<p>Determines the x-value origin point of the axis relative to the layer-area.</p>
+<p>See the GdvAxis:axis-beg-pix-y property</p>
+<p>Flags: Read / Write</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--axis-beg-pix-x"></a><h3>The <code class="literal">“axis-beg-pix-x”</code> property</h3>
+<pre class="programlisting">  “axis-beg-pix-x”           <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></pre>
+<p>Determines the x-value origin point of the axis.</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= 0</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--axis-beg-pix-y"></a><h3>The <code class="literal">“axis-beg-pix-y”</code> property</h3>
+<pre class="programlisting">  “axis-beg-pix-y”           <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></pre>
+<p>Determines the y-value origin point of the axis.</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= 0</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--axis-direction-outside"></a><h3>The <code class="literal">“axis-direction-outside”</code> property</h3>
+<pre class="programlisting">  “axis-direction-outside”   <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></pre>
+<p>The angle of orientation of the outside of the axis relative to the top.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: 1.5708</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--axis-end-at-screen-x"></a><h3>The <code class="literal">“axis-end-at-screen-x”</code> property</h3>
+<pre class="programlisting">  “axis-end-at-screen-x”     <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></pre>
+<p>Determines the x-value end point of the axis relative to the layer-area.</p>
+<p>See the GdvAxis:axis-end-pix-x property</p>
+<p>Flags: Read / Write</p>
+<p>Default value: 1</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--axis-end-at-screen-y"></a><h3>The <code class="literal">“axis-end-at-screen-y”</code> property</h3>
+<pre class="programlisting">  “axis-end-at-screen-y”     <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></pre>
+<p>Determines the x-value end point of the axis relative to the layer-area.</p>
+<p>See the GdvAxis:axis-end-pix-y property</p>
+<p>Flags: Read / Write</p>
+<p>Default value: 1</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--axis-end-pix-x"></a><h3>The <code class="literal">“axis-end-pix-x”</code> property</h3>
+<pre class="programlisting">  “axis-end-pix-x”           <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></pre>
+<p>Determines the x-value end point of the axis.</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= 0</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--axis-end-pix-y"></a><h3>The <code class="literal">“axis-end-pix-y”</code> property</h3>
+<pre class="programlisting">  “axis-end-pix-y”           <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></pre>
+<p>Determines the y-value end point of the axis.</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= 0</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--axis-orientation"></a><h3>The <code class="literal">“axis-orientation”</code> property</h3>
+<pre class="programlisting">  “axis-orientation”         <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></pre>
+<p>angle between the beginning of the axis and the vertical on screen.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--force-beg-end"></a><h3>The <code class="literal">“force-beg-end”</code> property</h3>
+<pre class="programlisting">  “force-beg-end”            <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
+<p>This property forces the axis to use the manually assigned beg- and end-
+
+properties. This property should be used with care because it may lead
+to a bad geometry-handling. However, in some cases one wants to bind the
+axis-geomety to the geometry of a layer or underlying other widget.</p>
+<p>This might be usefull e.g. when painting an axis above a picture or live-stream.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: FALSE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--mtics"></a><h3>The <code class="literal">“mtics”</code> property</h3>
+<pre class="programlisting">  “mtics”                    <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a></pre>
+<p>sets the absolute number of mtics per scale interval.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: 4</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--mtics-automatic"></a><h3>The <code class="literal">“mtics-automatic”</code> property</h3>
+<pre class="programlisting">  “mtics-automatic”          <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
+<p>Determines whether mtics should be setted automatically.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--mtics-beg-val"></a><h3>The <code class="literal">“mtics-beg-val”</code> property</h3>
+<pre class="programlisting">  “mtics-beg-val”            <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></pre>
+<p>Determines the beginning value of mtics-settings.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--mtics-end-val"></a><h3>The <code class="literal">“mtics-end-val”</code> property</h3>
+<pre class="programlisting">  “mtics-end-val”            <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></pre>
+<p>Determines the end value of mtics-settings.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: 100</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--resize-during-redraw"></a><h3>The <code class="literal">“resize-during-redraw”</code> property</h3>
+<pre class="programlisting">  “resize-during-redraw”     <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
+<p>*placeholder*.</p>
+<p>Flags: Read</p>
+<p>Default value: FALSE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--scale-auto-increment"></a><h3>The <code class="literal">“scale-auto-increment”</code> property</h3>
+<pre class="programlisting">  “scale-auto-increment”     <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
+<p>Determines whether the increment-value should be determined automatically.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--scale-beg-val"></a><h3>The <code class="literal">“scale-beg-val”</code> property</h3>
+<pre class="programlisting">  “scale-beg-val”            <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></pre>
+<p>Determines the minimum value of the axis.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--scale-end-val"></a><h3>The <code class="literal">“scale-end-val”</code> property</h3>
+<pre class="programlisting">  “scale-end-val”            <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></pre>
+<p>Determines the maximum value of the axis.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: 100</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--scale-increment-val"></a><h3>The <code class="literal">“scale-increment-val”</code> property</h3>
+<pre class="programlisting">  “scale-increment-val”      <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></pre>
+<p>Determines the increment value of the axis.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: 100</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--scale-limits-automatic"></a><h3>The <code class="literal">“scale-limits-automatic”</code> property</h3>
+<pre class="programlisting">  “scale-limits-automatic”   <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
+<p>Determines whether if the scale-borders should be rounded automatically up
+to the next better value.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--tics-automatic"></a><h3>The <code class="literal">“tics-automatic”</code> property</h3>
+<pre class="programlisting">  “tics-automatic”           <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
+<p>Determines whether tics should be setted automatically.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--tics-beg-val"></a><h3>The <code class="literal">“tics-beg-val”</code> property</h3>
+<pre class="programlisting">  “tics-beg-val”             <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></pre>
+<p>Determines the beginning value of tics-settings.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--tics-end-val"></a><h3>The <code class="literal">“tics-end-val”</code> property</h3>
+<pre class="programlisting">  “tics-end-val”             <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></pre>
+<p>Determines the end value of tics-settings.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: 100</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--title"></a><h3>The <code class="literal">“title”</code> property</h3>
+<pre class="programlisting">  “title”                    <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
+<p>The title-string of the axis.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis--title-widget"></a><h3>The <code class="literal">“title-widget”</code> property</h3>
+<pre class="programlisting">  “title-widget”             <a href="/usr/share/gtk-doc/html/gtk3/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> *</pre>
+<p>The title widget of the axis.</p>
+<p>Flags: Read / Write</p>
+</div>
+</div>
+<div class="refsect1">
+<a name="GdvAxis.signal-details"></a><h2>Signal Details</h2>
+<div class="refsect2">
+<a name="GdvAxis-get-inner-dir"></a><h3>The <code class="literal">“get-inner-dir”</code> signal</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+user_function (<a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a> *axis,
+               <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a>  value,
+               <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> pos_x,
+               <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> pos_y,
+               <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data)</pre>
+<p>Signal to get the innder-dir of a value on the axis.</p>
+<div class="refsect3">
+<a name="GdvAxis-get-inner-dir.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>axis</p></td>
+<td class="parameter_description"><p>the axis which received the signal</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>value</p></td>
+<td class="parameter_description"><p>the point-value on the axis</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pos_x</p></td>
+<td class="parameter_description"><p>the place to store the x-component of the direction</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pos_y</p></td>
+<td class="parameter_description"><p>the place to store the y-component of the direction</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="GdvAxis-get-inner-dir.returns"></a><h4>Returns</h4>
+<p> <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the point lies in the range of the axis.</p>
+</div>
+<p>Flags: <a href="/usr/share/gtk-doc/html/gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis-get-point"></a><h3>The <code class="literal">“get-point”</code> signal</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+user_function (<a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a> *axis,
+               <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a>  value,
+               <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> pos_x,
+               <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> pos_y,
+               <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data)</pre>
+<p>Signal to obtain the position of a value on screen for the axis.</p>
+<div class="refsect3">
+<a name="GdvAxis-get-point.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>axis</p></td>
+<td class="parameter_description"><p>the axis which received the signal</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>value</p></td>
+<td class="parameter_description"><p>the point-value on the axis</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pos_x</p></td>
+<td class="parameter_description"><p>the place to store the x-position</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pos_y</p></td>
+<td class="parameter_description"><p>the place to store the y-position</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="GdvAxis-get-point.returns"></a><h4>Returns</h4>
+<p> <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the point lies in the range of the axis.</p>
+</div>
+<p>Flags: <a href="/usr/share/gtk-doc/html/gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvAxis-make-tic-label-markup"></a><h3>The <code class="literal">“make-tic-label-markup”</code> signal</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a>*
+user_function (<a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a> *axis,
+               <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a>  value,
+               <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data)</pre>
+<p>Signal to obtain a pango markup-text for a given value that is used to get
+the tic-label over the axis.</p>
+<div class="refsect3">
+<a name="GdvAxis-make-tic-label-markup.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>axis</p></td>
+<td class="parameter_description"><p>the axis which received the signal</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>value</p></td>
+<td class="parameter_description"><p>the value that will be used for dermining the tic-label</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: <a href="/usr/share/gtk-doc/html/gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25.1</div>
+</body>
+</html>

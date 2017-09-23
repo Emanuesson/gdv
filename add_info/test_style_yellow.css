@@ -1,0 +1,54 @@
+GtkApplicationWindow {
+    background-color: #0a0a00;
+    color: #ebdf00;
+}
+
+GtkButton {
+    border-color: #2f2f00;
+    background-color: #0a0a00;
+    padding: 10.0;
+/*    border: 1px;*/
+    color: #ebdf00;
+}
+
+GtkFrame {
+    border-color: #2f2f00;
+    color: #ebdf00;
+}
+
+GdvLabel {
+    color: #ebdf00;
+    font-size: 8px;
+}
+
+Gdv2dView {
+/*    background-color: #0c0c0c;*/
+    background-color: #0a0a00;
+    -Gdv2dView-custom-property: 210.1px;
+}
+
+Gdv2dStaticLayer {
+/*    -GdvLayer-rmargin: 0.7;
+    -GdvLayer-lmargin: 0.3;
+    -GdvLayer-tmargin: 0.3;
+    -GdvLayer-bmargin: 0.7%;*/
+}
+
+GdvLinearAxis {
+/*
+    -GdvAxis-axis-line-width: 5.0px;
+    -GdvAxis-tics-line-width: 2.0px;
+    -GdvAxis-mtics-color: #0000ff;
+    -GdvAxis-mtics-line-width: 3.0px;*/
+    -GdvAxis-mtics-color: #ebdf00;
+    -GdvAxis-tics-color: #ebdf00;
+    -GdvAxis-axis-color: #ebdf00;
+    color: #ebdf00;
+/*    font-size: 8; */
+    font-size: 8px;
+/*    -GdvAxis-tics-out-length: 0.0px; */
+}
+
+GdvLayerContent {
+    -GdvLayerContent-point-color: #ebdf00;
+}

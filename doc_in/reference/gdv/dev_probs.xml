@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding="ISO-8859-1"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+]>
+  <chapter id="issues">
+    <title>Known issues in the concepts</title>
+      <para>
+        As the library has no real community or core-developer this part of the
+        documentation is thought as a collection of known problems of higher
+        complexity.
+      </para>
+      <para>
+        One of the biggest issues is about the general idea how the plotting of
+        axes should be implemented in the drawing-cycle of Gtk+.
+      </para>
+      <para>
+        Usually the axis-drawing starts with the measurement. As there is in the
+        plain beginning no Tic available on an axis, an automatic routine finds
+        a rather high value for the pixel-difference between different tics.
+      </para>
+      <para>
+        An adjustment to this high value is a rather high number of possible
+        Tics. Than these tics will be realized and added to the 
+        GdvAxis-Container.
+      </para>
+      <para>
+        After that the Axis is realized and space is allocated for the axis and
+        every Tic. Now the axis measures the free space again and realizes that
+        the space between every tic is much lower than previously thought. So
+        the value for the number of tics is automatically adjusted and the
+        residual Tics will be removed from the axis.
+      </para>
+      <para>
+        The process starts now with a similar situation as in the beginning and
+        will be continuing with adding, removing and measuring of Tics. This
+        cycle is depicted in the following graphic.
+      </para>
+
+      <informalfigure>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="realloc_prob.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </informalfigure>
+
+      <para>
+        It will be really hard to detect such a cycle and break it from within
+        the code.
+      </para>
+
+      <para>
+        For the moment this problem is rather simply solved by measuring
+        adjusting the number of Tics during the axis-allocation by the space
+        needed by the beginning- and ending-Tic, as their values can be easily
+        determined or are even fixed.
+      </para>
+
+      <para>
+        Nevertheless, this approach is problematic as in some cases the space
+        needed for the beginning- and ending-tic might differ from the space
+        needed for the tics in between. A simple example might be an axis
+        from 0 to 5e4 with tics at 2.5e4 in between.
+      </para>
+
+      <para>
+        However this effect is at the moment seen as the minor problem.
+      </para>
+
+  </chapter>
+

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<book xmlns="http://www.devhelp.net/book" title="GDV Reference Manual" link="index.html" author="" name="gdv" version="2" language="c">
+  <chapters>
+    <sub name="LibGdv Overview and introduction" link="gdv.html">
+      <sub name="Introduction to LibGdv" link="getting-started.html">
+        <sub name="Basic examples" link="getting-started.html#id-1.2.3.8">
+          <sub name="A simple example" link="getting-started.html#id-1.2.3.8.2"/>
+          <sub name="Adding a legend" link="getting-started.html#id-1.2.3.8.3"/>
+        </sub>
+      </sub>
+    </sub>
+    <sub name="API reference" link="refman.html">
+      <sub name="GdvLayer" link="GdvLayer.html"/>
+      <sub name="GdvLayerContent" link="GdvLayerContent.html"/>
+      <sub name="GdvAxis" link="GdvAxis.html"/>
+      <sub name="GdvLinearAxis" link="GdvLinearAxis.html"/>
+      <sub name="GdvLogAxis" link="GdvLogAxis.html"/>
+      <sub name="GdvIndicator" link="GdvIndicator.html"/>
+      <sub name="GdvOnedLayer" link="GdvOnedLayer.html"/>
+      <sub name="GdvTowdLayer" link="GdvTwodLayer.html"/>
+      <sub name="GdvTic" link="GdvTic.html"/>
+      <sub name="GdvMtic" link="GdvMtic.html"/>
+      <sub name="GdvLegend" link="GdvLegend.html"/>
+      <sub name="GdvLegendElement" link="GdvLegendElement.html"/>
+    </sub>
+    <sub name="Development-info" link="pt03.html">
+      <sub name="Description of open work" link="roadmap.html"/>
+      <sub name="Known issues in the concepts" link="issues.html"/>
+    </sub>
+  </chapters>
+  <functions>
+    <keyword type="function" name="gdv_layer_new ()" link="GdvLayer.html#gdv-layer-new"/>
+    <keyword type="function" name="gdv_layer_has_layer_content ()" link="GdvLayer.html#gdv-layer-has-layer-content"/>
+    <keyword type="function" name="gdv_layer_evaluate_data_point ()" link="GdvLayer.html#gdv-layer-evaluate-data-point"/>
+    <keyword type="function" name="gdv_layer_get_content_list ()" link="GdvLayer.html#gdv-layer-get-content-list"/>
+    <keyword type="function" name="gdv_layer_get_axis_list ()" link="GdvLayer.html#gdv-layer-get-axis-list"/>
+    <keyword type="struct" name="struct GdvLayerClass" link="GdvLayer.html#GdvLayerClass"/>
+    <keyword type="function" name="gdv_layer_content_new ()" link="GdvLayerContent.html#gdv-layer-content-new"/>
+    <keyword type="function" name="gdv_layer_content_add_data_point ()" link="GdvLayerContent.html#gdv-layer-content-add-data-point"/>
+    <keyword type="function" name="gdv_layer_content_remove_data_point_by_index ()" link="GdvLayerContent.html#gdv-layer-content-remove-data-point-by-index"/>
+    <keyword type="function" name="gdv_layer_content_get_content ()" link="GdvLayerContent.html#gdv-layer-content-get-content"/>
+    <keyword type="function" name="gdv_layer_content_get_min_max_x ()" link="GdvLayerContent.html#gdv-layer-content-get-min-max-x"/>
+    <keyword type="function" name="gdv_layer_content_get_min_max_y ()" link="GdvLayerContent.html#gdv-layer-content-get-min-max-y"/>
+    <keyword type="function" name="gdv_layer_content_get_min_max_z ()" link="GdvLayerContent.html#gdv-layer-content-get-min-max-z"/>
+    <keyword type="function" name="gdv_layer_content_reset ()" link="GdvLayerContent.html#gdv-layer-content-reset"/>
+    <keyword type="struct" name="struct GdvLayerContent" link="GdvLayerContent.html#GdvLayerContent-struct"/>
+    <keyword type="struct" name="struct GdvLayerContentClass" link="GdvLayerContent.html#GdvLayerContentClass"/>
+    <keyword type="struct" name="GdvLayerContentPrivate" link="GdvLayerContent.html#GdvLayerContentPrivate"/>
+    <keyword type="property" name="The “data-point” property" link="GdvLayerContent.html#GdvLayerContent--data-point"/>
+    <keyword type="property" name="The “line-style” property" link="GdvLayerContent.html#GdvLayerContent--line-style"/>
+    <keyword type="property" name="The “point-line-width” property" link="GdvLayerContent.html#GdvLayerContent--point-line-width"/>
+    <keyword type="property" name="The “point-type” property" link="GdvLayerContent.html#GdvLayerContent--point-type"/>
+    <keyword type="property" name="The “show-in-legend” property" link="GdvLayerContent.html#GdvLayerContent--show-in-legend"/>
+    <keyword type="property" name="The “title” property" link="GdvLayerContent.html#GdvLayerContent--title"/>
+    <keyword type="function" name="gdv_axis_new ()" link="GdvAxis.html#gdv-axis-new"/>
+    <keyword type="function" name="gdv_axis_get_tic_for_value ()" link="GdvAxis.html#gdv-axis-get-tic-for-value"/>
+    <keyword type="function" name="gdv_axis_get_tic_list ()" link="GdvAxis.html#gdv-axis-get-tic-list"/>
+    <keyword type="function" name="gdv_axis_get_mtic_list ()" link="GdvAxis.html#gdv-axis-get-mtic-list"/>
+    <keyword type="function" name="gdv_axis_get_indicator_list ()" link="GdvAxis.html#gdv-axis-get-indicator-list"/>
+    <keyword type="function" name="gdv_axis_title_set_markup ()" link="GdvAxis.html#gdv-axis-title-set-markup"/>
+    <keyword type="function" name="gdv_axis_get_title ()" link="GdvAxis.html#gdv-axis-get-title"/>
+    <keyword type="function" name="gdv_axis_set_title_widget ()" link="GdvAxis.html#gdv-axis-set-title-widget"/>
+    <keyword type="function" name="gdv_axis_get_show_title ()" link="GdvAxis.html#gdv-axis-get-show-title"/>
+    <keyword type="function" name="gdv_axis_get_borders ()" link="GdvAxis.html#gdv-axis-get-borders"/>
+    <keyword type="function" name="gdv_axis_queue_value_interval ()" link="GdvAxis.html#gdv-axis-queue-value-interval"/>
+    <keyword type="struct" name="struct GdvAxisClass" link="GdvAxis.html#GdvAxisClass"/>
+    <keyword type="property" name="The “axis-beg-at-screen-x” property" link="GdvAxis.html#GdvAxis--axis-beg-at-screen-x"/>
+    <keyword type="property" name="The “axis-beg-at-screen-y” property" link="GdvAxis.html#GdvAxis--axis-beg-at-screen-y"/>
+    <keyword type="property" name="The “axis-beg-pix-x” property" link="GdvAxis.html#GdvAxis--axis-beg-pix-x"/>
+    <keyword type="property" name="The “axis-beg-pix-y” property" link="GdvAxis.html#GdvAxis--axis-beg-pix-y"/>
+    <keyword type="property" name="The “axis-direction-outside” property" link="GdvAxis.html#GdvAxis--axis-direction-outside"/>
+    <keyword type="property" name="The “axis-end-at-screen-x” property" link="GdvAxis.html#GdvAxis--axis-end-at-screen-x"/>
+    <keyword type="property" name="The “axis-end-at-screen-y” property" link="GdvAxis.html#GdvAxis--axis-end-at-screen-y"/>
+    <keyword type="property" name="The “axis-end-pix-x” property" link="GdvAxis.html#GdvAxis--axis-end-pix-x"/>
+    <keyword type="property" name="The “axis-end-pix-y” property" link="GdvAxis.html#GdvAxis--axis-end-pix-y"/>
+    <keyword type="property" name="The “axis-orientation” property" link="GdvAxis.html#GdvAxis--axis-orientation"/>
+    <keyword type="property" name="The “force-beg-end” property" link="GdvAxis.html#GdvAxis--force-beg-end"/>
+    <keyword type="property" name="The “mtics” property" link="GdvAxis.html#GdvAxis--mtics"/>
+    <keyword type="property" name="The “mtics-automatic” property" link="GdvAxis.html#GdvAxis--mtics-automatic"/>
+    <keyword type="property" name="The “mtics-beg-val” property" link="GdvAxis.html#GdvAxis--mtics-beg-val"/>
+    <keyword type="property" name="The “mtics-end-val” property" link="GdvAxis.html#GdvAxis--mtics-end-val"/>
+    <keyword type="property" name="The “resize-during-redraw” property" link="GdvAxis.html#GdvAxis--resize-during-redraw"/>
+    <keyword type="property" name="The “scale-auto-increment” property" link="GdvAxis.html#GdvAxis--scale-auto-increment"/>
+    <keyword type="property" name="The “scale-beg-val” property" link="GdvAxis.html#GdvAxis--scale-beg-val"/>
+    <keyword type="property" name="The “scale-end-val” property" link="GdvAxis.html#GdvAxis--scale-end-val"/>
+    <keyword type="property" name="The “scale-increment-val” property" link="GdvAxis.html#GdvAxis--scale-increment-val"/>
+    <keyword type="property" name="The “scale-limits-automatic” property" link="GdvAxis.html#GdvAxis--scale-limits-automatic"/>
+    <keyword type="property" name="The “tics-automatic” property" link="GdvAxis.html#GdvAxis--tics-automatic"/>
+    <keyword type="property" name="The “tics-beg-val” property" link="GdvAxis.html#GdvAxis--tics-beg-val"/>
+    <keyword type="property" name="The “tics-end-val” property" link="GdvAxis.html#GdvAxis--tics-end-val"/>
+    <keyword type="property" name="The “title” property" link="GdvAxis.html#GdvAxis--title"/>
+    <keyword type="property" name="The “title-widget” property" link="GdvAxis.html#GdvAxis--title-widget"/>
+    <keyword type="signal" name="The “get-inner-dir” signal" link="GdvAxis.html#GdvAxis-get-inner-dir"/>
+    <keyword type="signal" name="The “get-point” signal" link="GdvAxis.html#GdvAxis-get-point"/>
+    <keyword type="signal" name="The “make-tic-label-markup” signal" link="GdvAxis.html#GdvAxis-make-tic-label-markup"/>
+    <keyword type="function" name="gdv_linear_axis_new ()" link="GdvLinearAxis.html#gdv-linear-axis-new"/>
+    <keyword type="struct" name="struct GdvLinearAxis" link="GdvLinearAxis.html#GdvLinearAxis-struct"/>
+    <keyword type="struct" name="struct GdvLinearAxisClass" link="GdvLinearAxis.html#GdvLinearAxisClass"/>
+    <keyword type="struct" name="GdvLinearAxisPrivate" link="GdvLinearAxis.html#GdvLinearAxisPrivate"/>
+    <keyword type="property" name="The “scale-increment-base” property" link="GdvLinearAxis.html#GdvLinearAxis--scale-increment-base"/>
+    <keyword type="function" name="gdv_log_axis_new ()" link="GdvLogAxis.html#gdv-log-axis-new"/>
+    <keyword type="struct" name="struct GdvLogAxis" link="GdvLogAxis.html#GdvLogAxis-struct"/>
+    <keyword type="struct" name="struct GdvLogAxisClass" link="GdvLogAxis.html#GdvLogAxisClass"/>
+    <keyword type="struct" name="GdvLogAxisPrivate" link="GdvLogAxis.html#GdvLogAxisPrivate"/>
+    <keyword type="function" name="gdv_indicator_new ()" link="GdvIndicator.html#gdv-indicator-new"/>
+    <keyword type="struct" name="struct GdvIndicatorClass" link="GdvIndicator.html#GdvIndicatorClass"/>
+    <keyword type="property" name="The “show-in-legend” property" link="GdvIndicator.html#GdvIndicator--show-in-legend"/>
+    <keyword type="property" name="The “show-in-out-of-range” property" link="GdvIndicator.html#GdvIndicator--show-in-out-of-range"/>
+    <keyword type="property" name="The “title” property" link="GdvIndicator.html#GdvIndicator--title"/>
+    <keyword type="property" name="The “value” property" link="GdvIndicator.html#GdvIndicator--value"/>
+    <keyword type="function" name="gdv_oned_layer_new ()" link="GdvOnedLayer.html#gdv-oned-layer-new"/>
+    <keyword type="function" name="gdv_oned_layer_replace_axis ()" link="GdvOnedLayer.html#gdv-oned-layer-replace-axis"/>
+    <keyword type="macro" name="GDV_ONED_LAYER_TYPE" link="GdvOnedLayer.html#GDV-ONED-LAYER-TYPE:CAPS"/>
+    <keyword type="struct" name="struct GdvOnedLayer" link="GdvOnedLayer.html#GdvOnedLayer-struct"/>
+    <keyword type="struct" name="struct GdvOnedLayerClass" link="GdvOnedLayer.html#GdvOnedLayerClass"/>
+    <keyword type="struct" name="GdvOnedLayerPrivate" link="GdvOnedLayer.html#GdvOnedLayerPrivate"/>
+    <keyword type="property" name="The “axis” property" link="GdvOnedLayer.html#GdvOnedLayer--axis"/>
+    <keyword type="property" name="The “base-orientation” property" link="GdvOnedLayer.html#GdvOnedLayer--base-orientation"/>
+    <keyword type="property" name="The “orientation” property" link="GdvOnedLayer.html#GdvOnedLayer--orientation"/>
+    <keyword type="function" name="gdv_twod_layer_new ()" link="GdvTwodLayer.html#gdv-twod-layer-new"/>
+    <keyword type="function" name="gdv_twod_layer_set_xrange ()" link="GdvTwodLayer.html#gdv-twod-layer-set-xrange"/>
+    <keyword type="function" name="gdv_twod_layer_set_yrange ()" link="GdvTwodLayer.html#gdv-twod-layer-set-yrange"/>
+    <keyword type="function" name="gdv_twod_layer_get_axis ()" link="GdvTwodLayer.html#gdv-twod-layer-get-axis"/>
+    <keyword type="function" name="gdv_twod_layer_set_axis ()" link="GdvTwodLayer.html#gdv-twod-layer-set-axis"/>
+    <keyword type="function" name="gdv_twod_layer_unset_axis ()" link="GdvTwodLayer.html#gdv-twod-layer-unset-axis"/>
+    <keyword type="macro" name="GDV_TWOD_LAYER_TYPE" link="GdvTwodLayer.html#GDV-TWOD-LAYER-TYPE:CAPS"/>
+    <keyword type="struct" name="struct GdvTwodLayer" link="GdvTwodLayer.html#GdvTwodLayer-struct"/>
+    <keyword type="struct" name="struct GdvTwodLayerClass" link="GdvTwodLayer.html#GdvTwodLayerClass"/>
+    <keyword type="struct" name="GdvTwodLayerPrivate" link="GdvTwodLayer.html#GdvTwodLayerPrivate"/>
+    <keyword type="function" name="gdv_tic_new ()" link="GdvTic.html#gdv-tic-new"/>
+    <keyword type="function" name="gdv_tic_label_set_markup ()" link="GdvTic.html#gdv-tic-label-set-markup"/>
+    <keyword type="function" name="gdv_tic_get_label ()" link="GdvTic.html#gdv-tic-get-label"/>
+    <keyword type="function" name="gdv_tic_set_label_widget ()" link="GdvTic.html#gdv-tic-set-label-widget"/>
+    <keyword type="function" name="gdv_tic_set_tic_position ()" link="GdvTic.html#gdv-tic-set-tic-position"/>
+    <keyword type="function" name="gdv_tic_get_show_label ()" link="GdvTic.html#gdv-tic-get-show-label"/>
+    <keyword type="function" name="gdv_tic_get_space_to_tic_position ()" link="GdvTic.html#gdv-tic-get-space-to-tic-position"/>
+    <keyword type="struct" name="struct GdvTicClass" link="GdvTic.html#GdvTicClass"/>
+    <keyword type="property" name="The “axis-inner-dir-x” property" link="GdvTic.html#GdvTic--axis-inner-dir-x"/>
+    <keyword type="property" name="The “axis-inner-dir-y” property" link="GdvTic.html#GdvTic--axis-inner-dir-y"/>
+    <keyword type="property" name="The “label” property" link="GdvTic.html#GdvTic--label"/>
+    <keyword type="property" name="The “label-widget” property" link="GdvTic.html#GdvTic--label-widget"/>
+    <keyword type="property" name="The “label-xalign” property" link="GdvTic.html#GdvTic--label-xalign"/>
+    <keyword type="property" name="The “label-yalign” property" link="GdvTic.html#GdvTic--label-yalign"/>
+    <keyword type="property" name="The “pos-x” property" link="GdvTic.html#GdvTic--pos-x"/>
+    <keyword type="property" name="The “pos-y” property" link="GdvTic.html#GdvTic--pos-y"/>
+    <keyword type="property" name="The “value” property" link="GdvTic.html#GdvTic--value"/>
+    <keyword type="function" name="gdv_mtic_new ()" link="GdvMtic.html#gdv-mtic-new"/>
+    <keyword type="struct" name="struct GdvMticClass" link="GdvMtic.html#GdvMticClass"/>
+    <keyword type="function" name="gdv_legend_new ()" link="GdvLegend.html#gdv-legend-new"/>
+    <keyword type="macro" name="GDV_LEGEND_TYPE" link="GdvLegend.html#GDV-LEGEND-TYPE:CAPS"/>
+    <keyword type="struct" name="struct GdvLegendClass" link="GdvLegend.html#GdvLegendClass"/>
+    <keyword type="property" name="The “columns” property" link="GdvLegend.html#GdvLegend--columns"/>
+    <keyword type="property" name="The “layer” property" link="GdvLegend.html#GdvLegend--layer"/>
+    <keyword type="property" name="The “rows” property" link="GdvLegend.html#GdvLegend--rows"/>
+    <keyword type="property" name="The “text-position” property" link="GdvLegend.html#GdvLegend--text-position"/>
+    <keyword type="function" name="gdv_legend_element_new ()" link="GdvLegendElement.html#gdv-legend-element-new"/>
+    <keyword type="struct" name="struct GdvLegendElementClass" link="GdvLegendElement.html#GdvLegendElementClass"/>
+    <keyword type="property" name="The “element” property" link="GdvLegendElement.html#GdvLegendElement--element"/>
+    <keyword type="property" name="The “sample-length” property" link="GdvLegendElement.html#GdvLegendElement--sample-length"/>
+    <keyword type="member" name="GdvLayerClass.evaluate-point" link="GdvLayer.html#GdvLayerClass.evaluate-point"/>
+    <keyword type="member" name="GdvLayerClass.eval-inner-point" link="GdvLayer.html#GdvLayerClass.eval-inner-point"/>
+    <keyword type="member" name="GdvAxisClass.get-point" link="GdvAxis.html#GdvAxisClass.get-point"/>
+    <keyword type="member" name="GdvAxisClass.get-inner-dir" link="GdvAxis.html#GdvAxisClass.get-inner-dir"/>
+    <keyword type="member" name="GdvAxisClass.make-tic-label-markup" link="GdvAxis.html#GdvAxisClass.make-tic-label-markup"/>
+  </functions>
+</book>

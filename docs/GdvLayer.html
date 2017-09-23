@@ -1,0 +1,332 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>GdvLayer: GDV Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="GDV Reference Manual">
+<link rel="up" href="refman.html" title="Part II. API reference">
+<link rel="prev" href="refman.html" title="Part II. API reference">
+<link rel="next" href="GdvLayerContent.html" title="GdvLayerContent">
+<meta name="generator" content="GTK-Doc V1.25.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#GdvLayer.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#GdvLayer.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="refman.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="refman.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="GdvLayerContent.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="GdvLayer"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="GdvLayer.top_of_page"></a>GdvLayer</span></h2>
+<p>GdvLayer — a layer base class</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="GdvLayer.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="GdvLayer.html" title="GdvLayer"><span class="returnvalue">GdvLayer</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="GdvLayer.html#gdv-layer-new" title="gdv_layer_new ()">gdv_layer_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GdvLayer.html#gdv-layer-has-layer-content" title="gdv_layer_has_layer_content ()">gdv_layer_has_layer_content</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GdvLayer.html#gdv-layer-evaluate-data-point" title="gdv_layer_evaluate_data_point ()">gdv_layer_evaluate_data_point</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="GdvLayer.html#gdv-layer-get-content-list" title="gdv_layer_get_content_list ()">gdv_layer_get_content_list</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="GdvLayer.html#gdv-layer-get-axis-list" title="gdv_layer_get_axis_list ()">gdv_layer_get_axis_list</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="GdvLayer.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody><tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="GdvLayer.html#GdvLayerClass" title="struct GdvLayerClass">GdvLayerClass</a></td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="GdvLayer.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+    <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+        <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gtk3/GtkWidget.html#GtkWidget-struct">GtkWidget</a>
+            <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gtk3/GtkContainer.html#GtkContainer-struct">GtkContainer</a>
+                <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gtk3/GtkBin.html#GtkBin-struct">GtkBin</a>
+                    <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gtk3/GtkOverlay.html#GtkOverlay-struct">GtkOverlay</a>
+                        <span class="lineart">╰──</span> GdvLayer
+                            <span class="lineart">├──</span> <a class="link" href="GdvOnedLayer.html" title="GdvOnedLayer">GdvOnedLayer</a>
+                            <span class="lineart">╰──</span> <a class="link" href="GdvTwodLayer.html" title="GdvTowdLayer">GdvTwodLayer</a>
+</pre>
+</div>
+<div class="refsect1">
+<a name="GdvLayer.description"></a><h2>Description</h2>
+<p><a class="link" href="GdvLayer.html" title="GdvLayer"><span class="type">GdvLayer</span></a> is a object-class, that contains
+2-dimensional plots of numerical data.</p>
+<div class="refsect2">
+<a name="id-1.3.2.6.3"></a><h3>CSS nodes</h3>
+<p>GdvLayer uses a single CSS node with name layer.</p>
+</div>
+</div>
+<div class="refsect1">
+<a name="GdvLayer.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="gdv-layer-new"></a><h3>gdv_layer_new ()</h3>
+<pre class="programlisting"><a class="link" href="GdvLayer.html" title="GdvLayer"><span class="returnvalue">GdvLayer</span></a> *
+gdv_layer_new (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Just a common constructor.</p>
+<div class="refsect3">
+<a name="gdv-layer-new.returns"></a><h4>Returns</h4>
+<p> a new <a class="link" href="GdvLayer.html" title="GdvLayer"><span class="type">GdvLayer</span></a></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdv-layer-has-layer-content"></a><h3>gdv_layer_has_layer_content ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gdv_layer_has_layer_content (<em class="parameter"><code><a class="link" href="GdvLayer.html" title="GdvLayer"><span class="type">GdvLayer</span></a> *layer</code></em>,
+                             <em class="parameter"><code><a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="type">GdvLayerContent</span></a> *layer_content</code></em>);</pre>
+<p>This is a convenient function to determine if a <span class="type">GdvLayerContent-instance</span> 
+is affiliated to a layer.</p>
+<div class="refsect3">
+<a name="gdv-layer-has-layer-content.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>layer</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GdvLayer.html" title="GdvLayer"><span class="type">GdvLayer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>layer_content</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="type">GdvLayerContent</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdv-layer-evaluate-data-point"></a><h3>gdv_layer_evaluate_data_point ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gdv_layer_evaluate_data_point (<em class="parameter"><code><a class="link" href="GdvLayer.html" title="GdvLayer"><span class="type">GdvLayer</span></a> *layer</code></em>,
+                               <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> data_point_x_value</code></em>,
+                               <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> data_point_y_value</code></em>,
+                               <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> data_point_z_value</code></em>,
+                               <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *pos_x</code></em>,
+                               <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *pos_y</code></em>);</pre>
+<p>This function calculates the position of a data-point within the allocated
+space of a layer-instance in pixel units. It simply applies the
+<span class="type">“evaluate_point”</span> method.</p>
+<div class="refsect3">
+<a name="gdv-layer-evaluate-data-point.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>layer</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GdvLayer.html" title="GdvLayer"><span class="type">GdvLayer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>data_point_x_value</p></td>
+<td class="parameter_description"><p>the x coordinate of the point</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>data_point_y_value</p></td>
+<td class="parameter_description"><p>the y coordinate of the point</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>data_point_z_value</p></td>
+<td class="parameter_description"><p>the z coordinate of the point</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pos_x</p></td>
+<td class="parameter_description"><p>the place to store the x-position on screen</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pos_y</p></td>
+<td class="parameter_description"><p>the place to store the y-position on screen</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gdv-layer-evaluate-data-point.returns"></a><h4>Returns</h4>
+<p> <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the point is within the range of the layer-axes and <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>
+otherwise</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdv-layer-get-content-list"></a><h3>gdv_layer_get_content_list ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
+gdv_layer_get_content_list (<em class="parameter"><code><a class="link" href="GdvLayer.html" title="GdvLayer"><span class="type">GdvLayer</span></a> *layer</code></em>);</pre>
+<p>Lists <a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="type">GdvLayerContent</span></a> instances that are used by the <em class="parameter"><code>layer</code></em>
+.</p>
+<div class="refsect3">
+<a name="gdv-layer-get-content-list.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>layer</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GdvLayer.html" title="GdvLayer"><span class="type">GdvLayer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gdv-layer-get-content-list.returns"></a><h4>Returns</h4>
+<p>    a newly allocated <a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> of contents. </p>
+<p><span class="annotation">[<a href="http://foldoc.org/transfer%20container"><span class="acronym">transfer container</span></a>][<a href="http://foldoc.org/element-type"><span class="acronym">element-type</span></a> GdvLayerContent]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdv-layer-get-axis-list"></a><h3>gdv_layer_get_axis_list ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
+gdv_layer_get_axis_list (<em class="parameter"><code><a class="link" href="GdvLayer.html" title="GdvLayer"><span class="type">GdvLayer</span></a> *layer</code></em>);</pre>
+<p>Lists <a class="link" href="GdvAxis.html" title="GdvAxis"><span class="type">GdvAxis</span></a> instances that are used by the <em class="parameter"><code>layer</code></em>
+.</p>
+<div class="refsect3">
+<a name="gdv-layer-get-axis-list.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>layer</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GdvLayer.html" title="GdvLayer"><span class="type">GdvLayer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gdv-layer-get-axis-list.returns"></a><h4>Returns</h4>
+<p>    a newly allocated <a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> of axes. </p>
+<p><span class="annotation">[<a href="http://foldoc.org/transfer%20container"><span class="acronym">transfer container</span></a>][<a href="http://foldoc.org/element-type"><span class="acronym">element-type</span></a> GdvAxis]</span></p>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="GdvLayer.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="GdvLayerClass"></a><h3>struct GdvLayerClass</h3>
+<pre class="programlisting">struct GdvLayerClass {
+  GtkOverlayClass parent_class;
+
+  gboolean (*evaluate_point)       (GdvLayer *layer,
+                                    gdouble             x_value,
+                                    gdouble             y_value,
+                                    gdouble             z_value,
+                                    gdouble            *pos_x,
+                                    gdouble            *pos_y);
+
+  gboolean (*eval_inner_point)     (GdvLayer      *layer,
+                                    guint point_1_x, guint point_1_y,
+                                    guint point_2_x, guint point_2_y);
+};
+</pre>
+<div class="refsect3">
+<a name="GdvLayerClass.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="GdvLayerClass.evaluate-point"></a>evaluate_point</code></em> ()</p></td>
+<td class="struct_member_description"><p>The method used to derive the position on screen during drawing.
+This signal should be implemented in order to plot <a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="type">GdvLayerContent</span></a> correctly.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="GdvLayerClass.eval-inner-point"></a>eval_inner_point</code></em> ()</p></td>
+<td class="struct_member_description"><p>Method to evaluate if a point on screen is more central
+with respect to the layer than another one. This is used by <a class="link" href="GdvTic.html" title="GdvTic"><span class="type">GdvTic</span></a> to know where
+to plot the outside- and inside-length.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25.1</div>
+</body>
+</html>
