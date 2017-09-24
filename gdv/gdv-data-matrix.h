@@ -102,7 +102,7 @@ GdvDataVector *gdv_data_matrix_get_column(GdvDataMatrix * matrix, gint j);
  */
 
 GdvDataMatrix *gdv_data_matrix_memcpy_submatrix (
-  GdvDataMatrix *a,
+  GdvDataMatrix *matrix,
   gint min_row, gint max_row,
   gint min_col, gint max_col);
 

@@ -1,6 +1,7 @@
 Overview of changes Gdv 0.7.2
 =============================
 
+* changed build-system to meson-build and ninja
 
 Overview of changes Gdv 0.7.1
 =============================

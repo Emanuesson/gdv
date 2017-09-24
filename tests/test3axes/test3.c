@@ -278,9 +278,9 @@ main (int argc, char **argv)
     gdv_twod_layer_get_axis (GDV_TWOD_LAYER (layer),
       GDV_Y2_AXIS);
 //  gtk_widget_hide (GTK_WIDGET (tmp_axis));
-  g_object_set (tmp_axis,
+//  g_object_set (tmp_axis,
 //    "visible", FALSE,
-    NULL);
+//    NULL);
 
   tmp_axis =
     gdv_twod_layer_get_axis (GDV_TWOD_LAYER (layer),
@@ -302,7 +302,7 @@ main (int argc, char **argv)
   tmp_axis =
     gdv_twod_layer_get_axis (GDV_TWOD_LAYER (layer),
       GDV_X1_AXIS);
-  g_object_set (tmp_axis,
+//  g_object_set (tmp_axis,
 //    "tics-automatic", FALSE,
 //    "mtics-automatic", FALSE,
 //    "scale-limits-automatic", FALSE,
@@ -314,7 +314,7 @@ main (int argc, char **argv)
 //    "scale-increment-base", 60.0,
 //    "tics-beg-val", 0.0,
 //    "tics-end-val", 120.0,
-    NULL);
+//    NULL);
 /*
   tmp_axis = 
     GDV_AXIS (g_object_new (gdv_linear_axis_get_type (),

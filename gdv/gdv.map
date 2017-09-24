@@ -1,0 +1,6 @@
+{
+global:
+    gdv_*;
+local:
+    *;
+};

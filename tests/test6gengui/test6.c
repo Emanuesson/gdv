@@ -106,7 +106,7 @@ report_axis_props (GdvAxis *axis)
   if (!tic_labels)
     g_printerr ("don't ");
   g_printerr ("print show-label\n");
-  g_printerr ("Scale diff Minimum Pixel: %e, Maximum Pixel: %e\n",
+  g_printerr ("Scale diff Minimum Pixel: %d, Maximum Pixel: %d\n",
     scale_min_diff_pix, scale_max_diff_pix);
   if (!scale_auto_increment)
     g_printerr ("don't ");

@@ -242,6 +242,23 @@ void gdv_data_matrix_set (GdvDataMatrix *matrix, gint i, gint j, gdouble x)
  * generated values are in general set to zero.
  * If both indizes are within the range of the matrix, the value at the index will be set to the new
  * value and the function will return NULL. */
+/**
+ * gdv_data_matrix_set_and_expand:
+ * @matrix: a #GdvDataMatrix
+ * @i: a given row-index
+ * @j: a given column-index
+ * @x: the value to be set
+ *
+ * Looks up the given indices. If these are in range, the position will be set to @x, otherwise
+ * @matrix will be extended up to @i and @j and the value will be set.
+ *
+ * The intention for this function was to provide a easy and handy way to extend a given matrix
+ * without the danger of memory-leaks etc.. However, it should be applied with care, as it might
+ * slow down simple processes significantly.
+ *
+ * Returns: (nullable) (transfer full): A new copy of @matrix, or #NULL, if no copy was created.
+ *
+ */
 GdvDataMatrix *gdv_data_matrix_set_and_expand (GdvDataMatrix *matrix, gint i, gint j, gdouble x)
 {
   gint rows, columns;
@@ -335,6 +352,16 @@ gint gdv_data_matrix_swap (GdvDataMatrix *v, GdvDataMatrix *w)
   return gsl_matrix_swap (v->priv->data, w->priv->data);
 }
 
+/**
+ * gdv_data_matrix_get_row:
+ * @matrix: a #GdvDataMatrix
+ * @i: a given row-index
+ *
+ * Copies the row given under index @i.
+ *
+ * Returns: (nullable) (transfer full): A fresh #GdvDataVector with the row-copy.
+ *
+ */
 GdvDataVector *gdv_data_matrix_get_row(GdvDataMatrix * matrix, gint i)
 {
   GdvDataVector *new_vector;
@@ -361,6 +388,16 @@ GdvDataVector *gdv_data_matrix_get_row(GdvDataMatrix * matrix, gint i)
   return new_vector;
 }
 
+/**
+ * gdv_data_matrix_get_column:
+ * @matrix: a #GdvDataMatrix
+ * @j: a given column-index
+ *
+ * Copies the column given under index @i.
+ *
+ * Returns: (nullable) (transfer full): A fresh #GdvDataVector with the column-copy.
+ *
+ */
 GdvDataVector *gdv_data_matrix_get_column(GdvDataMatrix * matrix, gint j)
 {
   GdvDataVector *new_vector;
@@ -396,21 +433,34 @@ gint gdv_data_matrix_transpose (GdvDataMatrix *matrix);
 
 */
 
+/**
+ * gdv_data_matrix_memcpy_submatrix:
+ * @matrix: a #GdvDataMatrix
+ * @min_row: a given lower row-index
+ * @max_row: a given upper row-index
+ * @min_col: a given lower column-index
+ * @max_col: a given upper column-index
+ *
+ * Copies the whole submatrix under the given boundaries.
+ *
+ * Returns: (nullable) (transfer full): A fresh #GdvDataMatrix with the submatrix.
+ *
+ */
 GdvDataMatrix *gdv_data_matrix_memcpy_submatrix (
-  GdvDataMatrix *a,
+  GdvDataMatrix *matrix,
   gint min_row, gint max_row,
   gint min_col, gint max_col)
 {
   GdvDataMatrix *return_matrix;
   gint row_i, col_i;
 
-  g_return_val_if_fail (GDV_DATA_IS_MATRIX (a), NULL);
+  g_return_val_if_fail (GDV_DATA_IS_MATRIX (matrix), NULL);
   g_return_val_if_fail (max_row > min_row, NULL);
   g_return_val_if_fail (max_col > min_col, NULL);
-  g_return_val_if_fail (min_row >= 0 && min_row < a->priv->data->size1, NULL);
-  g_return_val_if_fail (max_row > 0 && max_row < a->priv->data->size1, NULL);
-  g_return_val_if_fail (min_col >= 0 && min_col < a->priv->data->size2, NULL);
-  g_return_val_if_fail (max_col > 0 && max_col < a->priv->data->size2, NULL);
+  g_return_val_if_fail (min_row >= 0 && min_row < matrix->priv->data->size1, NULL);
+  g_return_val_if_fail (max_row > 0 && max_row < matrix->priv->data->size1, NULL);
+  g_return_val_if_fail (min_col >= 0 && min_col < matrix->priv->data->size2, NULL);
+  g_return_val_if_fail (max_col > 0 && max_col < matrix->priv->data->size2, NULL);
 
   return_matrix =
     gdv_data_matrix_new ((gint) (max_row - min_row + 1), (gint) (max_col - min_col + 1));
@@ -423,7 +473,7 @@ GdvDataMatrix *gdv_data_matrix_memcpy_submatrix (
         return_matrix,
         row_i,
         col_i,
-        gsl_matrix_get (a->priv->data, row_i + min_row, col_i + min_col));
+        gsl_matrix_get (matrix->priv->data, row_i + min_row, col_i + min_col));
     }
   }
 

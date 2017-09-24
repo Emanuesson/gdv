@@ -30,8 +30,8 @@
 
 #include <gdv/gdv.h>
 
-#include "tests/gemu_sub/gemu-glib-util.h"
-#include "tests/gemu_sub/gemu-gtk-util.h"
+//#include "tests/gemu_sub/gemu-glib-util.h"
+//#include "tests/gemu_sub/gemu-gtk-util.h"
 
 static void destroy( GtkWidget *widget,
                      gpointer   data )
