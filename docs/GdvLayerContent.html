@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GdvLayerContent: GDV Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="GDV Reference Manual">
-<link rel="up" href="refman.html" title="Part II. API reference">
+<link rel="up" href="refman.html" title="Part II. Core API reference">
 <link rel="prev" href="GdvLayer.html" title="GdvLayer">
 <link rel="next" href="GdvAxis.html" title="GdvAxis">
-<meta name="generator" content="GTK-Doc V1.25.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.26.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -125,6 +125,16 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
+<td class="property_name"><a class="link" href="GdvLayerContent.html#GdvLayerContent--fill-above" title="The “fill-above” property">fill-above</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
+<td class="property_name"><a class="link" href="GdvLayerContent.html#GdvLayerContent--fill-below" title="The “fill-below” property">fill-below</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
 <td class="property_type"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a></td>
 <td class="property_name"><a class="link" href="GdvLayerContent.html#GdvLayerContent--line-style" title="The “line-style” property">line-style</a></td>
 <td class="property_flags">Read / Write</td>
@@ -192,7 +202,7 @@ GdvLayerContent implements
 </div>
 <div class="refsect1">
 <a name="GdvLayerContent.description"></a><h2>Description</h2>
-<p><a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="type">GdvLayerContent</span></a> is a object-class, thats intention is to basically contain 
+<p><a class="link" href="GdvLayerContent.html" title="GdvLayerContent"><span class="type">GdvLayerContent</span></a> is a object-class, thats intention is to basically contain
 all the information, that will be plotted in a single data-series of a plot.</p>
 </div>
 <div class="refsect1">
@@ -309,7 +319,7 @@ gdv_layer_content_get_content (<em class="parameter"><code><a class="link" href=
 </div>
 <div class="refsect3">
 <a name="gdv-layer-content-get-content.returns"></a><h4>Returns</h4>
-<p> a newly allocated
+<p>a newly allocated
 copy of the content-list. </p>
 <p><span class="annotation">[<a href="http://foldoc.org/element-type"><span class="acronym">element-type</span></a> GdvDataPoint][<a href="http://foldoc.org/transfer%20container"><span class="acronym">transfer container</span></a>]</span></p>
 </div>
@@ -462,6 +472,10 @@ gdv_layer_content_reset (<em class="parameter"><code><a class="link" href="GdvLa
 <a name="GdvLayerContentClass"></a><h3>struct GdvLayerContentClass</h3>
 <pre class="programlisting">struct GdvLayerContentClass {
   GtkWidgetClass parent_class;
+
+  /* Padding to allow adding up to 12 new virtual functions without
+   * breaking ABI. */
+  gpointer _gdv_reserve[12];
 };
 </pre>
 <div class="refsect3">
@@ -472,7 +486,11 @@ gdv_layer_content_reset (<em class="parameter"><code><a class="link" href="GdvLa
 <col class="struct_members_description">
 <col width="200px" class="struct_members_annotations">
 </colgroup>
-<tbody></tbody>
+<tbody><tr>
+<td class="struct_member_name"><p><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> <em class="structfield"><code><a name="GdvLayerContentClass.-gdv-reserve"></a>_gdv_reserve</code></em>[12];</p></td>
+<td> </td>
+<td> </td>
+</tr></tbody>
 </table></div>
 </div>
 </div>
@@ -490,6 +508,22 @@ gdv_layer_content_reset (<em class="parameter"><code><a class="link" href="GdvLa
 <p>Gives the data-point that was added last to the layer-content or makes it
 possible to add a new data-point.</p>
 <p>Flags: Read / Write</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvLayerContent--fill-above"></a><h3>The <code class="literal">“fill-above”</code> property</h3>
+<pre class="programlisting">  “fill-above”               <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
+<p>Determines if the space above the data should be filled.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: FALSE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GdvLayerContent--fill-below"></a><h3>The <code class="literal">“fill-below”</code> property</h3>
+<pre class="programlisting">  “fill-below”               <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
+<p>Determines if the space below the data should be filled.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: FALSE</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -537,6 +571,6 @@ possible to add a new data-point.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25.1</div>
+<hr>Generated by GTK-Doc V1.26.1</div>
 </body>
 </html>

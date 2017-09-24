@@ -9,7 +9,7 @@
         </sub>
       </sub>
     </sub>
-    <sub name="API reference" link="refman.html">
+    <sub name="Core API reference" link="refman.html">
       <sub name="GdvLayer" link="GdvLayer.html"/>
       <sub name="GdvLayerContent" link="GdvLayerContent.html"/>
       <sub name="GdvAxis" link="GdvAxis.html"/>
@@ -23,7 +23,11 @@
       <sub name="GdvLegend" link="GdvLegend.html"/>
       <sub name="GdvLegendElement" link="GdvLegendElement.html"/>
     </sub>
-    <sub name="Development-info" link="pt03.html">
+    <sub name="Specialized widgets" link="pt03.html">
+      <sub name="GdvSpecialDrumDisplay" link="GdvSpecialDrumDisplay.html"/>
+      <sub name="GdvSpecialCheckedIndicator" link="GdvSpecialCheckedIndicator.html"/>
+    </sub>
+    <sub name="Development-info" link="pt04.html">
       <sub name="Description of open work" link="roadmap.html"/>
       <sub name="Known issues in the concepts" link="issues.html"/>
     </sub>
@@ -47,6 +51,8 @@
     <keyword type="struct" name="struct GdvLayerContentClass" link="GdvLayerContent.html#GdvLayerContentClass"/>
     <keyword type="struct" name="GdvLayerContentPrivate" link="GdvLayerContent.html#GdvLayerContentPrivate"/>
     <keyword type="property" name="The “data-point” property" link="GdvLayerContent.html#GdvLayerContent--data-point"/>
+    <keyword type="property" name="The “fill-above” property" link="GdvLayerContent.html#GdvLayerContent--fill-above"/>
+    <keyword type="property" name="The “fill-below” property" link="GdvLayerContent.html#GdvLayerContent--fill-below"/>
     <keyword type="property" name="The “line-style” property" link="GdvLayerContent.html#GdvLayerContent--line-style"/>
     <keyword type="property" name="The “point-line-width” property" link="GdvLayerContent.html#GdvLayerContent--point-line-width"/>
     <keyword type="property" name="The “point-type” property" link="GdvLayerContent.html#GdvLayerContent--point-type"/>
@@ -104,10 +110,14 @@
     <keyword type="struct" name="GdvLogAxisPrivate" link="GdvLogAxis.html#GdvLogAxisPrivate"/>
     <keyword type="function" name="gdv_indicator_new ()" link="GdvIndicator.html#gdv-indicator-new"/>
     <keyword type="struct" name="struct GdvIndicatorClass" link="GdvIndicator.html#GdvIndicatorClass"/>
+    <keyword type="property" name="The “rotate-widget-with-axis” property" link="GdvIndicator.html#GdvIndicator--rotate-widget-with-axis"/>
     <keyword type="property" name="The “show-in-legend” property" link="GdvIndicator.html#GdvIndicator--show-in-legend"/>
     <keyword type="property" name="The “show-in-out-of-range” property" link="GdvIndicator.html#GdvIndicator--show-in-out-of-range"/>
     <keyword type="property" name="The “title” property" link="GdvIndicator.html#GdvIndicator--title"/>
     <keyword type="property" name="The “value” property" link="GdvIndicator.html#GdvIndicator--value"/>
+    <keyword type="property" name="The “widget” property" link="GdvIndicator.html#GdvIndicator--widget"/>
+    <keyword type="property" name="The “widget-xalign” property" link="GdvIndicator.html#GdvIndicator--widget-xalign"/>
+    <keyword type="property" name="The “widget-yalign” property" link="GdvIndicator.html#GdvIndicator--widget-yalign"/>
     <keyword type="function" name="gdv_oned_layer_new ()" link="GdvOnedLayer.html#gdv-oned-layer-new"/>
     <keyword type="function" name="gdv_oned_layer_replace_axis ()" link="GdvOnedLayer.html#gdv-oned-layer-replace-axis"/>
     <keyword type="macro" name="GDV_ONED_LAYER_TYPE" link="GdvOnedLayer.html#GDV-ONED-LAYER-TYPE:CAPS"/>
@@ -157,10 +167,29 @@
     <keyword type="struct" name="struct GdvLegendElementClass" link="GdvLegendElement.html#GdvLegendElementClass"/>
     <keyword type="property" name="The “element” property" link="GdvLegendElement.html#GdvLegendElement--element"/>
     <keyword type="property" name="The “sample-length” property" link="GdvLegendElement.html#GdvLegendElement--sample-length"/>
+    <keyword type="function" name="gdv_special_drum_display_new ()" link="GdvSpecialDrumDisplay.html#gdv-special-drum-display-new"/>
+    <keyword type="struct" name="struct GdvSpecialDrumDisplay" link="GdvSpecialDrumDisplay.html#GdvSpecialDrumDisplay-struct"/>
+    <keyword type="struct" name="struct GdvSpecialDrumDisplayClass" link="GdvSpecialDrumDisplay.html#GdvSpecialDrumDisplayClass"/>
+    <keyword type="struct" name="GdvSpecialDrumDisplayPrivate" link="GdvSpecialDrumDisplay.html#GdvSpecialDrumDisplayPrivate"/>
+    <keyword type="property" name="The “center-value” property" link="GdvSpecialDrumDisplay.html#GdvSpecialDrumDisplay--center-value"/>
+    <keyword type="property" name="The “left-right-range” property" link="GdvSpecialDrumDisplay.html#GdvSpecialDrumDisplay--left-right-range"/>
+    <keyword type="function" name="gdv_special_checked_indicator_new ()" link="GdvSpecialCheckedIndicator.html#gdv-special-checked-indicator-new"/>
+    <keyword type="struct" name="struct GdvSpecialCheckedIndicatorClass" link="GdvSpecialCheckedIndicator.html#GdvSpecialCheckedIndicatorClass"/>
+    <keyword type="property" name="The “in-length” property" link="GdvSpecialCheckedIndicator.html#GdvSpecialCheckedIndicator--in-length"/>
+    <keyword type="property" name="The “out-length” property" link="GdvSpecialCheckedIndicator.html#GdvSpecialCheckedIndicator--out-length"/>
     <keyword type="member" name="GdvLayerClass.evaluate-point" link="GdvLayer.html#GdvLayerClass.evaluate-point"/>
     <keyword type="member" name="GdvLayerClass.eval-inner-point" link="GdvLayer.html#GdvLayerClass.eval-inner-point"/>
+    <keyword type="member" name="GdvLayerContentClass.-gdv-reserve" link="GdvLayerContent.html#GdvLayerContentClass.-gdv-reserve"/>
     <keyword type="member" name="GdvAxisClass.get-point" link="GdvAxis.html#GdvAxisClass.get-point"/>
     <keyword type="member" name="GdvAxisClass.get-inner-dir" link="GdvAxis.html#GdvAxisClass.get-inner-dir"/>
     <keyword type="member" name="GdvAxisClass.make-tic-label-markup" link="GdvAxis.html#GdvAxisClass.make-tic-label-markup"/>
+    <keyword type="member" name="GdvLinearAxisClass.-gdv-reserve" link="GdvLinearAxis.html#GdvLinearAxisClass.-gdv-reserve"/>
+    <keyword type="member" name="GdvLogAxisClass.-gdv-reserve" link="GdvLogAxis.html#GdvLogAxisClass.-gdv-reserve"/>
+    <keyword type="member" name="GdvIndicatorClass.-gdv-reserve" link="GdvIndicator.html#GdvIndicatorClass.-gdv-reserve"/>
+    <keyword type="member" name="GdvTwodLayerClass.-gdv-reserve" link="GdvTwodLayer.html#GdvTwodLayerClass.-gdv-reserve"/>
+    <keyword type="member" name="GdvTicClass.-gdv-reserve" link="GdvTic.html#GdvTicClass.-gdv-reserve"/>
+    <keyword type="member" name="GdvMticClass.-gdv-reserve" link="GdvMtic.html#GdvMticClass.-gdv-reserve"/>
+    <keyword type="member" name="GdvLegendClass.-gdv-reserve" link="GdvLegend.html#GdvLegendClass.-gdv-reserve"/>
+    <keyword type="member" name="GdvLegendElementClass.-gdv-reserve" link="GdvLegendElement.html#GdvLegendElementClass.-gdv-reserve"/>
   </functions>
 </book>

@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GdvAxis: GDV Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="GDV Reference Manual">
-<link rel="up" href="refman.html" title="Part II. API reference">
+<link rel="up" href="refman.html" title="Part II. Core API reference">
 <link rel="prev" href="GdvLayerContent.html" title="GdvLayerContent">
 <link rel="next" href="GdvLinearAxis.html" title="GdvLinearAxis">
-<meta name="generator" content="GTK-Doc V1.25.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.26.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -387,7 +387,7 @@ the tic-values to a specific precision-criteria.</p>
 </div>
 <div class="refsect3">
 <a name="gdv-axis-get-tic-for-value.returns"></a><h4>Returns</h4>
-<p> The <a class="link" href="GdvTic.html" title="GdvTic"><span class="type">GdvTic</span></a> with the given Tic-value. </p>
+<p>The <a class="link" href="GdvTic.html" title="GdvTic"><span class="type">GdvTic</span></a> with the given Tic-value. </p>
 <p><span class="annotation">[<a href="http://foldoc.org/nullable"><span class="acronym">nullable</span></a>][<a href="http://foldoc.org/transfer%20none"><span class="acronym">transfer none</span></a>]</span></p>
 </div>
 </div>
@@ -415,7 +415,7 @@ gdv_axis_get_tic_list (<em class="parameter"><code><a class="link" href="GdvAxis
 </div>
 <div class="refsect3">
 <a name="gdv-axis-get-tic-list.returns"></a><h4>Returns</h4>
-<p>    a newly allocated <a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> of tics. </p>
+<p>a newly allocated <a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> of tics. </p>
 <p><span class="annotation">[<a href="http://foldoc.org/transfer%20container"><span class="acronym">transfer container</span></a>][<a href="http://foldoc.org/element-type"><span class="acronym">element-type</span></a> GdvTic]</span></p>
 </div>
 </div>
@@ -443,7 +443,7 @@ gdv_axis_get_mtic_list (<em class="parameter"><code><a class="link" href="GdvAxi
 </div>
 <div class="refsect3">
 <a name="gdv-axis-get-mtic-list.returns"></a><h4>Returns</h4>
-<p>    a newly allocated <a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> of mtics. </p>
+<p>a newly allocated <a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> of mtics. </p>
 <p><span class="annotation">[<a href="http://foldoc.org/transfer%20container"><span class="acronym">transfer container</span></a>][<a href="http://foldoc.org/element-type"><span class="acronym">element-type</span></a> GdvMtic]</span></p>
 </div>
 </div>
@@ -471,7 +471,7 @@ gdv_axis_get_indicator_list (<em class="parameter"><code><a class="link" href="G
 </div>
 <div class="refsect3">
 <a name="gdv-axis-get-indicator-list.returns"></a><h4>Returns</h4>
-<p>    a newly allocated <a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> of indicators. </p>
+<p>a newly allocated <a href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> of indicators. </p>
 <p><span class="annotation">[<a href="http://foldoc.org/transfer%20container"><span class="acronym">transfer container</span></a>][<a href="http://foldoc.org/element-type"><span class="acronym">element-type</span></a> GdvIndicator]</span></p>
 </div>
 </div>
@@ -500,7 +500,7 @@ the current title is removed.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>markup</p></td>
-<td class="parameter_description"><p> the text to use as the title of the axis. </p></td>
+<td class="parameter_description"><p>the text to use as the title of the axis. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<a href="http://foldoc.org/allow-none"><span class="acronym">allow-none</span></a>]</span></td>
 </tr>
 </tbody>
@@ -533,7 +533,7 @@ to <a href="/usr/share/gtk-doc/html/gtk3/GtkFrame.html#gtk-frame-new"><code clas
 </div>
 <div class="refsect3">
 <a name="gdv-axis-get-title.returns"></a><h4>Returns</h4>
-<p> the text in the title, or <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if there
+<p>the text in the title, or <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if there
 was no title widget or the lable widget was not
 a <a href="/usr/share/gtk-doc/html/gtk3/GtkLabel.html#GtkLabel-struct"><span class="type">GtkLabel</span></a>. This string is owned by GTK+ and
 must not be modified or freed. </p>
@@ -564,7 +564,7 @@ will appear next to the axis as additional information.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>title_widget</p></td>
-<td class="parameter_description"><p> the <a href="/usr/share/gtk-doc/html/gtk3/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> that should be used as new title. </p></td>
+<td class="parameter_description"><p>the <a href="/usr/share/gtk-doc/html/gtk3/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> that should be used as new title. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<a href="http://foldoc.org/nullable"><span class="acronym">nullable</span></a>]</span></td>
 </tr>
 </tbody>
@@ -841,7 +841,6 @@ given function value.</p></td>
 <a name="GdvAxis--force-beg-end"></a><h3>The <code class="literal">“force-beg-end”</code> property</h3>
 <pre class="programlisting">  “force-beg-end”            <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
 <p>This property forces the axis to use the manually assigned beg- and end-
-
 properties. This property should be used with care because it may lead
 to a bad geometry-handling. However, in some cases one wants to bind the
 axis-geomety to the geometry of a layer or underlying other widget.</p>
@@ -927,6 +926,11 @@ axis-geomety to the geometry of a layer or underlying other widget.</p>
 <pre class="programlisting">  “scale-limits-automatic”   <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
 <p>Determines whether if the scale-borders should be rounded automatically up
 to the next better value.</p>
+<p>An annotation about the behaviour of GdvAxis:scale-limits-automatic:
+The property does not implie, that there should be absolutely no changes
+to the values of GdvAxis:tics-beg-val and GdvAxis:tics-end-val. It just
+means, that the GdvAxis:scale-beg-val and GdvAxis:scale-end-val should
+kept constant!</p>
 <p>Flags: Read / Write</p>
 <p>Default value: TRUE</p>
 </div>
@@ -1118,6 +1122,6 @@ the tic-label over the axis.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25.1</div>
+<hr>Generated by GTK-Doc V1.26.1</div>
 </body>
 </html>
