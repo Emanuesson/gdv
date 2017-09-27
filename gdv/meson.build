@@ -104,9 +104,11 @@ libgdv_deps = [
   dependency('gio-2.0'),
   dependency('gmodule-2.0'),
   dependency('gtk+-3.0'),
+#  dependency('gtksourceview-3.0'),
   dependency('gsl'),
   cc.find_library('m', required: false),
-  cc.find_library('rt', required: false),
+#  cc.find_library('rt', required: false),
+#  cc.find_library('hdf5', required: false),
 ]
 
 libgdv_args = []

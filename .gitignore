@@ -37,7 +37,6 @@ m4macros/*
 
 # Relicts of the build-process
 *Makefile.in
-*h.in
 aux-build/*
 autom4te.cache/*
 m4/*

@@ -1,0 +1,85 @@
+/* gdv-debug.h.in
+ *
+ * Copyright (C) 2017 Emanuel Schmidt <eschmidt216@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#ifndef GDV_DEBUG_H
+#define GDV_DEBUG_H
+
+#include <glib.h>
+
+G_BEGIN_DECLS
+
+#ifndef GDV_ENABLE_TRACE
+# define GDV_ENABLE_TRACE @ENABLE_TRACING@
+#endif
+#if GDV_ENABLE_TRACE != 1
+# undef GDV_ENABLE_TRACE
+#endif
+
+/**
+ * GDV_LOG_LEVEL_TRACE: (skip)
+ */
+#ifndef GDV_LOG_LEVEL_TRACE
+# define GDV_LOG_LEVEL_TRACE ((GLogLevelFlags)(1 << G_LOG_LEVEL_USER_SHIFT))
+#endif
+
+#ifdef GDV_ENABLE_TRACE
+# define GDV_TRACE_MSG(fmt, ...)                                         \
+   g_log(G_LOG_DOMAIN, GDV_LOG_LEVEL_TRACE, "  MSG: %s():%d: " fmt,       \
+         G_STRFUNC, __LINE__, ##__VA_ARGS__)
+# define GDV_PROBE                                                       \
+   g_log(G_LOG_DOMAIN, GDV_LOG_LEVEL_TRACE, "PROBE: %s():%d",            \
+         G_STRFUNC, __LINE__)
+# define GDV_TODO(_msg)                                                  \
+   g_log(G_LOG_DOMAIN, GDV_LOG_LEVEL_TRACE, " TODO: %s():%d: %s",        \
+         G_STRFUNC, __LINE__, _msg)
+# define GDV_ENTRY                                                       \
+   g_log(G_LOG_DOMAIN, GDV_LOG_LEVEL_TRACE, "ENTRY: %s():%d",            \
+         G_STRFUNC, __LINE__)
+# define GDV_EXIT                                                        \
+   G_STMT_START {                                                        \
+      g_log(G_LOG_DOMAIN, GDV_LOG_LEVEL_TRACE, " EXIT: %s():%d",         \
+            G_STRFUNC, __LINE__);                                        \
+      return;                                                            \
+   } G_STMT_END
+# define GDV_GOTO(_l)                                                    \
+   G_STMT_START {                                                        \
+      g_log(G_LOG_DOMAIN, GDV_LOG_LEVEL_TRACE, " GOTO: %s():%d ("#_l")", \
+            G_STRFUNC, __LINE__);                                        \
+      goto _l;                                                           \
+   } G_STMT_END
+# define GDV_RETURN(_r)                                                  \
+   G_STMT_START {                                                        \
+      g_log(G_LOG_DOMAIN, GDV_LOG_LEVEL_TRACE, " EXIT: %s():%d ",        \
+            G_STRFUNC, __LINE__);                                        \
+      return _r;                                                         \
+   } G_STMT_END
+#else
+# define GDV_TODO(_msg)
+# define GDV_PROBE
+# define GDV_TRACE_MSG(fmt, ...)
+# define GDV_ENTRY
+# define GDV_GOTO(_l)   goto _l
+# define GDV_EXIT       return
+# define GDV_RETURN(_r) return _r
+#endif
+
+G_END_DECLS
+
+#endif /* GDV_DEBUG_H */

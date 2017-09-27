@@ -1,0 +1,98 @@
+/* gdv-version.h.in
+ *
+ * Copyright (C) 2017 Emanuel Schmidt <eschmidt216@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#ifndef GDV_VERSION_H
+#define GDV_VERSION_H
+
+//#if !defined(GDV_INSIDE) && !defined(GDV_COMPILATION)
+//#error "Only <gdv.h> can be included directly."
+//#endif
+
+/**
+ * SECTION:gdv-version
+ * @short_description: Gdv version checking
+ *
+ * Gdv provides macros to check the version of the library at compile-time
+ */
+
+/**
+ * GDV_MAJOR_VERSION:
+ *
+ * Gdv major version component (e.g. 1 if %GDV_VERSION is 1.2.3)
+ */
+#define GDV_MAJOR_VERSION              (@GDV_MAJOR_VERSION@)
+
+/**
+ * GDV_MINOR_VERSION:
+ *
+ * Gdv minor version component (e.g. 2 if %GDV_VERSION is 1.2.3)
+ */
+#define GDV_MINOR_VERSION              (@GDV_MINOR_VERSION@)
+
+/**
+ * GDV_MICRO_VERSION:
+ *
+ * Gdv micro version component (e.g. 3 if %GDV_VERSION is 1.2.3)
+ */
+#define GDV_MICRO_VERSION              (@GDV_MICRO_VERSION@)
+
+/**
+ * GDV_VERSION
+ *
+ * Gdv version.
+ */
+#define GDV_VERSION                    (@GDV_VERSION@)
+
+/**
+ * GDV_VERSION_S:
+ *
+ * Gdv version, encoded as a string, useful for printing and
+ * concatenation.
+ */
+#define GDV_VERSION_S                  "@GDV_VERSION@"
+
+#define GDV_ENCODE_VERSION(major,minor,micro) \
+        ((major) << 24 | (minor) << 16 | (micro) << 8)
+
+/**
+ * GDV_VERSION_HEX:
+ *
+ * Gdv version, encoded as an hexadecimal number, useful for
+ * integer comparisons.
+ */
+#define GDV_VERSION_HEX \
+        (GDV_ENCODE_VERSION (GDV_MAJOR_VERSION, GDV_MINOR_VERSION, GDV_MICRO_VERSION))
+
+/**
+ * GDV_CHECK_VERSION:
+ * @major: required major version
+ * @minor: required minor version
+ * @micro: required micro version
+ *
+ * Compile-time version checking. Evaluates to %TRUE if the version
+ * of gdv is greater than the required one.
+ */
+#define GDV_CHECK_VERSION(major,minor,micro)   \
+        (GDV_MAJOR_VERSION > (major) || \
+         (GDV_MAJOR_VERSION == (major) && GDV_MINOR_VERSION > (minor)) || \
+         (GDV_MAJOR_VERSION == (major) && GDV_MINOR_VERSION == (minor) && \
+          GDV_MICRO_VERSION >= (micro)))
+
+#endif /* GDV_VERSION_H */

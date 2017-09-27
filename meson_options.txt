@@ -18,7 +18,7 @@ option('package_subdir', type: 'string',
 )
 
 option('enable_gtk_doc',
-       type: 'boolean', value: false,
+       type: 'boolean', value: true,
        description: 'Whether to generate the API reference for Dazzle')
 
 option('enable_tests',

@@ -108,5 +108,5 @@ subdir('data_viewer')
 subdir('tests')
 
 if get_option('enable_gtk_doc')
-  subdir('doc')
+  subdir('doc_in')
 endif
