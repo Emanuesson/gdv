@@ -179,8 +179,8 @@ pkgg.generate(
       subdirs: libgdv_header_subdir,
       version: meson.project_version(),
          name: 'Gdv',
-     filebase: 'libgdv-@0@'.format(apiversion),
-  description: 'Gdv for Gtk+ 3.x applications',
+     filebase: 'gdv-@0@'.format(apiversion),
+  description: 'Gdv for Gtk+ applications',
      requires: 'gtk+-3.0',
   install_dir: join_paths(libdir, 'pkgconfig'),
 )

@@ -7,7 +7,7 @@
   <bookinfo>
     <title>GDV Reference Manual</title>
     <releaseinfo>
-      Documentation for LibGdv, version &version;.
+      Documentation for LibGdv, version &apiversion;
 <!--      The latest version of this documentation can be found on-line at
       <ulink role="online-location" url="http://library.gnome.org/devel/glib/unstable/">http://library.gnome.org/devel/glib/unstable/</ulink>.-->
     </releaseinfo>

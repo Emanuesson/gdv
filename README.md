@@ -1,7 +1,7 @@
 General Information
 ===================
 
-This is Gdv version 0.7.2. Gdv is a graphical library, that adds some functionality to the GTK+-library to present and visualize scientific and generally all kind of data.
+Gdv is a graphical library, that adds some functionality to the GTK+-library to present and visualize scientific and generally all kind of data.
 
 Status
 ======
@@ -76,4 +76,56 @@ Please feel free to contact me via github or elsewhere, if you have any further 
 Installation
 ============
 
-See the file 'INSTALL'
+In order to build gdv you will need:
+
+  - a C99 compatible compiler
+  - Python 3
+  - [Meson](http://mesonbuild.com)
+  - [Ninja](https://ninja-build.org)
+  - [Gtk+](https://www.gtk.org/)
+  - [GLib](https://download.gnome.org/sources/glib)
+
+You will also need various dependencies, based on the platform you are
+building for:
+
+  - [GObject-Introspection](https://download.gnome.org/sources/gobject-introspection)
+
+Once you have all the necessary dependencies, you can build gdv by using
+Meson:
+
+```sh
+$ meson _build .
+$ cd _build
+$ ninja
+```
+
+If you need to build the documentation enter the following commands:
+
+```sh
+meson . build
+cd build
+meson configure -Denable_gtk_doc=true
+ninja
+ninja gdv-doc
+```
+
+You can run the test suite using:
+
+```sh
+$ meson test
+```
+
+And, finally, you can install gdv using:
+
+```
+$ sudo ninja install
+```
+
+Complete information about installing gdv and related libraries
+can be found in the file:
+
+```
+docs/reference/gdv/html/index.html
+```
+
+Or [online](https://emanuesson.github.io/#gdv)
