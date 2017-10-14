@@ -33,7 +33,7 @@
 #define P_(String) String
 #define textdomain(Domain)
 #define bindtextdomain(Package, Directory)
-#define GETTEXT_PACKAGE NULL
+/* #define GETTEXT_PACKAGE NULL */
 
 #endif  /* __GDV_CENTRAL_H_INCLUDE  */
 

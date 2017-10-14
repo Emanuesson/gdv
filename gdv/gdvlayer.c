@@ -57,8 +57,6 @@ enum
   N_PROPERTIES
 };
 
-static GParamSpec *layer_properties[N_PROPERTIES] = { NULL, };
-
 struct _GdvLayerPrivate
 {
   /* elements */
@@ -113,12 +111,6 @@ static void gdv_layer_get_preferred_width_for_height(GtkWidget           *widget
 static gboolean
 gdv_layer_real_has_layer_content (GdvLayer *layer,
                                   GdvLayerContent *layer_content);
-gboolean gdv_layer_evaluate_data_point(GdvLayer *layer,
-                                       gdouble data_point_x_value,
-                                       gdouble data_point_y_value,
-                                       gdouble data_point_z_value,
-                                       gdouble *pos_x,
-                                       gdouble *pos_y);
 
 static gboolean
 gdv_layer_evaluate_data_point_unimplemented (GdvLayer *layer,
@@ -180,10 +172,8 @@ gdv_layer_class_init (GdvLayerClass *klass)
 static void
 gdv_layer_init (GdvLayer *layer)
 {
-  GdvLayer *layer_title;
   GtkWidget *widget = GTK_WIDGET (layer);
 
-  GtkWidgetPath *widget_path;
   GtkCssProvider *css_provider;
   GtkStyleContext *style_context;
 
@@ -205,7 +195,6 @@ gdv_layer_init (GdvLayer *layer)
 /*  layer->priv->update_axes_table =
     g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, g_free);
 */
-  widget_path = gtk_widget_get_path (widget);
   css_provider = gtk_css_provider_new ();
   style_context = gtk_widget_get_style_context (widget);
   gtk_css_provider_load_from_resource (
@@ -380,35 +369,7 @@ gdv_layer_dispose (GObject *object)
 static void
 gdv_layer_finalize (GObject *object)
 {
-  GdvLayer *layer = GDV_LAYER (object);
-
-  /* finalizing the axes-table */
-/*  if (layer->priv->update_axes_table)
-  {
-    g_hash_table_unref (layer->priv->update_axes_table);
-    layer->priv->update_axes_table = NULL;
-  }
-*/
   G_OBJECT_CLASS (gdv_layer_parent_class)->finalize (object);
-}
-
-static void update_axes (
-  GdvLayerContent *content,
-  gpointer property_value,
-  GdvLayer *layer)
-{
-  if (GDV_IS_LAYER (layer))
-  {
-    GList *axes_list = gdv_layer_get_axis_list (layer);
-    GList *tmp_cpy;
-
-    for (tmp_cpy = axes_list; tmp_cpy; tmp_cpy = tmp_cpy->next)
-    {
-      gtk_widget_queue_resize (GTK_WIDGET (tmp_cpy->data));
-//      gtk_widget_queue_draw (GTK_WIDGET (tmp_cpy->data));
-    }
-
-  }
 }
 
 /**
@@ -429,12 +390,7 @@ gdv_layer_draw (GtkWidget *widget,
                 cairo_t   *cr)
 {
   GtkAllocation allocation;
-  GList *local_axes_list, *local_data_list;
-  GList *orig_axes_list;
-  GdvLayer *layer;
   GtkStyleContext *style_context;
-
-  layer = GDV_LAYER (widget);
 
   gtk_widget_get_allocation (widget, &allocation);
   style_context = gtk_widget_get_style_context (widget);
@@ -457,8 +413,6 @@ gdv_layer_measure (
   gpointer             data)
 {
   GList *child_list, *child_list_copy;
-  int local_data_minimum, local_data_natural;
-  int local_axis_minimum, local_axis_natural;
   int global_content_minimum = 0,
       global_content_natural = 0;
   guint border_width;
@@ -478,34 +432,44 @@ gdv_layer_measure (
 
     if (child_list_copy->data &&
         gtk_widget_get_visible (child_list_copy->data))
+    {
       if (orientation == GTK_ORIENTATION_HORIZONTAL)
       {
         if (for_size > 0)
+        {
           gtk_widget_get_preferred_width_for_height (
             child_list_copy->data,
             for_size,
             &data_min,
             &data_nat);
+        }
         else
+        {
           gtk_widget_get_preferred_width (
             child_list_copy->data,
             &data_min,
             &data_nat);
+        }
       }
       else
       {
         if (for_size > 0)
+        {
           gtk_widget_get_preferred_height_for_width (
             child_list_copy->data,
             for_size,
             &data_min,
             &data_nat);
+        }
         else
+        {
           gtk_widget_get_preferred_height (
             child_list_copy->data,
             &data_min,
             &data_nat);
+        } /* orientation == GTK_ORIENTATION_VERTICAL */
       }
+    }
 
     global_content_minimum += data_min;
     global_content_natural += data_nat;

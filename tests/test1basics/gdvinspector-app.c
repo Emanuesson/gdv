@@ -54,8 +54,6 @@ gdv_inspector_app_activate (GApplication *application)
 static void
 gdv_inspector_app_startup (GApplication *application)
 {
-  GdvInspectorApp *app = GDV_INSPECTOR_APP (application);
-
   G_APPLICATION_CLASS (gdv_inspector_app_parent_class)->startup (application);
 }
 
@@ -70,16 +68,12 @@ gdv_inspector_app_init (GdvInspectorApp *app)
 static void
 gdv_inspector_app_dispose (GObject *object)
 {
-  GdvInspectorApp *app = GDV_INSPECTOR_APP (object);
-
   G_OBJECT_CLASS (gdv_inspector_app_parent_class)->dispose (object);
 }
 
 static void
 gdv_inspector_app_finalize (GObject *object)
 {
-  GdvInspectorApp *app = GDV_INSPECTOR_APP (object);
-
   G_OBJECT_CLASS (gdv_inspector_app_parent_class)->finalize (object);
 }
 

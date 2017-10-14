@@ -45,8 +45,6 @@ enum
   N_PROPERTIES
 };
 
-static GParamSpec* data_properties[N_PROPERTIES] = { NULL, };
-
 struct _GdvDataMatrixPrivate
 {
   gsl_matrix *data;
@@ -142,8 +140,6 @@ gdv_data_matrix_get_property (GObject*    object,
 static void
 gdv_data_matrix_dispose (GObject* object)
 {
-  GdvDataMatrix* self = GDV_DATA_MATRIX (object);
-
   G_OBJECT_CLASS (gdv_data_matrix_parent_class)->dispose (object);
 }
 

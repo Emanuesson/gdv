@@ -55,31 +55,11 @@ G_DEFINE_TYPE_WITH_PRIVATE (GdvMtic, gdv_mtic, GDV_TYPE_TIC);
 static void
 gdv_mtic_init (GdvMtic *mtic)
 {
-  GtkWidget *widget;
-
-  widget = GTK_WIDGET (mtic);
-}
-
-static void
-gdv_mtic_dispose (GObject *object)
-{
-  GdvMtic *mtic = GDV_MTIC (object);
-
-  G_OBJECT_CLASS (gdv_mtic_parent_class)->dispose (object);
-}
-
-static void
-gdv_mtic_finalize (GObject *object)
-{
-  GdvMtic *mtic = GDV_MTIC (object);
-
-  G_OBJECT_CLASS (gdv_mtic_parent_class)->finalize (object);
 }
 
 static void
 gdv_mtic_class_init (GdvMticClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   gtk_widget_class_set_css_name (widget_class, "mtic");

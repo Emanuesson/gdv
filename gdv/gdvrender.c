@@ -120,8 +120,8 @@ gtk_do_render_tic (GtkStyleContext *context,
                    gdouble          x1,
                    gdouble          y1)
 {
-  GdkRGBA *color;
-  gdouble axis_line_width;
+//  GdkRGBA *color;
+//  gdouble axis_line_width;
   GValue value_lw = G_VALUE_INIT;
   GValue value_lc = G_VALUE_INIT;
 
@@ -135,8 +135,8 @@ gtk_do_render_tic (GtkStyleContext *context,
   gtk_style_context_get_style_property (context,
                                         "tics-color", &value_lc);
 
-  axis_line_width = g_value_get_double (&value_lw);
-  color = g_value_get_boxed (&value_lc);
+//  axis_line_width = g_value_get_double (&value_lw);
+//  color = g_value_get_boxed (&value_lc);
 
   cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
   cairo_set_line_width (cr, lw);
@@ -163,8 +163,8 @@ gtk_do_render_mtic (GtkStyleContext *context,
                     gdouble          x1,
                     gdouble          y1)
 {
-  GdkRGBA *color;
-  gdouble axis_line_width;
+//  GdkRGBA *color;
+//  gdouble axis_line_width;
   GValue value_lw = G_VALUE_INIT;
   GValue value_lc = G_VALUE_INIT;
 
@@ -178,8 +178,8 @@ gtk_do_render_mtic (GtkStyleContext *context,
   gtk_style_context_get_style_property (context,
                                         "mtics-color", &value_lc);
 
-  axis_line_width = g_value_get_double (&value_lw);
-  color = g_value_get_boxed (&value_lc);
+//  axis_line_width = g_value_get_double (&value_lw);
+//  color = g_value_get_boxed (&value_lc);
 
    cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
   cairo_set_line_width (cr, lw);

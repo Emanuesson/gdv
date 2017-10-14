@@ -112,12 +112,6 @@ G_DEFINE_TYPE_WITH_PRIVATE (GdvLegendElement, gdv_legend_element, GTK_TYPE_CONTA
 static void
 gdv_legend_element_init (GdvLegendElement *legend_element)
 {
-  GtkStyleContext *style_context;
-  GtkCssProvider *css_provider;
-  GtkWidget *widget;
-
-  widget = GTK_WIDGET (legend_element);
-
   gtk_widget_set_can_focus (GTK_WIDGET (legend_element), TRUE);
   gtk_widget_set_receives_default (GTK_WIDGET (legend_element), TRUE);
   gtk_widget_set_has_window (GTK_WIDGET (legend_element), FALSE);
@@ -135,7 +129,6 @@ gdv_legend_element_set_property (GObject      *object,
                                  GParamSpec   *pspec)
 {
   GdvLegendElement *self;
-  cairo_pattern_t *source;
 
   self = GDV_LEGEND_ELEMENT (object);
 
@@ -185,40 +178,13 @@ gdv_legend_element_get_property (GObject    *object,
 static void
 gdv_legend_element_dispose (GObject *object)
 {
-  GdvLegendElement *legend_element = GDV_LEGEND_ELEMENT (object);
-
   G_OBJECT_CLASS (gdv_legend_element_parent_class)->dispose (object);
 }
 
 static void
 gdv_legend_element_finalize (GObject *object)
 {
-  GdvLegendElement *legend_element = GDV_LEGEND_ELEMENT (object);
-
   G_OBJECT_CLASS (gdv_legend_element_parent_class)->finalize (object);
-}
-
-static void gdv_legend_element_add (GtkContainer *container_legend_element,
-                                    GtkWidget    *widget)
-{
-}
-
-static void gdv_legend_element_remove (GtkContainer *container_legend_element,
-                                       GtkWidget    *widget)
-{
-}
-
-static void gdv_legend_element_forall (GtkContainer *container,
-                                       gboolean      include_internals,
-                                       GtkCallback   callback,
-                                       gpointer      callback_data)
-{
-}
-
-static GtkWidgetPath *
-gdv_legend_element_get_path_for_child (GtkContainer *container,
-                                       GtkWidget    *child)
-{
 }
 
 static void
@@ -226,7 +192,6 @@ gdv_legend_element_class_init (GdvLegendElementClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
-  GtkContainerClass *container_class = GTK_CONTAINER_CLASS (klass);
 
   object_class->dispose = gdv_legend_element_dispose;
   object_class->finalize = gdv_legend_element_finalize;
@@ -313,10 +278,6 @@ gdv_legend_element_measure (
   int                 *natural_baseline,
   gpointer             data)
 {
-  gdouble diff_x, diff_y;
-  GtkBorder border;
-  gint minimal_indicator = 0, natural_indicator = 0;
-
   /* Measuring the indicators */
   if (GDV_IS_INDICATOR (legend_element->priv->connected_element))
   {
@@ -348,10 +309,7 @@ gdv_legend_element_measure (
     GtkStyleContext *content_context =
       gtk_widget_get_style_context (GTK_WIDGET (legend_element->priv->connected_element));
     gint minimum_point = 0,
-         natural_point = 0,
-         minimum_baseline_point = 0,
-         natural_baseline_point = 0;
-
+         natural_point = 0;
 
     if (orientation == GTK_ORIENTATION_HORIZONTAL)
     {
@@ -407,12 +365,6 @@ gdv_legend_element_realize (GtkWidget *widget)
   GtkAllocation allocation;
   GdkWindow *window;
   GdkWindowAttr attributes;
-  gint attributes_mask;
-  GdvLegendElement *legend_element;
-  GdkWindow *event_window;
-  GList *indicator_list, *tic_list, *mtic_list;
-
-  legend_element = GDV_LEGEND_ELEMENT (widget);
 
   gtk_widget_get_allocation (widget, &allocation);
 
@@ -434,22 +386,17 @@ gdv_legend_element_realize (GtkWidget *widget)
                             GDK_ENTER_NOTIFY_MASK |
                             GDK_LEAVE_NOTIFY_MASK);
 
-  attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL;
-
   window = gtk_widget_get_parent_window (widget);
   gtk_widget_set_window (widget, window);
   g_object_ref (window);
 
 
   attributes.wclass = GDK_INPUT_ONLY;
-  attributes_mask = 0;
 }
 
 static void
 gdv_legend_element_unrealize (GtkWidget *widget)
 {
-  GdvLegendElement *legend_element = GDV_LEGEND_ELEMENT (widget);
-
   /* TODO: Write this function! */
 
   GTK_WIDGET_CLASS (gdv_legend_element_parent_class)->unrealize (widget);
@@ -459,10 +406,6 @@ static void
 gdv_legend_element_size_allocate (GtkWidget     *widget,
                                   GtkAllocation *allocation)
 {
-  GdvLegendElement *legend_element;
-
-  legend_element = GDV_LEGEND_ELEMENT (widget);
-
   gtk_widget_set_allocation (widget, allocation);
 
 }

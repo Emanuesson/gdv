@@ -101,10 +101,6 @@ enum
 static GParamSpec *layer_properties[N_PROPERTIES] = { NULL, };
 
 /* Prototypes */
-static void
-gdv_oned_layer_dispose (GObject *object);
-static void
-gdv_oned_layer_finalize (GObject *object);
 static gboolean
 evaluate_data_point (GdvLayer *layer,
                      gdouble data_point_x_value,
@@ -118,11 +114,6 @@ static void
 gdv_oned_layer_add (GtkContainer *container, GtkWidget *child);
 static void
 gdv_oned_layer_remove (GtkContainer *container, GtkWidget *child);
-
-static gboolean
-eval_inner_point (GdvLayer      *layer,
-                  guint point_1_x, guint point_1_y,
-                  guint point_2_x, guint point_2_y);
 
 G_DEFINE_TYPE_WITH_PRIVATE (GdvOnedLayer,
                             gdv_oned_layer,
@@ -264,9 +255,6 @@ gdv_oned_layer_class_init (GdvOnedLayerClass *klass)
 static void
 gdv_oned_layer_init (GdvOnedLayer *layer)
 {
-  GdvIndicator *main_indicator;
-  gdouble nat_tmargin, nat_bmargin, nat_lmargin, nat_rmargin;
-
   layer->priv = gdv_oned_layer_get_instance_private (layer);
 
   layer->priv->base_orientation = GTK_ORIENTATION_VERTICAL;
@@ -284,19 +272,6 @@ gdv_oned_layer_init (GdvOnedLayer *layer)
   layer->priv->base_orientation = GTK_ORIENTATION_VERTICAL;
   layer->priv->orientation = 0.0;
   layer->priv->left_top_scale = TRUE;
-}
-
-static void
-changed_layer_content (GdvLayerContent *content, gpointer param_spec, GdvOnedLayer *layer)
-{
-  GdvDataPoint *data_point;
-
-  g_object_get (content, "data-point", &data_point, NULL);
-
-  if (!data_point)
-    return;
-
-  gtk_widget_queue_draw (GTK_WIDGET (layer));
 }
 
 static void
@@ -329,23 +304,6 @@ gdv_oned_layer_remove (GtkContainer *container, GtkWidget *child)
   }
 }
 
-static void
-gdv_oned_layer_dispose (GObject *object)
-{
-  GdvOnedLayer *layer = GDV_ONED_LAYER (object);
-
-  g_object_unref (layer->priv->axis);
-
-  G_OBJECT_CLASS (gdv_oned_layer_parent_class)->dispose (object);
-}
-
-static void
-gdv_oned_layer_finalize (GObject *object)
-{
-  GdvOnedLayer *view = GDV_ONED_LAYER (object);
-
-  G_OBJECT_CLASS (gdv_oned_layer_parent_class)->finalize (object);
-}
 static gboolean
 evaluate_data_point (GdvLayer *layer,
                      gdouble data_point_x_value,

@@ -97,16 +97,12 @@ gdv_log_axis_init (GdvLogAxis *axis)
 static void
 gdv_log_axis_dispose (GObject *object)
 {
-  GdvLogAxis *view = GDV_LOG_AXIS (object);
-
   G_OBJECT_CLASS (gdv_log_axis_parent_class)->dispose (object);
 }
 
 static void
 gdv_log_axis_finalize (GObject *object)
 {
-  GdvLogAxis *view = GDV_LOG_AXIS (object);
-
   G_OBJECT_CLASS (gdv_log_axis_parent_class)->finalize (object);
 }
 
@@ -177,13 +173,10 @@ gdv_log_axis_size_allocate (GtkWidget           *widget,
   gdouble      scale_beg_x, scale_beg_y,
                scale_end_x, scale_end_y;
 
-  gdouble      highest_tic_value, lowest_tic_value;
-  gdouble      current_exponent, current_tic_value;
-
   gint         scale_min_diff_pix, scale_max_diff_pix;
 
-  gdouble      inner_dir_x = 0.0, inner_dir_y = 0.0,
-               axis_dir_x = 0.0, axis_dir_y = 0.0;
+  gdouble      inner_dir_x = 0.0, inner_dir_y = 0.0;
+//  gdouble      axis_dir_x = 0.0, axis_dir_y = 0.0;
   gdouble      tic_label_halign, tic_label_valign;
 
   GdvTic      *beg_tic = NULL, *end_tic = NULL;
@@ -211,8 +204,6 @@ gdv_log_axis_size_allocate (GtkWidget           *widget,
   gint         title_height = 0, title_width = 0;
   gint         title_height_nat = 0, title_width_nat = 0;
   GtkAllocation title_allocation;
-
-  gboolean     first_iteration = TRUE;
 
   GList *previouse_tics, *tics_copy;
   GList *previouse_mtics, *mtics_copy;
@@ -287,8 +278,8 @@ gdv_log_axis_size_allocate (GtkWidget           *widget,
   /* calculating basic geometric values */
   inner_dir_x = -1.0 * sin (angle_to_outer_dir);
   inner_dir_y = cos (angle_to_outer_dir);
-  axis_dir_x = -1.0 * sin (angle_to_start);
-  axis_dir_y = cos (angle_to_start);
+//  axis_dir_x = -1.0 * sin (angle_to_start);
+//  axis_dir_y = cos (angle_to_start);
 
   tic_label_halign = -0.5 * fabs(inner_dir_y);
   tic_label_valign = -0.5 * fabs(inner_dir_x);
@@ -358,7 +349,6 @@ gdv_log_axis_size_allocate (GtkWidget           *widget,
 
   while (TRUE)
   {
-    gdouble current_scale_diff_in_px;
     gdouble down_scaled_difference;
     gdouble down_scaled_beg, down_scaled_end;
     gchar *new_tic_label;
@@ -580,8 +570,6 @@ gdv_log_axis_size_allocate (GtkWidget           *widget,
       break;
     }
 
-    first_iteration = FALSE;
-
     /* aborting criteria - optimisation successful */
     if ((current_diff_pix < (gdouble) scale_min_diff_pix) || !scale_auto_increment)
       break;
@@ -694,7 +682,6 @@ gdv_log_axis_size_allocate (GtkWidget           *widget,
   {
     gdouble local_tic_value;
     gdouble local_val_resid;
-    gint tmp_min, tmp_nat;
 
     g_object_get (tics_copy->data, "value", &local_tic_value, NULL);
     local_val_resid =
@@ -723,7 +710,6 @@ gdv_log_axis_size_allocate (GtkWidget           *widget,
   {
     gdouble local_mtic_value;
     gdouble local_val_resid, local_mtic_resid;
-    gint tmp_min, tmp_nat;
 
     g_object_get (mtics_copy->data, "value", &local_mtic_value, NULL);
     local_val_resid =
@@ -769,7 +755,6 @@ gdv_log_axis_size_allocate (GtkWidget           *widget,
     {
       gdouble local_tic_value;
       gdouble local_val_resid;
-      gint tmp_min, tmp_nat;
 
       /* floating-point precision struggle */
       g_object_get (tics_copy->data, "value", &local_tic_value, NULL);
@@ -823,8 +808,7 @@ gdv_log_axis_size_allocate (GtkWidget           *widget,
       {
         gdouble local_mtic_value;
 
-        gdouble local_val_resid, local_mtic_resid;
-        gint tmp_min, tmp_nat;
+        gdouble local_val_resid;
 
         /* floating-point precision struggle */
         g_object_get (mtics_copy->data, "value", &local_mtic_value, NULL);
@@ -846,9 +830,6 @@ gdv_log_axis_size_allocate (GtkWidget           *widget,
         local_mtic_val <= GSL_MAX (mtics_end_val, mtics_beg_val) &&
         local_mtic_val >= GSL_MIN (mtics_end_val, mtics_beg_val))
       {
-        GtkAllocation mtic_allocation;
-        gint tmp_min, tmp_nat;
-
         if (!local_mtic)
         {
           local_mtic =
@@ -1157,7 +1138,6 @@ gdv_log_axis_get_space_to_beg_position (
   gpointer             data)
 {
   GList *tic_list, *tic_list_start;
-  GdvTic *beg_tic = NULL;
   gdouble tics_beg_val, axis_orientation;
   gdouble outside_dir;
   gboolean axis_title_on;
@@ -1189,7 +1169,6 @@ gdv_log_axis_get_space_to_beg_position (
 
   while (tic_list)
   {
-    gdouble current_value;
     gint local_min, local_nat;
 
     /* FIXME: this might not be correctly reached due to round-off errors */
@@ -1277,7 +1256,6 @@ gdv_log_axis_get_space_to_end_position (
   gpointer             data)
 {
   GList *tic_list, *tic_list_start;
-  GdvTic *end_tic = NULL;
   gdouble tics_end_val, axis_orientation;
   gdouble outside_dir;
 
@@ -1310,7 +1288,6 @@ gdv_log_axis_get_space_to_end_position (
 
   while (tic_list)
   {
-    gdouble current_value;
     gint local_min, local_nat;
 
     /* FIXME: this might not be correctly reached due to round-off errors */

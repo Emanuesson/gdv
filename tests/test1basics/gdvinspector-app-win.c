@@ -62,8 +62,6 @@ struct _GdvInspectorAppWindowPrivate
   GdvOnedLayer *consummeter;
 };
 
-static GParamSpec *data_properties[N_PROPERTIES] = { NULL, };
-
 G_DEFINE_TYPE_WITH_PRIVATE (
   GdvInspectorAppWindow,
   gdv_inspector_app_window,
@@ -84,10 +82,9 @@ gdv_inspector_app_window_finalize (GObject *object)
 static void
 gdv_inspector_app_window_class_init (GdvInspectorAppWindowClass *klass)
 {
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
-	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-	object_class->dispose = gdv_inspector_app_window_dispose;
+  object_class->dispose = gdv_inspector_app_window_dispose;
   object_class->finalize = gdv_inspector_app_window_finalize;
 
   g_type_ensure (GDV_ONED_LAYER_TYPE);
@@ -208,13 +205,10 @@ timeout_cb (GdvIndicator *indicator)
 
 void
 gdv_inspector_app_window_init (GdvInspectorAppWindow *window)
-{    
-  GtkWidget *widget = GTK_WIDGET (window);
-  GtkWidgetPath *widget_path;
-  GtkStyleContext *style_context;
-  GtkCssProvider *css_provider;
-  GList *axes_list;
+{
   GdvAxis *new_axis;
+  GdvSpecialCheckedIndicator *new_ind_ondl, *new_ind;
+  const gsl_rng_type * T;
 
   gtk_widget_init_template (GTK_WIDGET (window));
 
@@ -228,12 +222,8 @@ gdv_inspector_app_window_init (GdvInspectorAppWindow *window)
 
 // FIXME: These are essential!
   gtk_widget_show_all (GTK_WIDGET (window->priv->onedlayer));
-  gtk_widget_show_all (window->priv->loglayer);
 
-
-
-
-//  g_object_get (window->priv->onedlayer, "axis", &new_axis, NULL);
+  //  g_object_get (window->priv->onedlayer, "axis", &new_axis, NULL);
 //  g_object_set (new_axis,
 //    "mtics-beg-val", 0.0,
 //    "mtics-end-val", 7000.0,
@@ -257,23 +247,23 @@ gdv_inspector_app_window_init (GdvInspectorAppWindow *window)
 //    "axis-end-pix-y", 100.0,
 //    NULL);
 
-	/* initialize window group */
+  /* initialize window group */
   new_axis = GDV_AXIS (gdv_log_axis_new());
   gdv_oned_layer_replace_axis (window->priv->loglayer, new_axis);
   gtk_widget_show (GTK_WIDGET(new_axis));
 
-  GdvSpecialCheckedIndicator *new_ind = gdv_special_checked_indicator_new();
+  new_ind = gdv_special_checked_indicator_new();
   g_object_set (new_ind, "value", 50.0, NULL);
-  gtk_container_add (new_axis, new_ind);
+  gtk_container_add (GTK_CONTAINER (new_axis), GTK_WIDGET (new_ind));
 
   g_timeout_add (20, ((GSourceFunc) timeout_cb), new_ind);
 
-	/* initialize window group */
+  /* initialize window group */
   g_object_get (window->priv->onedlayer, "axis", &new_axis, NULL);
 
-  GdvSpecialCheckedIndicator *new_ind_ondl = gdv_special_checked_indicator_new();
+  new_ind_ondl = gdv_special_checked_indicator_new();
   g_object_set (new_ind_ondl, "value", 50.0, NULL);
-  gtk_container_add (new_axis, new_ind_ondl);
+  gtk_container_add (GTK_CONTAINER (new_axis), GTK_WIDGET (new_ind_ondl));
 
   g_timeout_add (20, ((GSourceFunc) timeout_cb_oned),
                  window->priv->onedlayer);
@@ -335,7 +325,6 @@ gdv_inspector_app_window_init (GdvInspectorAppWindow *window)
 //  gtk_widget_show (window->priv->twodlayer);
 
   /* gsl rng */
-  const gsl_rng_type * T;
   gsl_rng_env_setup();
   T = gsl_rng_default;
   global_rng = gsl_rng_alloc (T);

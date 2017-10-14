@@ -41,8 +41,6 @@ struct _GdvViewerAppWindowPrivate
   GdvLayerContent *content;
 };
 
-static GParamSpec *data_properties[N_PROPERTIES] = { NULL, };
-
 G_DEFINE_TYPE_WITH_PRIVATE (GdvViewerAppWindow, gdv_viewer_app_window, GTK_TYPE_APPLICATION_WINDOW);
 
 static void
@@ -60,10 +58,9 @@ gdv_viewer_app_window_finalize (GObject *object)
 static void
 gdv_viewer_app_window_class_init (GdvViewerAppWindowClass *klass)
 {
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
-	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-	object_class->dispose = gdv_viewer_app_window_dispose;
+  object_class->dispose = gdv_viewer_app_window_dispose;
   object_class->finalize = gdv_viewer_app_window_finalize;
 
   gtk_widget_class_set_template_from_resource (GTK_WIDGET_CLASS (object_class),
@@ -74,22 +71,10 @@ gdv_viewer_app_window_class_init (GdvViewerAppWindowClass *klass)
 void
 gdv_viewer_app_window_init (GdvViewerAppWindow *window)
 {
-	GtkBox *content_box;
-	GtkWindowGroup *window_group;
-	GtkPaned *central_pane;
-	GtkTreeView *central_proj_view;
-
   g_type_ensure (gdv_twod_layer_get_type ());
 
   gtk_widget_init_template (GTK_WIDGET (window));
-	window->priv = gdv_viewer_app_window_get_instance_private (window);
-
-
-	/* initialize window group */
-//  window->priv->window_group = gtk_window_group_new ();
-//  gtk_window_group_add_window (window->priv->window_group, GTK_WINDOW (window));
-
-//  gtk_widget_show (GTK_WIDGET(window->priv->content_box));
+  window->priv = gdv_viewer_app_window_get_instance_private (window);
 }
 
 GdvViewerAppWindow *

@@ -113,10 +113,6 @@ static gboolean
 gdv_tic_draw (GtkWidget    *widget,
               cairo_t      *cr);
 static void
-gdv_tic_map (GtkWidget *widget);
-static void
-gdv_tic_unmap (GtkWidget *widget);
-static void
 gdv_tic_get_preferred_width (GtkWidget           *widget,
                              gint                *minimum_size,
                              gint                *natural_size);
@@ -145,11 +141,9 @@ static void
 gdv_tic_init (GdvTic *tic)
 {
   GtkWidget *widget = GTK_WIDGET (tic);
-  GtkWidgetPath *widget_path;
   GtkStyleContext *style_context;
   GtkCssProvider *css_provider;
 
-  widget_path = gtk_widget_get_path (widget);
   css_provider = gtk_css_provider_new ();
   style_context = gtk_widget_get_style_context (widget);
   gtk_css_provider_load_from_resource (
@@ -189,7 +183,6 @@ gdv_tic_set_property (GObject      *object,
                       GParamSpec   *pspec)
 {
   GdvTic *self;
-  cairo_pattern_t *source;
   gchar *label_dup;
 
   self = GDV_TIC (object);
@@ -387,7 +380,7 @@ gdv_tic_set_label_widget (GdvTic  *tic,
                           GtkWidget *label_widget)
 {
   GdvTicPrivate *priv;
-  gboolean need_resize = FALSE;
+//  gboolean need_resize = FALSE;
 
   g_return_if_fail (GDV_IS_TIC (tic));
   g_return_if_fail (label_widget == NULL || GTK_IS_WIDGET (label_widget));
@@ -400,7 +393,7 @@ gdv_tic_set_label_widget (GdvTic  *tic,
 
   if (priv->label)
   {
-    need_resize = gdv_tic_label_widget_is_visible (tic);
+//    need_resize = gdv_tic_label_widget_is_visible (tic);
     gtk_widget_unparent (priv->label);
   }
 
@@ -462,7 +455,6 @@ void gdv_tic_set_tic_position (GdvTic  *tic, gfloat x, gfloat y)
 gboolean gdv_tic_get_show_label (GdvTic *tic)
 {
   gboolean tic_label;
-  gchar    *tic_format = NULL;
 
   g_return_val_if_fail (GDV_IS_TIC (tic), FALSE);
 
@@ -476,16 +468,12 @@ gboolean gdv_tic_get_show_label (GdvTic *tic)
 static void
 gdv_tic_dispose (GObject *object)
 {
-  GdvTic *tic = GDV_TIC (object);
-
   G_OBJECT_CLASS (gdv_tic_parent_class)->dispose (object);
 }
 
 static void
 gdv_tic_finalize (GObject *object)
 {
-  GdvTic *tic = GDV_TIC (object);
-
   G_OBJECT_CLASS (gdv_tic_parent_class)->finalize (object);
 }
 
@@ -796,9 +784,6 @@ gdv_tic_get_space_to_tic_position (
   gdouble   tics_inner_length, tics_outer_length;
   gdouble   label_distance;
   gboolean  tic_label;
-  gdouble   normalized_x_dir, normalized_y_dir, axis_dir_length;
-  PangoAlignment hor_alignment = PANGO_ALIGN_CENTER;
-  gint ver_alignment = 0;
   gint label_height = 0, label_width = 0;
   gdouble   normalized_x_inner_dir, normalized_y_inner_dir, inner_dir_length;
 
@@ -1053,19 +1038,8 @@ gdv_tic_draw (GtkWidget    *widget,
 {
   GdvTic *tic = GDV_TIC (widget);
   GtkAllocation allocation;
-  guint     beg_x,
-            beg_y,
-            end_x,
-            end_y;
-  gdouble   tic_line_width;
-  gdouble   scale_beg_val,
-            scale_end_val;
-  gint      scale_max_diff_pix, scale_min_diff_pix;
-  gdouble   tics_line_width, tics_inner_length, tics_outer_length;
+  gdouble   tics_inner_length, tics_outer_length;
   gboolean  tic_label;
-  gdouble   tic_scale_min_x, tic_scale_min_y, tic_scale_max_x, tic_scale_max_y;
-  gboolean  draw_scale_min_tic, draw_scale_max_tic;
-  GList *local_indicator_list;
 
   gdouble   normalized_x_inner_dir, normalized_y_inner_dir, inner_dir_length;
   GtkStyleContext *context;
@@ -1122,17 +1096,11 @@ gdv_tic_measure (
   gpointer             data)
 {
   GtkWidget *widget;
-  GdvTicPrivate *priv;
-  gint child_min, child_nat;
   GtkAllocation allocation;
 
   gdouble   tic_line_width;
-  gdouble   tics_inner_length, tics_outer_length, label_distance;
-  gboolean  tic_label;
-  gdouble   normalized_x_inner_dir, normalized_y_inner_dir, inner_dir_length;
 
   widget = GTK_WIDGET (tic);
-  priv = tic->priv;
 
   gtk_widget_get_allocation (widget, &allocation);
 

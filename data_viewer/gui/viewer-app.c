@@ -56,8 +56,6 @@ gdv_viewer_app_activate (GApplication *application)
 static void
 gdv_viewer_app_startup (GApplication *application)
 {
-  GdvViewerApp *app = GDV_VIEWER_APP (application);
-
   G_APPLICATION_CLASS (gdv_viewer_app_parent_class)->startup (application);
 }
 
@@ -81,8 +79,6 @@ gdv_viewer_app_dispose (GObject *object)
 static void
 gdv_viewer_app_finalize (GObject *object)
 {
-  GdvViewerApp *app = GDV_VIEWER_APP (object);
-
   G_OBJECT_CLASS (gdv_viewer_app_parent_class)->finalize (object);
 }
 

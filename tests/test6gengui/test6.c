@@ -134,44 +134,23 @@ static void destroy( GtkWidget *widget,
   gtk_main_quit ();
 }
 
-static void activate_button (GtkSpinButton *spin_button,
-                             gpointer data)
-{
-  GdvAxis *x_axis = GDV_AXIS (data);
-  gdouble value;
-
-  g_object_get (G_OBJECT (spin_button),
-    "value", &value,
-    NULL);
-
-  g_object_set (G_OBJECT(x_axis),
-    "axis-orientation", value * M_PI,
-    "axis-direction-outside", value * M_PI + 0.5 * M_PI,
-    NULL);
-
-  gtk_widget_queue_resize (GTK_WIDGET (x_axis));
-  gtk_widget_queue_allocate (GTK_WIDGET (x_axis));
-  gtk_widget_queue_draw (GTK_WIDGET (x_axis));
-//  g_print ("received scale: %e\n", new_value);
-}
-
 int
 main (int argc, char **argv)
 {
-  GdvLayerContent *layer_content;
-  GtkWidget *left_box, *right_box, *main_box, *overlay;
-  GList *tic_list;
+  GtkWidget *left_box, *right_box, *main_box;
 
-  gint var_index;
   GtkWidget *main_window;
-  GtkWidget *frame;
-  GdvAxis *test_axis = NULL;
-  GtkWidget *test_indicator_label;
-  GdvLegend *test_legend;
-  GdkScreen *screen_window;
-  GtkWidget *spin_button;
   GdvLayer *layer;
-  GdvLayerContent *content1, *content2;
+  GdvLogAxis *new_x1_axis, *new_x2_axis;
+  GtkWidget *tmp_label;
+  GdvAxis *current_axis;
+  GdvIndicator *test_indicator;
+  gint i;
+  GdvLayerContent *new_content, *new_content2;
+
+  GtkStyleContext *style_context;
+  GtkCssProvider *css_provider;
+  GdvLegend *new_legend;
 
   gtk_init (&argc, &argv);
 
@@ -213,14 +192,14 @@ main (int argc, char **argv)
 
 /////////////////////////////////////////
 
-  GdvLogAxis *new_x1_axis =
+  new_x1_axis =
     g_object_new (GDV_LOG_TYPE_AXIS,
                   "halign", GTK_ALIGN_FILL,
                   "valign", GTK_ALIGN_END,
                   "axis-orientation", -0.5 * M_PI,
                   "axis-direction-outside", M_PI,
                   NULL);
-  GdvLogAxis *new_x2_axis =
+  new_x2_axis =
     g_object_new (GDV_LOG_TYPE_AXIS,
                   "halign", GTK_ALIGN_FILL,
                   "valign", GTK_ALIGN_START,
@@ -251,8 +230,6 @@ main (int argc, char **argv)
 //    NULL);
 
 //  g_object_set (axes_list->data, "title", "hello World", NULL);
-  GtkWidget *tmp_label;
-  GdvAxis *current_axis;
 
   current_axis = gdv_twod_layer_get_axis (GDV_TWOD_LAYER (layer), GDV_X1_AXIS);
   tmp_label = g_object_new (gtk_label_get_type(), NULL);
@@ -261,7 +238,7 @@ main (int argc, char **argv)
   gtk_label_set_angle (GTK_LABEL (tmp_label), 0.0);
   gdv_axis_set_title_widget (GDV_AXIS (current_axis), tmp_label);
 
-  GdvIndicator *test_indicator = g_object_new (GDV_TYPE_INDICATOR, NULL);
+  test_indicator = g_object_new (GDV_TYPE_INDICATOR, NULL);
   gtk_container_add (GTK_CONTAINER (current_axis), GTK_WIDGET (test_indicator));
   g_object_set (test_indicator, "value", 50.0, NULL);
 
@@ -355,10 +332,9 @@ main (int argc, char **argv)
 //  }
 */
 
-  GdvLayerContent *new_content = g_object_new (GDV_LAYER_TYPE_CONTENT, "title", "sin", NULL);
-  GdvLayerContent *new_content2 = g_object_new (GDV_LAYER_TYPE_CONTENT, "title", "cos", NULL);
+  new_content = g_object_new (GDV_LAYER_TYPE_CONTENT, "title", "sin", NULL);
+  new_content2 = g_object_new (GDV_LAYER_TYPE_CONTENT, "title", "cos", NULL);
 
-  gint i;
   for (i = 0; i < 500; i++)
   {
     gdouble double_i = (gdouble) i;
@@ -388,11 +364,6 @@ main (int argc, char **argv)
 
 
 
-  GtkWidgetPath *widget_path;
-  GtkStyleContext *style_context;
-  GtkCssProvider *css_provider;
-
-  widget_path = gtk_widget_get_path (GTK_WIDGET (new_content));
   css_provider = gtk_css_provider_new ();
   style_context = gtk_widget_get_style_context (GTK_WIDGET (new_content));
   gtk_css_provider_load_from_data (css_provider,
@@ -411,7 +382,7 @@ main (int argc, char **argv)
 
 */
 
-  GdvLegend *new_legend = gdv_legend_new();
+  new_legend = gdv_legend_new();
   g_object_set (new_legend, "layer", layer, NULL);
   gtk_box_pack_start (GTK_BOX (right_box), GTK_WIDGET (new_legend), TRUE, FALSE, 2);
 

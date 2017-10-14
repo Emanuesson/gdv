@@ -77,9 +77,6 @@ enum
   N_PROPERTIES
 };
 
-/* --- variables --- */
-static guint indicator_signals[LAST_SIGNAL] = { 0 };
-
 struct _GdvIndicatorPrivate
 {
   /* value */
@@ -116,7 +113,6 @@ gdv_indicator_init (GdvIndicator *indicator)
 {
   GtkStyleContext *style_context;
   GtkCssProvider *css_provider;
-  GtkWidgetPath *widget_path;
 
   GtkWidget *widget;
 
@@ -124,7 +120,6 @@ gdv_indicator_init (GdvIndicator *indicator)
 
   gtk_widget_set_name (widget, "new indicator");
 
-  widget_path = gtk_widget_get_path (widget);
   css_provider = gtk_css_provider_new ();
   style_context = gtk_widget_get_style_context (widget);
   gtk_css_provider_load_from_resource (
@@ -156,7 +151,6 @@ gdv_indicator_set_property (GObject      *object,
                             GParamSpec   *pspec)
 {
   GdvIndicator *self;
-  cairo_pattern_t *source;
 
   self = GDV_INDICATOR (object);
 
@@ -244,16 +238,12 @@ gdv_indicator_get_property (GObject    *object,
 static void
 gdv_indicator_dispose (GObject *object)
 {
-  GdvIndicator *view = GDV_INDICATOR (object);
-
   G_OBJECT_CLASS (gdv_indicator_parent_class)->dispose (object);
 }
 
 static void
 gdv_indicator_finalize (GObject *object)
 {
-  GdvIndicator *view = GDV_INDICATOR (object);
-
   G_OBJECT_CLASS (gdv_indicator_parent_class)->finalize (object);
 }
 
@@ -287,16 +277,9 @@ gdv_indicator_realize (GtkWidget *widget)
 {
   GtkAllocation allocation;
   GdkWindow *window;
-  GdkWindowAttr attributes;
-  gint attributes_mask;
-  GdvIndicator *indicator;
-  GtkStyleContext *context;
-  gint focus_width;
-  gint focus_pad;
 
   gtk_widget_get_allocation (widget, &allocation);
 
-  indicator = GDV_INDICATOR (widget);
 
   gtk_widget_set_realized (widget, TRUE);
 
@@ -316,10 +299,6 @@ static void
 gdv_indicator_size_allocate (GtkWidget     *widget,
                              GtkAllocation *allocation)
 {
-  GdvIndicator *indicator;
-
-  indicator = GDV_INDICATOR (widget);
-
   gtk_widget_set_allocation (widget, allocation);
 
 }
@@ -360,12 +339,6 @@ gboolean gdv_indicator_draw (GtkWidget   *widget,
   }
 
   return FALSE;
-}
-
-static void
-gdv_indicator_map (GtkWidget *widget)
-{
-  gtk_widget_set_mapped (widget, TRUE);
 }
 
 static void

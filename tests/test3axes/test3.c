@@ -173,84 +173,17 @@ report_axis_props (GdvAxis *axis)
 
 static gboolean added;
 
-static gboolean
-timeout_cb (GdvLayer *layer)
-{
-//  if (!gtk_widget_get_realized(GTK_WIDGET (layer)))
-//    return TRUE;
-//
-
-  if (!added)
-  {
-  GdvAxis *tmp_axis = 
-    GDV_AXIS (g_object_new (gdv_linear_axis_get_type (),
-          "halign", GTK_ALIGN_START,
-          "valign", GTK_ALIGN_FILL,
-          "axis-orientation", 0.0,
-          "axis-direction-outside", -0.5*M_PI,
-/*          "scale-increment-val", 3600.0,
-          "visible", FALSE,
-          "tics-automatic", TRUE,
-//          "mtics-automatic", FALSE,
-          "scale-limits-automatic", FALSE,
-          "scale-beg-val", 0.0,
-          "scale-end-val", 86400.0,
-//          "scale-auto-increment", FALSE,
-*/
-          NULL));
-  gtk_widget_set_name (GTK_WIDGET (tmp_axis), "y1-axis");
-  gtk_widget_show(GTK_WIDGET (tmp_axis));
-
-  gdv_twod_layer_unset_axis (GDV_TWOD_LAYER (layer), GDV_Y1_AXIS);
-
-  g_print ("ADDING\n");
-  gdv_twod_layer_set_axis (GDV_TWOD_LAYER (layer),
-    GDV_AXIS (tmp_axis),
-    GDV_Y1_AXIS);
-  }
-
-  added = TRUE;
-
-/*
-  GList *layer_children = gtk_container_get_children(GTK_CONTAINER (layer));
-
-  while (layer_children)
-  {
-    if (GDV_IS_AXIS (layer_children->data))
-    {
-      GdvAxis *axis = GDV_AXIS (layer_children->data);
-
-      GList *tic_list = gdv_axis_get_tic_list (GDV_AXIS (axis));
-      while (tic_list)
-      {
-        report_tic_props (tic_list->data);
-        tic_list = tic_list->next;
-      }
-    }
-
-    layer_children = layer_children->next;
-  }
-*/
-  return FALSE;
-}
 
 int
 main (int argc, char **argv)
 {
-  GdvLayerContent *layer_content;
-  GtkWidget *main_box;
-  GList *tic_list;
-
-  gint var_index;
   GtkWidget *main_window;
   GtkWidget *frame;
 //  GdvAxis *test_axis = NULL;
 
-  GtkWidget *test_indicator_label;
-
-  GdkScreen *screen_window;
-  GtkCssProvider *css_provider;
   GdvTwodLayer *layer;
+
+  GdvAxis *tmp_axis;
 
   gtk_init (&argc, &argv);
 
@@ -274,7 +207,7 @@ main (int argc, char **argv)
 
   gtk_widget_show_all (GTK_WIDGET (main_window));
 
-  GdvAxis *tmp_axis =
+  tmp_axis =
     gdv_twod_layer_get_axis (GDV_TWOD_LAYER (layer),
       GDV_Y2_AXIS);
 //  gtk_widget_hide (GTK_WIDGET (tmp_axis));
@@ -316,7 +249,7 @@ main (int argc, char **argv)
 //    "tics-end-val", 120.0,
 //    NULL);
 /*
-  tmp_axis = 
+  tmp_axis =
     GDV_AXIS (g_object_new (gdv_linear_axis_get_type (),
           "halign", GTK_ALIGN_START,
           "valign", GTK_ALIGN_FILL,

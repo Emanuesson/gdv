@@ -232,7 +232,6 @@ static void
 gdv_layer_content_init (GdvLayerContent *content)
 {
   GtkWidget *widget;
-  GtkWidgetPath *widget_path;
   GtkStyleContext *style_context;
   GtkCssProvider *css_provider;
 
@@ -241,7 +240,6 @@ gdv_layer_content_init (GdvLayerContent *content)
   gtk_widget_set_name (widget, "new layer");
 
   /* initializing style-properties */
-  widget_path = gtk_widget_get_path (widget);
   css_provider = gtk_css_provider_new ();
   style_context = gtk_widget_get_style_context (widget);
   gtk_css_provider_load_from_resource (
@@ -290,8 +288,6 @@ static gboolean
 gdv_layer_content_on_draw (GtkWidget    *widget,
                            cairo_t      *cr)
 {
-  gboolean pixel_ward = FALSE;
-  gdouble prev_line_width = cairo_get_line_width (cr);
   gboolean first_point;
   gdouble prev_pixel_x = 0.0, prev_pixel_y = 0.0;
   GtkStyleContext *context;
@@ -406,16 +402,12 @@ gdv_layer_content_on_draw (GtkWidget    *widget,
 static void
 gdv_layer_content_dispose (GObject *object)
 {
-  GdvLayerContent *content = GDV_LAYER_CONTENT (object);
-
   G_OBJECT_CLASS (gdv_layer_content_parent_class)->dispose (object);
 }
 
 static void
 gdv_layer_content_finalize (GObject *object)
 {
-  GdvLayerContent *content = GDV_LAYER_CONTENT (object);
-
   G_OBJECT_CLASS (gdv_layer_content_parent_class)->finalize (object);
 }
 
@@ -686,7 +678,6 @@ gdv_layer_content_add_data_point (GdvLayerContent *layer_content,
                                   gdouble          z_value)
 {
   GdvDataPoint *new_value;
-  GtkWidget *parent;
 
   g_return_if_fail (GDV_LAYER_IS_CONTENT (layer_content));
 
@@ -708,8 +699,6 @@ gdv_layer_content_add_data_point (GdvLayerContent *layer_content,
     fmin (layer_content->priv->layer_min->y, y_value);
   layer_content->priv->layer_min->z =
     fmin (layer_content->priv->layer_min->z, z_value);
-
-  parent = gtk_widget_get_parent (GTK_WIDGET (layer_content));
 
   layer_content->priv->data_values =
     g_list_append (layer_content->priv->data_values, new_value);

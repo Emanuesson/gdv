@@ -44,8 +44,6 @@ enum
   N_PROPERTIES
 };
 
-static GParamSpec* data_properties[N_PROPERTIES] = { NULL, };
-
 struct _GdvDataVectorPrivate
 {
   gsl_vector *data;
@@ -126,8 +124,6 @@ gdv_data_vector_get_property (GObject*    object,
 static void
 gdv_data_vector_dispose (GObject* object)
 {
-  GdvDataVector* self = GDV_DATA_VECTOR (object);
-
   G_OBJECT_CLASS (gdv_data_vector_parent_class)->dispose (object);
 }
 
@@ -355,9 +351,14 @@ gint gdv_data_vector_min_index (const GdvDataVector * v)
 
 void gdv_data_vector_minmax_index (const GdvDataVector * v, gint * imin, gint * imax)
 {
+  size_t local_min, local_max;
+
   g_return_if_fail (GDV_DATA_IS_VECTOR (v));
 
-  gsl_vector_minmax_index  (v->priv->data, (size_t *) imin, (size_t *) imax);
+  gsl_vector_minmax_index  (v->priv->data, &local_min, &local_max);
+
+  *imin = local_min;
+  *imax = local_max;
 }
 
 GdvDataVector *_gdv_data_vector_init_from_vect (gsl_vector *vector)

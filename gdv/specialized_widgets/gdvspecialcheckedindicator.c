@@ -161,12 +161,6 @@ gboolean gdv_special_checked_indicator_draw (
 
   gdouble value;
 
-  gdouble angle_on_top;
-  gdouble inner_offset;
-  gdouble arrow_height;
-  gdouble in_length, out_length;
-  GdkRGBA *primary_color, *secondary_color;
-  gdouble line_width;
   gboolean show_in_out_of_range;
 
   /* FIXME: Does this even make sense? Look up examples from Gtk+ */

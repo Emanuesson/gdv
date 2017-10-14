@@ -38,8 +38,6 @@ enum
   N_PROPERTIES
 };
 
-static GParamSpec *view_properties[N_PROPERTIES] = { NULL, };
-
 struct _GdvSpecialTimeAxisPrivate
 {
   gint placeholder;
@@ -71,11 +69,9 @@ gdv_special_time_axis_make_tic_label_markup (GdvAxis *axis, gdouble  value);
 static void
 gdv_special_time_axis_class_init (GdvSpecialTimeAxisClass *klass)
 {
-  GObjectClass *gobject_class;
   GtkWidgetClass *widget_class;
   GdvAxisClass *axis_class;
 
-  gobject_class = G_OBJECT_CLASS (klass);
   widget_class = GTK_WIDGET_CLASS (klass);
   axis_class = GDV_AXIS_CLASS (klass);
 
@@ -119,18 +115,15 @@ gdv_special_time_axis_init (GdvSpecialTimeAxis *time_axis)
 {
   GtkWidget *widget;
 
-  GtkWidgetPath *widget_path;
-  GtkStyleContext *style_context;
   GtkCssProvider *css_provider;
+  GdkScreen *screen;
 
   widget = GTK_WIDGET (time_axis);
 
   time_axis->priv = gdv_special_time_axis_get_instance_private (time_axis);
 
 	/* initialize window group */
-  widget_path = gtk_widget_get_path (widget);
   css_provider = gtk_css_provider_new ();
-  style_context = gtk_style_context_new ();
 //  gtk_css_provider_load_from_resource (
 //    css_provider,
 //    "/net/gevseexe/gevseapp/ui/gui/default_general.css");
@@ -138,7 +131,7 @@ gdv_special_time_axis_init (GdvSpecialTimeAxis *time_axis)
 //    style_context,
 //    GTK_STYLE_PROVIDER (css_provider),
 //    GTK_STYLE_PROVIDER_PRIORITY_FALLBACK);
-  GdkScreen *screen = gtk_widget_get_screen (widget);
+  screen = gtk_widget_get_screen (widget);
   if (screen)
     gtk_style_context_add_provider_for_screen (
       screen,
@@ -151,6 +144,7 @@ gdv_special_time_axis_init (GdvSpecialTimeAxis *time_axis)
 
 }
 
+/*
 static void gdv_special_time_axis_set_property (GObject      *object,
                                       guint         property_id,
                                       const GValue *value,
@@ -165,8 +159,8 @@ static void gdv_special_time_axis_set_property (GObject      *object,
 //      break;
 
     default:
-      /* unknown property */
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+*/      /* unknown property */
+/*      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
     }
 }
@@ -185,12 +179,13 @@ static void gdv_special_time_axis_get_property (GObject    *object,
 //      break;
 
     default:
-      /* unknown property */
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+*/      /* unknown property */
+/*      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
 
     }
 }
+*/
 
 /*
 static void
@@ -207,7 +202,6 @@ gdv_special_time_axis_size_allocate (GtkWidget           *widget,
 static gchar *
 gdv_special_time_axis_make_tic_label_markup (GdvAxis *axis, gdouble  value)
 {
-  GdvLinearAxis *linear_axis = GDV_LINEAR_AXIS (axis);
   gchar *return_string = NULL;
 
   return_string =

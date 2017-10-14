@@ -84,7 +84,6 @@ static void
 gdv_legend_init (GdvLegend *legend)
 {
   GtkWidget *widget = GTK_WIDGET (legend);
-  GtkWidgetPath *widget_path;
   GtkStyleContext *style_context;
   GtkCssProvider *css_provider;
 
@@ -93,7 +92,6 @@ gdv_legend_init (GdvLegend *legend)
   gtk_widget_set_receives_default (GTK_WIDGET (legend), TRUE);
   gtk_widget_set_has_window (GTK_WIDGET (legend), FALSE);
 
-  widget_path = gtk_widget_get_path (widget);
   css_provider = gtk_css_provider_new ();
   style_context = gtk_widget_get_style_context (widget);
   gtk_css_provider_load_from_resource (
@@ -132,7 +130,6 @@ gdv_legend_set_property (GObject      *object,
                          GParamSpec   *pspec)
 {
   GdvLegend *self;
-  cairo_pattern_t *source;
 
   self = GDV_LEGEND (object);
 
@@ -202,16 +199,12 @@ gdv_legend_get_property (GObject    *object,
 static void
 gdv_legend_dispose (GObject *object)
 {
-  GdvLegend *legend = GDV_LEGEND (object);
-
   G_OBJECT_CLASS (gdv_legend_parent_class)->dispose (object);
 }
 
 static void
 gdv_legend_finalize (GObject *object)
 {
-  GdvLegend *view = GDV_LEGEND (object);
-
   G_OBJECT_CLASS (gdv_legend_parent_class)->finalize (object);
 }
 

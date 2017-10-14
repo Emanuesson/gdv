@@ -45,7 +45,6 @@ main (int argc, char **argv)
   GtkWidget *main_window;
   GdvAxis *test_axis = NULL;
   GdvLayer *layer;
-  GdvLayerContent *content1, *content2;
 
   gtk_init (&argc, &argv);
 

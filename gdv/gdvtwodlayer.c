@@ -39,15 +39,19 @@
 #include "gdvlayercontent.h"
 #include "gdv-data-boxed.h"
 
-#define max(a,b) \
- ({ __typeof__ (a) _a = (a); \
-     __typeof__ (b) _b = (b); \
-   _a > _b ? _a : _b; })
+/* local minimum-function */
+static gint min (gint a,
+                  gint b)
+{
+  return a < b ? a : b;
+}
 
-#define min(a,b) \
- ({ __typeof__ (a) _a = (a); \
-     __typeof__ (b) _b = (b); \
-   _a < _b ? _a : _b; })
+/* local maximum-function */
+static gint max (gint a,
+                  gint b)
+{
+  return a > b ? a : b;
+}
 
 /**
  * SECTION:gdvtwodlayer
@@ -108,10 +112,6 @@ enum
 };
 
 /* Prototypes */
-static void
-gdv_twod_layer_dispose (GObject *object);
-static void
-gdv_twod_layer_finalize (GObject *object);
 static gboolean
 evaluate_data_point (GdvLayer *layer,
                      gdouble data_point_x_value,
@@ -161,7 +161,6 @@ G_DEFINE_TYPE_WITH_PRIVATE (GdvTwodLayer,
 static void
 gdv_twod_layer_class_init (GdvTwodLayerClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
   GdvLayerClass *layer_class = GDV_LAYER_CLASS (klass);
   GtkContainerClass *container_class = GTK_CONTAINER_CLASS (klass);
@@ -188,8 +187,6 @@ gdv_twod_layer_class_init (GdvTwodLayerClass *klass)
 static void
 gdv_twod_layer_init (GdvTwodLayer *layer)
 {
-  gdouble nat_tmargin, nat_bmargin, nat_lmargin, nat_rmargin;
-
   layer->priv = gdv_twod_layer_get_instance_private (layer);
 
   layer->priv->x1_axis =
@@ -269,22 +266,6 @@ static void gdv_twod_layer_remove (
       container,
       child);
   }
-}
-
-static void
-gdv_twod_layer_dispose (GObject *object)
-{
-  GdvTwodLayer *layer = GDV_TWOD_LAYER (object);
-
-  G_OBJECT_CLASS (gdv_twod_layer_parent_class)->dispose (object);
-}
-
-static void
-gdv_twod_layer_finalize (GObject *object)
-{
-  GdvTwodLayer *view = GDV_TWOD_LAYER (object);
-
-  G_OBJECT_CLASS (gdv_twod_layer_parent_class)->finalize (object);
 }
 
 static gboolean

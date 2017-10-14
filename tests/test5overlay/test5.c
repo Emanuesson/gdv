@@ -39,24 +39,18 @@ static void destroy( GtkWidget *widget,
 int
 main (int argc, char **argv)
 {
-  GdvLayerContent *layer_content;
-  GtkWidget *main_box, *overlay;
-  GList *tic_list;
+  GtkWidget *overlay;
 
-  gint var_index;
   GtkWidget *main_window;
   GtkWidget *frame;
-  GdvAxis *test_axis = NULL;
-  GtkWidget *test_indicator_label;
   GdvLegend *test_legend;
-  GdkScreen *screen_window;
   GdvOnedLayer *layer;
   GdvLayerContent *content1, *content2;
+  gint i;
 
   gtk_init (&argc, &argv);
 
   main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-  main_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
   test_legend = gdv_legend_new ();
 
@@ -94,7 +88,6 @@ main (int argc, char **argv)
   g_object_set (content2, "title", "cos(x)", NULL);
   gtk_container_add(GTK_CONTAINER (layer), GTK_WIDGET(content2));
 
-  gint i;
   for (i = 0; i < 400; i++)
   {
     gdv_layer_content_add_data_point (

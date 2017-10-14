@@ -26,6 +26,7 @@
 #define __GDV_H_INSIDE__
 
 #include <gtk/gtk.h>
+
 #include <gdv/gdvcentral.h>
 #include <gdv/gdvrender.h>
 #include <gdv/gdvonedlayer.h>

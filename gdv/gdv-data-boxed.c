@@ -247,7 +247,6 @@ GdvDataNPoint *gdv_data_n_point_set_and_expand (GdvDataNPoint *point1,
     const guint n,
     gdouble x)
 {
-  gboolean return_status;
   GdvDataNPoint *result;
 
   if (n <= point1->N)

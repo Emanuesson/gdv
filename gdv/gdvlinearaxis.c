@@ -135,7 +135,6 @@ static void
 gdv_linear_axis_class_init (GdvLinearAxisClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GtkContainerClass *container_class = GTK_CONTAINER_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
   GdvAxisClass *axis_class = GDV_AXIS_CLASS (klass);
 
@@ -262,10 +261,6 @@ gdv_linear_axis_size_allocate (GtkWidget           *widget,
 
   GdvLinearAxis *linear_axis = GDV_LINEAR_AXIS (widget);
   GtkAllocation axis_allocation = *allocation;
-  GdvAxis *x1axis;
-  GdvLinearAxis *axis = GDV_LINEAR_AXIS (widget);
-
-  GdvLayer *parent_layer = GDV_LAYER (gtk_widget_get_parent(widget));
 
   gboolean  scale_automatic;
 
@@ -284,10 +279,10 @@ gdv_linear_axis_size_allocate (GtkWidget           *widget,
   gdouble   angle_to_outer_dir, angle_to_start;
 
   gdouble   init_increment_val;
-  gdouble   init_tic_beg_val, init_tic_end_val;
+//  gdouble   init_tic_beg_val, init_tic_end_val;
 
-  gdouble   inner_dir_x = 0.0, inner_dir_y = 0.0,
-            axis_dir_x = 0.0, axis_dir_y = 0.0;
+  gdouble   inner_dir_x = 0.0, inner_dir_y = 0.0;
+//  gdouble   axis_dir_x = 0.0, axis_dir_y = 0.0;
 
   gboolean  force_beg_end;
 
@@ -295,8 +290,6 @@ gdv_linear_axis_size_allocate (GtkWidget           *widget,
   gdouble   tmp_tics_val_beg, tmp_tics_val_end;
   gdouble   tics_beg_val,
             tics_end_val;
-  GValue    tics_lw_val, tics_lc_val;
-  gboolean  tic_labels;
   gboolean  beg_is_new = FALSE, end_is_new = FALSE;
 
   gdouble   tic_label_halign, tic_label_valign;
@@ -307,8 +300,6 @@ gdv_linear_axis_size_allocate (GtkWidget           *widget,
   guint     mtics_number;
   gdouble   current_diff_pix = G_MAXDOUBLE;
   gint max_top_border, max_bot_border, max_left_border, max_right_border;
-
-  GdkWindow *main_win = gtk_widget_get_window (widget);
 
   gboolean set_tics = TRUE;
 
@@ -393,8 +384,8 @@ gdv_linear_axis_size_allocate (GtkWidget           *widget,
 
   /* safing all necessary values */
   init_increment_val = scale_increment_val;
-  init_tic_beg_val = tics_beg_val;
-  init_tic_end_val = tics_end_val;
+//  init_tic_beg_val = tics_beg_val;
+//  init_tic_end_val = tics_end_val;
 
   init_scale_beg_val = scale_beg_val;
   init_scale_end_val = scale_end_val;
@@ -416,8 +407,8 @@ gdv_linear_axis_size_allocate (GtkWidget           *widget,
   /* calculating basic geometric values */
   inner_dir_x = -1.0 * sin (angle_to_outer_dir);
   inner_dir_y = cos (angle_to_outer_dir);
-  axis_dir_x = -1.0 * sin (angle_to_start);
-  axis_dir_y = cos (angle_to_start);
+//  axis_dir_x = -1.0 * sin (angle_to_start);
+//  axis_dir_y = cos (angle_to_start);
 
   tic_label_halign = -0.5 * fabs(inner_dir_y);
   tic_label_valign = -0.5 * fabs(inner_dir_x);
@@ -491,7 +482,6 @@ gdv_linear_axis_size_allocate (GtkWidget           *widget,
   {
     gdouble base_value =
       pow (10.0, exponent) * (sign > 0.0 ? mantissa : 1.0 / mantissa);
-    gdouble current_scale_diff_in_px;
     gdouble down_scaled_difference;
     gdouble down_scaled_beg, down_scaled_end;
     gchar *new_tic_label;
@@ -532,8 +522,8 @@ gdv_linear_axis_size_allocate (GtkWidget           *widget,
     }
 
     /* Calculating the scale begin- and end-values */
-    if (scale_automatic && scale_beg_val <= scale_end_val ||
-        !scale_automatic && scale_beg_val > scale_end_val)
+    if ((scale_automatic && (scale_beg_val <= scale_end_val)) ||
+        (!scale_automatic && (scale_beg_val > scale_end_val)))
     {
       scale_beg_val =
         (gdouble) floor (init_scale_beg_val / scale_increment_val);
@@ -947,8 +937,6 @@ gdv_linear_axis_size_allocate (GtkWidget           *widget,
    */
   if (mtics_automatic && set_tics)
   {
-    gdouble exponent, mantissa;
-
     mtics_beg_val = scale_beg_val;
     mtics_end_val = scale_end_val;
 
@@ -992,7 +980,6 @@ gdv_linear_axis_size_allocate (GtkWidget           *widget,
   {
     gdouble local_tic_value;
     gdouble local_val_resid;
-    gint tmp_min, tmp_nat;
 
     g_object_get (tics_copy->data, "value", &local_tic_value, NULL);
     local_val_resid =
@@ -1029,7 +1016,6 @@ gdv_linear_axis_size_allocate (GtkWidget           *widget,
   {
     gdouble local_mtic_value;
     gdouble local_val_resid, local_mtic_resid;
-    gint tmp_min, tmp_nat;
 
     g_object_get (mtics_copy->data, "value", &local_mtic_value, NULL);
     local_val_resid =
@@ -1089,8 +1075,7 @@ gdv_linear_axis_size_allocate (GtkWidget           *widget,
       {
         gdouble local_mtic_value;
 
-        gdouble local_val_resid, local_mtic_resid;
-        gint tmp_min, tmp_nat;
+        gdouble local_val_resid;
 
         /* floating-point precision struggle */
         g_object_get (mtics_copy->data, "value", &local_mtic_value, NULL);
@@ -1114,9 +1099,6 @@ gdv_linear_axis_size_allocate (GtkWidget           *widget,
         local_mtic_val >= GSL_MIN (mtics_end_val, mtics_beg_val) &&
         local_mtic_val >= GSL_MIN (scale_beg_val, scale_end_val))
       {
-        GtkAllocation mtic_allocation;
-        gint tmp_min, tmp_nat;
-
         if (!local_mtic)
         {
           local_mtic =
@@ -1158,7 +1140,6 @@ gdv_linear_axis_size_allocate (GtkWidget           *widget,
     {
       gdouble local_tic_value;
       gdouble local_val_resid;
-      gint tmp_min, tmp_nat;
 
       /* floating-point precision struggle */
       g_object_get (tics_copy->data, "value", &local_tic_value, NULL);
@@ -1214,8 +1195,7 @@ gdv_linear_axis_size_allocate (GtkWidget           *widget,
       {
         gdouble local_mtic_value;
 
-        gdouble local_val_resid, local_mtic_resid;
-        gint tmp_min, tmp_nat;
+        gdouble local_val_resid;
 
         /* floating-point precision struggle */
         g_object_get (mtics_copy->data, "value", &local_mtic_value, NULL);
@@ -1239,9 +1219,6 @@ gdv_linear_axis_size_allocate (GtkWidget           *widget,
         local_mtic_val >= GSL_MIN (mtics_end_val, mtics_beg_val) &&
         local_mtic_val >= GSL_MIN (scale_beg_val, scale_end_val))
       {
-        GtkAllocation mtic_allocation;
-        gint tmp_min, tmp_nat;
-
         if (!local_mtic)
         {
           local_mtic =
@@ -1568,8 +1545,7 @@ gdv_linear_axis_get_space_to_beg_position (
   gpointer             data)
 {
   GList *tic_list, *tic_list_start;
-  GdvTic *beg_tic = NULL;
-  gdouble axis_orientation;
+//  gdouble axis_orientation;
   gdouble outside_dir;
   gboolean axis_title_on;
   GtkWidget *title_widget;
@@ -1583,7 +1559,7 @@ gdv_linear_axis_get_space_to_beg_position (
   *natural = 0;
 
   g_object_get (axis,
-                "axis-orientation", &axis_orientation,
+//                "axis-orientation", &axis_orientation,
                 "axis-direction-outside", &outside_dir,
                 "title-widget", &title_widget,
                 "axis-beg-pix-x", &scale_beg_x,
@@ -1608,7 +1584,6 @@ gdv_linear_axis_get_space_to_beg_position (
 
   while (tic_list)
   {
-    gdouble current_value;
     gint local_min, local_nat;
 
     /* FIXME: this might not be correctly reached due to round-off errors */
@@ -1702,8 +1677,7 @@ gdv_linear_axis_get_space_to_end_position (
   gpointer             data)
 {
   GList *tic_list, *tic_list_start;
-  GdvTic *end_tic = NULL;
-  gdouble tics_end_val, axis_orientation;
+//  gdouble tics_end_val, axis_orientation;
   gdouble outside_dir;
 
   gboolean axis_title_on;
@@ -1718,7 +1692,7 @@ gdv_linear_axis_get_space_to_end_position (
   *natural = 0;
 
   g_object_get (axis,
-                "axis-orientation", &axis_orientation,
+                //"axis-orientation", &axis_orientation,
                 "axis-direction-outside", &outside_dir,
                 "title-widget", &title_widget,
                 "axis-beg-pix-x", &scale_beg_x,
@@ -1743,7 +1717,6 @@ gdv_linear_axis_get_space_to_end_position (
 
   while (tic_list)
   {
-    gdouble current_value;
     gint local_min, local_nat;
 
     /* FIXME: this might not be correctly reached due to round-off errors */

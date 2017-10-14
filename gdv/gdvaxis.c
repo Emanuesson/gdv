@@ -241,14 +241,12 @@ gdv_axis_init (GdvAxis *axis)
 {
   GtkStyleContext *style_context;
   GtkCssProvider *css_provider;
-  GtkWidgetPath *widget_path;
 
   GtkWidget *widget;
 
   widget = GTK_WIDGET (axis);
 
   /* initializing style-properties */
-  widget_path = gtk_widget_get_path (widget);
   css_provider = gtk_css_provider_new ();
   style_context = gtk_widget_get_style_context (widget);
   gtk_css_provider_load_from_resource (
@@ -315,7 +313,6 @@ gdv_axis_set_property (GObject      *object,
                        GParamSpec   *pspec)
 {
   GdvAxis *self;
-  cairo_pattern_t *source;
   gchar *title_dup;
   gint allocation_dimension;
 
@@ -604,18 +601,10 @@ gdv_axis_get_property (GObject    *object,
 }
 
 static void
-gdv_axis_remove_switch (GtkWidget *child, GtkContainer *container)
-{
-    gtk_container_remove (container, child);
-}
-
-static void
 gdv_axis_dispose (GObject *object)
 {
-  GdvAxis *axis = GDV_AXIS (object);
-
   /* This is an old relict. Probably everything here will be done by the 
-   * GtkContainer-Class 
+   * GtkContainer-Class
    */
 
   G_OBJECT_CLASS (gdv_axis_parent_class)->dispose (object);
@@ -739,12 +728,8 @@ static void gdv_axis_remove (GtkContainer *container_axis,
   {
     GdvIndicator *indicator;
     gulong *update_indicator_id;
-    GList *local_indicator_list;
 
     indicator = GDV_INDICATOR (widget);
-
-    /* TODO: check if indicator is even assigned to the axis! */
-    local_indicator_list = g_list_find (axis->priv->indicators, widget);
 
     axis->priv->indicators =
       g_list_remove (axis->priv->indicators, indicator);
@@ -1772,7 +1757,7 @@ const gchar *gdv_axis_get_title (GdvAxis *axis)
 void gdv_axis_set_title_widget (GdvAxis  *axis, GtkWidget *title_widget)
 {
   GdvAxisPrivate *priv;
-  gboolean need_resize = FALSE;
+//  gboolean need_resize = FALSE;
 
   g_return_if_fail (GDV_IS_AXIS (axis));
   g_return_if_fail (title_widget == NULL || GTK_IS_WIDGET (title_widget));
@@ -1785,7 +1770,7 @@ void gdv_axis_set_title_widget (GdvAxis  *axis, GtkWidget *title_widget)
 
   if (priv->title)
   {
-    need_resize = gdv_axis_title_widget_is_visible (axis);
+//    need_resize = gdv_axis_title_widget_is_visible (axis);
     gtk_widget_unparent (priv->title);
   }
 
@@ -1897,17 +1882,11 @@ gdv_axis_measure (
   int                 *natural_baseline,
   gpointer             data)
 {
-  gdouble diff_x, diff_y;
-  GtkStyleContext *context;
-
   GList *tics_list;
-  gint tic_min = 0, tic_nat = 0;
   gint glob_tic_min_start = 0, glob_tic_nat_start = 0,
        glob_tic_min_stop = 0, glob_tic_nat_stop = 0;
-  gint glob_tic_min_size = 0, glob_tic_nat_size = 0;
   gint scale_min_diff, projected_min_diff = 0;
   gdouble axis_line_width;
-  gdouble direction_outer = axis->priv->direction_outer;
   gdouble axis_direction = axis->priv->direction_start;
   gboolean axis_title_on;
   gint title_height = 0, title_width = 0;
@@ -2140,8 +2119,6 @@ gdv_axis_size_allocate (GtkWidget     *widget,
   {
     GdvIndicator *local_indicator;
     GtkAllocation indicator_allocation;
-    gdouble local_value;
-    gdouble local_pos_x, local_pos_y;
     gint indicator_width, indicator_height,
          indicator_min_width, indicator_min_height;
 
@@ -2248,20 +2225,12 @@ static gboolean
 gdv_axis_draw (GtkWidget    *widget,
                cairo_t      *cr)
 {
-  GtkAllocation allocation;
   guint     beg_x,
             beg_y,
             end_x,
             end_y;
   gdouble   axis_line_width = 0.0;
-  gdouble   scale_beg_val,
-            scale_end_val;
-  gint      scale_max_diff_pix, scale_min_diff_pix;
-  gdouble   tics_line_width, tics_inner_length, tics_outer_length;
-  gdouble   tic_scale_min_x, tic_scale_min_y, tic_scale_max_x, tic_scale_max_y;
-  gboolean  draw_scale_min_tic, draw_scale_max_tic;
-  GList    *local_indicator_list, *local_tic_list, *local_mtic_list;
-
+//  gdouble   scale_beg_val, scale_end_val;
   GtkStyleContext *context;
 
   GdvAxis *axis = GDV_AXIS (widget);
@@ -2277,8 +2246,8 @@ gdv_axis_draw (GtkWidget    *widget,
   end_x = (guint) axis->priv->axis_end_pix_x;
   end_y = (guint) axis->priv->axis_end_pix_y;
 
-  scale_beg_val = axis->priv->scale_min_val;
-  scale_end_val = axis->priv->scale_max_val;
+//  scale_beg_val = axis->priv->scale_min_val;
+//  scale_end_val = axis->priv->scale_max_val;
 
   if (axis_line_width && cr != NULL && !axis->priv->resize_during_redraw)
   {

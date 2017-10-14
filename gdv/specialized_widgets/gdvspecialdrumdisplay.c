@@ -87,7 +87,6 @@ gdv_special_drum_display_get_property (
   GParamSpec *pspec)
 {
   GdvSpecialDrumDisplay *self = GDV_SPECIAL_DRUM_DISPLAY (object);
-  gint allocation_dimension;
 
   switch (property_id)
   {
@@ -110,7 +109,6 @@ gdv_special_drum_display_get_property (
 static void
 gdv_special_drum_display_class_init (GdvSpecialDrumDisplayClass *klass)
 {
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->set_property = gdv_special_drum_display_set_property;

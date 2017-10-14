@@ -145,43 +145,11 @@ static void destroy( GtkWidget *widget,
   gtk_main_quit ();
 }
 
-static void activate_button (GtkSpinButton *spin_button,
-                             gpointer data)
-{
-  GdvAxis *x_axis = GDV_AXIS (data);
-  gdouble value;
-
-  g_object_get (G_OBJECT (spin_button),
-    "value", &value,
-    NULL);
-
-  g_object_set (G_OBJECT(x_axis),
-    "axis-orientation", value * M_PI,
-    "axis-direction-outside", value * M_PI + 0.5 * M_PI,
-    NULL);
-
-  gtk_widget_queue_resize (GTK_WIDGET (x_axis));
-  gtk_widget_queue_allocate (GTK_WIDGET (x_axis));
-  gtk_widget_queue_draw (GTK_WIDGET (x_axis));
-}
-
 int
 main (int argc, char **argv)
 {
-  GdvLayerContent *layer_content;
-  GtkWidget *left_box, *right_box, *main_box, *overlay;
-  GList *tic_list;
-
-  gint var_index;
   GtkWidget *main_window;
-  GtkWidget *frame;
-  GdvAxis *test_axis = NULL;
-  GtkWidget *test_indicator_label;
-  GdvLegend *test_legend;
-  GdkScreen *screen_window;
-  GtkWidget *spin_button;
   GdvLayer *layer;
-  GdvLayerContent *content1, *content2;
   GList *axis_list;
 
   gtk_init (&argc, &argv);
