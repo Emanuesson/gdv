@@ -333,8 +333,10 @@ gdv_legend_refresh (GdvLegend *legend)
     for (current_col = 0; current_col < legend->priv->columns; current_col++)
     {
       GtkWidget *current_element = NULL;
-      guint example_current_grid_row, example_current_grid_column;
-      guint descriptor_current_grid_row, descriptor_current_grid_column;
+      guint example_current_grid_row = 0;
+      guint example_current_grid_column = 0;
+      guint descriptor_current_grid_row = 0;
+      guint descriptor_current_grid_column = 0;
       GtkWidget *current_legend_example = NULL;
       GtkWidget *current_legend_descriptor = NULL;
 

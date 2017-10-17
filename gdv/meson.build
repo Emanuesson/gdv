@@ -1,6 +1,6 @@
 
 libgdv_header_subdir = join_paths(package_subdir, 'libgdv-' + apiversion)
-libgdv_header_dir = join_paths(get_option('includedir'), libgdv_header_subdir, '/gdv/')
+libgdv_header_dir = join_paths(get_option('includedir'), libgdv_header_subdir)
 
 libgdv_resources = gnome.compile_resources(
   'libgdv-resources',

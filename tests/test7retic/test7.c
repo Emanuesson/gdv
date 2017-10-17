@@ -111,6 +111,8 @@ report_axis_props (GdvAxis *axis)
 static gboolean
 timeout_cb_oned (GdvLayer *layer)
 {
+
+  g_print ("\nTimeout Callback!\n");
   if (layer && GDV_IS_LAYER (layer))
   {
     GList *axis_list;
@@ -126,13 +128,19 @@ timeout_cb_oned (GdvLayer *layer)
         NULL);
 
       if (current_axis_end == 100.0)
+      {
         g_object_set (axis_list->data,
           "scale-end-val", 99.9,
           NULL);
+        g_print ("End_value to %.1f\n", 99.9);
+      }
       else
+      {
         g_object_set (axis_list->data,
           "scale-end-val", 100.0,
           NULL);
+        g_print ("End_value to %.1f\n", 100.0);
+      }
     }
   }
 
@@ -161,7 +169,8 @@ main (int argc, char **argv)
   gtk_container_add (GTK_CONTAINER (main_window), GTK_WIDGET (layer));
 
   g_signal_connect (main_window, "destroy",
-	      G_CALLBACK (destroy), NULL);
+                    G_CALLBACK (destroy),
+                    NULL);
 
   gtk_widget_set_size_request (GTK_WIDGET (main_window),
     200, 200);
@@ -177,7 +186,7 @@ main (int argc, char **argv)
 
   g_list_free (axis_list);
 
-  g_timeout_add (100, ((GSourceFunc) timeout_cb_oned),
+  g_timeout_add (1000, ((GSourceFunc) timeout_cb_oned),
                  layer);
 
   gtk_widget_show_all (GTK_WIDGET (main_window));

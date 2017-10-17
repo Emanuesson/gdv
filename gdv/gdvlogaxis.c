@@ -367,10 +367,11 @@ gdv_log_axis_size_allocate (GtkWidget           *widget,
     if (scale_auto_increment)
     {
       scale_increment_val = down_scaled_difference;
-      signed_scale_increment_val =
-        scale_beg_val < scale_end_val ?
-        1.0 / scale_increment_val : scale_increment_val;
     }
+
+    signed_scale_increment_val =
+      scale_beg_val < scale_end_val ?
+      1.0 / scale_increment_val : scale_increment_val;
 
     if (scale_automatic)
     {

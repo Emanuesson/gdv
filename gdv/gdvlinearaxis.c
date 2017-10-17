@@ -560,8 +560,8 @@ gdv_linear_axis_size_allocate (GtkWidget           *widget,
         (gdouble) floor (scale_end_val / down_scaled_difference);
     }
 
-//    g_print ("SET SCV DSB %e DSE %e SCB %e SCE %e\n",
-//      down_scaled_beg, down_scaled_end, scale_beg_val, scale_end_val);
+    g_print ("SET SCV DSB %e DSE %e SCB %e SCE %e\n",
+      down_scaled_beg, down_scaled_end, scale_beg_val, scale_end_val);
 
 
     if (scale_automatic && scale_auto_increment)
@@ -579,9 +579,9 @@ gdv_linear_axis_size_allocate (GtkWidget           *widget,
       tics_end_val = scale_end_val;
     }
 
-//      g_print ("FIN SCD %e %e TI %e %e\n",
-//        scale_beg_val, scale_end_val,
-//        tics_beg_val, tics_end_val);
+      g_print ("FIN SCD %e %e TI %e %e\n",
+        scale_beg_val, scale_end_val,
+        tics_beg_val, tics_end_val);
 
 
 
