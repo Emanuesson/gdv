@@ -17,6 +17,9 @@ test_link_args = [
   '-fPIC',
 ]
 
+#subdir('unittest_axis_test')
+
+subdir('gemu_sub')
 subdir('test1basics')
 subdir('test3axes')
 subdir('test4legend')

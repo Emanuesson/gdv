@@ -1,5 +1,5 @@
 /*
- * viewer-main.c
+ * viewer-source-view.h
  * This file is part of gdv
  *
  * Copyright (C) 2013 - Emanuel Schmidt
@@ -20,36 +20,27 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#ifndef __VIEWER_SOURCE_VIEW_H__
+#define __VIEWER_SOURCE_VIEW_H__
 
-#include <stdlib.h>
-#include <gtk/gtk.h>
+#include <glib-object.h>
+#include <gtksourceview/gtksource.h>
 
-#include "data_viewer/application/viewer-app.h"
+G_BEGIN_DECLS
 
+/* FIXME: look up similar examples of source-view implementation and adapt an own source-view */
 
+/*
+ * Type declaration.
+ */
+#define VIEWER_TYPE_SOURCE_VIEW viewer_source_view_get_type ()
+G_DECLARE_DERIVABLE_TYPE (ViewerSourceView, viewer_source_view, VIEWER, SOURCE_VIEW, GtkSourceView)
 
-int
-main (int argc, char **argv)
-{
+/*
+ * Method definitions.
+ */
+ViewerSourceView *viewer_source_view_new (void);
 
-  GdvViewerApp *app;
-  int status;
+G_END_DECLS
 
-  app = gdv_viewer_app_new ();
-
-  status = g_application_run (G_APPLICATION (app), argc, argv);
-
-  /* Force disposal of the application (to help catch cleanup
-   * issues at shutdown) and then (hopefully) finalize the app.
-   * This trick was used in the Gnome-builder IDE and is quite handy.
-   */
-//  g_object_unref (primary_instance);
-  g_object_run_dispose (G_OBJECT (app));
-  g_clear_object (&app);
-
-  return status;
-}
-
+#endif /* __VIEWER_SOURCE_VIEW_H__ */

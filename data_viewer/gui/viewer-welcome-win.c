@@ -24,7 +24,8 @@
 #include <config.h>
 #endif
 
-#include "viewer-welcome-win.h"
+#include "gui/viewer-welcome-win.h"
+
 
 /* Define Properties */
 enum

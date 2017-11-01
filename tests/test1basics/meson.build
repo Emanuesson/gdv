@@ -17,7 +17,7 @@ test1_sources = [
   test1_resources,
 ]
 
-executable('test1', test1_sources,
+test1 = executable('test1', test1_sources,
              c_args: test_cflags,
           link_args: test_link_args,
        dependencies: libgdv_deps + [libgdv_dep],
@@ -25,4 +25,5 @@ executable('test1', test1_sources,
        link_depends: libgdv_map,
 include_directories: [ root_inc, src_inc ],
 )
+#test('test1', test1, env: test_env)
 

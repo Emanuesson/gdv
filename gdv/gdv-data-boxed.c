@@ -58,29 +58,31 @@ static GdvDataPoint *
 gdv_data_point_copy (const GdvDataPoint *point)
 {
   GdvDataPoint *result = g_new (GdvDataPoint, 1);
+
   *result = *point;
 
   return result;
 }
 
-gdouble gdv_data_point_metric    (const GdvDataPoint *point1,
-                                  const GdvDataPoint *point2)
-
+gdouble
+gdv_data_point_metric (const GdvDataPoint *point1,
+                       const GdvDataPoint *point2)
 {
-  return sqrt(
-           gsl_pow_2 (point1->x - point2->x) +
-           gsl_pow_2 (point1->y - point2->y) +
-           gsl_pow_2 (point1->z - point2->z)
-         );
+  return sqrt (
+    gsl_pow_2 (point1->x - point2->x) +
+    gsl_pow_2 (point1->y - point2->y) +
+    gsl_pow_2 (point1->z - point2->z)
+              );
 }
 
-gdouble gdv_data_point_distance_to_origin    (const GdvDataPoint *point)
+gdouble
+gdv_data_point_distance_to_origin (const GdvDataPoint *point)
 {
-  return sqrt(
-           gsl_pow_2 (point->x) +
-           gsl_pow_2 (point->y) +
-           gsl_pow_2 (point->z)
-         );
+  return sqrt (
+    gsl_pow_2 (point->x) +
+    gsl_pow_2 (point->y) +
+    gsl_pow_2 (point->z)
+              );
 }
 
 G_DEFINE_BOXED_TYPE (GdvDataPoint, gdv_data_point,
@@ -138,18 +140,19 @@ gboolean
 gdv_data_point_double_extended_equal (const GdvDataPointDoubleExtended *point1,
                                       const GdvDataPointDoubleExtended *point2)
 {
-  return gdv_data_point_single_extended_equal(point1->point, point2->point)
-         && gdv_data_point_equal(point1->neg_range_2, point2->neg_range_2)
-         && gdv_data_point_equal(point1->pos_range_2, point2->pos_range_2);
+  return gdv_data_point_single_extended_equal (point1->point, point2->point)
+         && gdv_data_point_equal (point1->neg_range_2, point2->neg_range_2)
+         && gdv_data_point_equal (point1->pos_range_2, point2->pos_range_2);
 }
 
 static GdvDataPointDoubleExtended *
 gdv_data_point_double_extended_copy (const GdvDataPointDoubleExtended *point)
 {
   GdvDataPointDoubleExtended *result = g_new (GdvDataPointDoubleExtended, 1);
-  result->point = gdv_data_point_single_extended_copy(point->point);
-  result->neg_range_2 = gdv_data_point_copy(point->neg_range_2);
-  result->pos_range_2 = gdv_data_point_copy(point->pos_range_2);
+
+  result->point = gdv_data_point_single_extended_copy (point->point);
+  result->neg_range_2 = gdv_data_point_copy (point->neg_range_2);
+  result->pos_range_2 = gdv_data_point_copy (point->pos_range_2);
 
   return result;
 }
@@ -170,8 +173,9 @@ G_DEFINE_BOXED_TYPE (GdvDataPointDoubleExtended, gdv_data_point_double_extended,
  *
  * Since: 0.10
  */
-gboolean gdv_data_n_point_equal (const GdvDataNPoint *point1,
-                                 const GdvDataNPoint *point2)
+gboolean
+gdv_data_n_point_equal(const GdvDataNPoint *point1,
+                       const GdvDataNPoint *point2)
 {
   gint i;
 
@@ -181,10 +185,10 @@ gboolean gdv_data_n_point_equal (const GdvDataNPoint *point1,
     return FALSE;
 
   for (i = 0; i < point1->N; i++)
-  {
-    if (point1->x[i] != point2->x[i])
-      return FALSE;
-  }
+    {
+      if (point1->x [i] != point2->x [i])
+        return FALSE;
+    }
 
   return TRUE;
 }
@@ -202,8 +206,9 @@ gdv_data_n_point_copy (const GdvDataNPoint *point)
   return result;
 }
 
-gdouble gdv_data_n_point_metric (const GdvDataNPoint *point1,
-                                 const GdvDataNPoint *point2)
+gdouble
+gdv_data_n_point_metric (const GdvDataNPoint *point1,
+                         const GdvDataNPoint *point2)
 {
   gint i;
   gdouble metric = 0.0;
@@ -211,61 +216,64 @@ gdouble gdv_data_n_point_metric (const GdvDataNPoint *point1,
   g_return_val_if_fail (point1->x, 0.0);
   g_return_val_if_fail (point2->x, 0.0);
 
-
   g_return_val_if_fail ((point1->N != point2->N) ||
                         !point1->x ||
                         !point2->x, 0.0);
 
   for (i = 0; i < point1->N; i++)
-  {
-    metric += gsl_pow_2(point1->x[i] - point2->x[i]);
-  }
+    {
+      metric += gsl_pow_2 (point1->x [i] - point2->x [i]);
+    }
 
   return metric;
 }
 
-gdouble gdv_data_n_point_get (const GdvDataNPoint *point1,
-                              const guint n)
+gdouble
+gdv_data_n_point_get (const GdvDataNPoint *point1,
+                      const guint          n)
 {
   g_return_val_if_fail (n < point1->N, 0.0);
   g_return_val_if_fail (point1->x, 0.0);
 
-  return point1->x[n];
+  return point1->x [n];
 }
 
-void gdv_data_n_point_set (GdvDataNPoint *point1,
-                           const guint n,
-                           gdouble x)
+void
+gdv_data_n_point_set (GdvDataNPoint *point1,
+                      const guint    n,
+                      gdouble        x)
 {
   g_return_if_fail (n < point1->N);
   g_return_if_fail (point1->x);
 
-  point1->x[n] = x;
+  point1->x [n] = x;
 }
 
-GdvDataNPoint *gdv_data_n_point_set_and_expand (GdvDataNPoint *point1,
-    const guint n,
-    gdouble x)
+GdvDataNPoint *
+gdv_data_n_point_set_and_expand (GdvDataNPoint *point1,
+                                 const guint    n,
+                                 gdouble        x)
 {
   GdvDataNPoint *result;
 
   if (n <= point1->N)
-  {
-    gdv_data_n_point_set (point1, n, x);
-    return point1;
-  }
+    {
+      gdv_data_n_point_set (point1, n, x);
+      return point1;
+    }
 
   result = g_new (GdvDataNPoint, 1);
   result->x = g_new (gdouble, n);
   *result->x = *point1->x;
   result->N = n;
-  result->x[n] = x;
+  result->x [n] = x;
 
   g_free (point1);
   return result;
 }
 
-gdouble gdv_data_n_point_distance_to_origin (const GdvDataNPoint *point)
+gdouble
+gdv_data_n_point_distance_to_origin (const GdvDataNPoint *point)
 {
   gint i;
   gdouble return_val = 0.0;
@@ -273,9 +281,9 @@ gdouble gdv_data_n_point_distance_to_origin (const GdvDataNPoint *point)
   g_return_val_if_fail (point->x, 0.0);
 
   for (i = 0; i < point->N; i++)
-  {
-    return_val += gsl_pow_2(point->x[i]);
-  }
+    {
+      return_val += gsl_pow_2 (point->x [i]);
+    }
 
   return return_val;
 }
@@ -388,4 +396,3 @@ gdv_data_pixel_copy (const GdvDataPixel *pixel)
 G_DEFINE_BOXED_TYPE (GdvDataPixel, gdv_data_pixel,
                      gdv_data_pixel_copy,
                      g_free)
-

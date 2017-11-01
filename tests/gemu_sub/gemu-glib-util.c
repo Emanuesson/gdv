@@ -48,12 +48,12 @@ typedef struct {
 static guint
 global_id_list[1000] = { 0 };
 
-static gint compare_ids (const gulong *a, const gulong *b)
-{
-  gulong comp = *a - *b;
-
-  return (gint) comp;
-}
+//static gint compare_ids (const gulong *a, const gulong *b)
+//{
+//  gulong comp = *a - *b;
+//
+//  return (gint) comp;
+//}
 
 static gboolean
 tmp_info_reconnect (
@@ -66,6 +66,9 @@ tmp_info_reconnect (
 
   g_signal_add_emission_hook (ihint->signal_id,
     0, reconn->hook, reconn->data, reconn->data);
+
+
+  return TRUE; /* FIXME: Test the effect of this! */
 //  g_signal_add_emission_hook (ihint->signal_id,
 //    0, tmp_info_reconnect, data, NULL);
 }
@@ -94,9 +97,11 @@ GList *gemu_glib_util_connect_to_all_signals (
   GList *return_list = NULL;
   GType parent_type = G_TYPE_FROM_INSTANCE (object);
 
+  _ReconnecData *reconnect_struct;
+
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
 
-  _ReconnecData *reconnect_struct = g_new (_ReconnecData, 1);
+  reconnect_struct = g_new (_ReconnecData, 1);
 
   reconnect_struct->hook = emission_hook;
   reconnect_struct->data = data;
@@ -141,7 +146,7 @@ GList *gemu_glib_util_connect_to_all_signals (
               tmp_info_reconnect,
               reconnect_struct,
               data_destroy);
-         }
+        }
         else
           g_print ("SIGNAL %s has flag G_SIGNAL_NO_HOOKS\n",
                    g_signal_name(list_of_signal_ids[i]));
@@ -156,7 +161,7 @@ GList *gemu_glib_util_connect_to_all_signals (
 
     return_list = g_list_concat (return_list, local_connector_ids);
   }
-  while (parent_type = g_type_parent(parent_type));
+  while (parent_type == g_type_parent(parent_type));
 
   return return_list;
 }
@@ -189,4 +194,6 @@ gemu_glib_util_show_details (
     g_signal_name (ihint->signal_id),
     g_quark_to_string(ihint->detail),
     object_on_emit);
+
+  return TRUE;
 }

@@ -28,7 +28,7 @@
 
 #include <gdv/gdv.h>
 
-#include <data_viewer/gui/viewer-app.h>
+#include <application/viewer-app.h>
 
 G_BEGIN_DECLS;
 

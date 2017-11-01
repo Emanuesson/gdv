@@ -42,7 +42,7 @@
  *  right during the instance-initialization.
  */
 
-
+/*
 static void
 add_emission_hook_to_children (GtkWidget *child, gpointer data)
 {
@@ -64,6 +64,7 @@ add_emission_hook_to_children (GtkWidget *child, gpointer data)
 
   *pt_to_handler_id = g_list_concat (*pt_to_handler_id, local_list);
 }
+*/
 
 /**
  * gemu_gtk_util_signal_connect_to_widget_children:
@@ -159,7 +160,7 @@ gemu_gtk_util_signal_use_append_and_remove (
      * to the other array-elements in a more solid way.
      */
     GtkWidget *appended_widget = g_value_get_object (param_values + 1);
-    GList *handler_id_list = NULL;
+//    GList *handler_id_list = NULL;
 
     g_print (" ;add object: %s (%p)\n",
       g_type_name (G_TYPE_FROM_INSTANCE(appended_widget)),
@@ -167,7 +168,7 @@ gemu_gtk_util_signal_use_append_and_remove (
 
     if (GTK_IS_CONTAINER (appended_widget))
     {
-      handler_id_list =
+//      handler_id_list =
         gemu_gtk_util_signal_connect_to_widget_children (
           GTK_CONTAINER (appended_widget),
           gemu_gtk_util_signal_use_append_and_remove,
@@ -175,7 +176,7 @@ gemu_gtk_util_signal_use_append_and_remove (
     }
     else
     {
-      handler_id_list =
+//      handler_id_list =
         gemu_glib_util_connect_to_all_signals (
           G_OBJECT (appended_widget),
           gemu_glib_util_show_details,
@@ -194,6 +195,8 @@ gemu_gtk_util_signal_use_append_and_remove (
   }
   else
     g_print ("\n");
+
+  return TRUE;
 }
 
 

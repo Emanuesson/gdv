@@ -24,9 +24,9 @@
 
 #include <cairo-gobject.h>
 
-#include "viewer-app.h"
-#include "viewer-app-win.h"
-#include "viewer-welcome-win.h"
+#include "application/viewer-app.h"
+#include "gui/viewer-app-win.h"
+#include "gui/viewer-welcome-win.h"
 
 #define SLEEP_LGTH  5
 #define NPOINTS     50
@@ -46,6 +46,8 @@ gdv_viewer_app_activate (GApplication *application)
   GdvViewerAppWindow *win;
 
   win = gdv_viewer_app_window_new (GDV_VIEWER_APP (application));
+
+
   gtk_window_present (GTK_WINDOW (win));
 
 //  builder = gtk_builder_new_from_resource ("/org/gtk/exampleapp/app-menu.ui");

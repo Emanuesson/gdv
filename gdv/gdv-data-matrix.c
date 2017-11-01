@@ -20,6 +20,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/* TODO: substitute this part of the library wastly by a better approach
+ *       (e.g. something like Gh5lib or a Gtk+-style numpy-clone)
+ *
+ */
+
+
 #ifdef HAVE_CONFIG_H
   #include <config.h>
 #endif

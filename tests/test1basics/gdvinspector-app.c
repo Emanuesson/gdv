@@ -48,7 +48,6 @@ gdv_inspector_app_activate (GApplication *application)
 
 //  builder = gtk_builder_new_from_resource ("/org/gtk/exampleapp/app-menu.ui");
 //  app_menu = G_MENU_MODEL (gtk_builder_get_object (builder, "appmenu"));
-
 }
 
 static void
@@ -60,9 +59,7 @@ gdv_inspector_app_startup (GApplication *application)
 static void
 gdv_inspector_app_init (GdvInspectorApp *app)
 {
-
-  app->priv = gdv_inspector_app_get_instance_private (app);    
-
+  app->priv = gdv_inspector_app_get_instance_private (app);
 }
 
 static void
@@ -89,7 +86,6 @@ gdv_inspector_app_class_init (GdvInspectorAppClass *klass)
   application_class->startup = gdv_inspector_app_startup;
   application_class->activate = gdv_inspector_app_activate;
 }
-
 
 /**
  * gdv_inspector_app_new:
