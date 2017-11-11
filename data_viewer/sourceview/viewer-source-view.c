@@ -46,6 +46,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (ViewerSourceView, viewer_source_view, GTK_SOURCE_TYP
 static void
 viewer_source_view_init (ViewerSourceView *view)
 {
+/*
 //  gtk_widget_init_template (GTK_WIDGET (view));
 //  GtkTextBuffer *new_buffer = gtk_text_buffer_new (NULL);
   GtkSourceBuffer *new_buffer = gtk_source_buffer_new (NULL);
@@ -53,6 +54,9 @@ viewer_source_view_init (ViewerSourceView *view)
   GtkTextIter start, end;
 //  GdkRGBA rgba;
   GtkTextTag *tag;
+*/
+
+/*
 
   gtk_text_buffer_set_text (GTK_TEXT_BUFFER (new_buffer),
     "Hello my world\n"
@@ -70,6 +74,7 @@ viewer_source_view_init (ViewerSourceView *view)
   gtk_text_buffer_apply_tag (GTK_TEXT_BUFFER (new_buffer), tag, &start, &end);
 
   gtk_text_view_set_buffer (GTK_TEXT_VIEW (view), GTK_TEXT_BUFFER (new_buffer));
+*/
 }
 
 static void

@@ -67,6 +67,9 @@ GType                   gdv_viewer_app_window_get_type     (void);
 
 GdvViewerAppWindow *gdv_viewer_app_window_new (GdvViewerApp *app);
 
+void gdv_viewer_app_window_open (GdvViewerAppWindow *win,
+                                 GFile            *file);
+
 /* not exported public methods*/
 
 G_END_DECLS;

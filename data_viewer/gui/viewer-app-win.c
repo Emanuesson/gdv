@@ -25,12 +25,15 @@
 #endif
 
 #include "gui/viewer-app-win.h"
+#include "file/viewer-file.h"
 #include "sourceview/viewer-source-view.h"
 
 /* Define Properties */
 enum
 {
   PROP_0,
+
+  PROP_VIEWER_WIN_FILE,
 
   N_PROPERTIES
 };
@@ -41,8 +44,14 @@ struct _GdvViewerAppWindowPrivate
 
   GdvLayerContent *content;
   GdvTwodLayer    *main_layer;
-  GtkTreeView     *file_list;
-  ViewerSourceView *file_view;
+  GtkTreeView     *file_view;
+  GtkScrolledWindow *file_view_window;
+  ViewerSourceView *file_content;
+  GtkScrolledWindow *file_content_window;
+
+//  ViewerFile *file;
+  GList *files;
+
 //  GtkListStore *file_list;
 };
 
@@ -61,10 +70,56 @@ gdv_viewer_app_window_finalize (GObject *object)
 }
 
 static void
-on_treeview_selection_changed (GtkTreeSelection *treeselection,
+on_treeview_selection_changed (GtkTreeSelection *tree_selection,
                                gpointer          user_data)
 {
-  g_print ("hello world\n");
+//  GList *selected_rows;
+//  GtkTreeModel *current_model;
+  GdvViewerAppWindow *window = user_data;
+  GdvViewerAppWindowPrivate *priv;
+  //gpointer *user_data_ptr;
+
+  priv = gdv_viewer_app_window_get_instance_private (window);
+
+//  current_model = gtk_tree_view_get_model (priv->file_view);
+//  selected_rows = gtk_tree_selection_get_selected_rows (tree_selection, current_model);
+
+//  user_data_ptr = gtk_tree_selection_get_user_data(tree_selection);
+
+//  g_print ("Here: %s\n", g_type_name (G_OBJECT_TYPE (user_data_ptr)));
+}
+
+
+static void
+bottom_panel_toggled (GtkToggleButton *togglebutton,
+                      gpointer         user_data)
+{
+  gboolean button_status;
+  GdvViewerAppWindow *window = GDV_VIEWER_APP_WINDOW (user_data);
+  GdvViewerAppWindowPrivate *priv;
+
+  g_object_get (togglebutton, "active", &button_status, NULL);
+
+  priv = gdv_viewer_app_window_get_instance_private (window);
+
+  g_object_set (priv->file_content, "visible", button_status, NULL);
+  g_object_set (priv->file_content_window, "visible", button_status, NULL);
+}
+
+static void
+left_panel_toggled (GtkToggleButton *togglebutton,
+                      gpointer         user_data)
+{
+  gboolean button_status;
+  GdvViewerAppWindow *window = GDV_VIEWER_APP_WINDOW (user_data);
+  GdvViewerAppWindowPrivate *priv;
+
+  g_object_get (togglebutton, "active", &button_status, NULL);
+
+  priv = gdv_viewer_app_window_get_instance_private (window);
+
+  g_object_set (priv->file_view, "visible", button_status, NULL);
+  g_object_set (priv->file_view_window, "visible", button_status, NULL);
 }
 
 static void
@@ -80,16 +135,30 @@ gdv_viewer_app_window_class_init (GdvViewerAppWindowClass *klass)
   gtk_widget_class_set_template_from_resource (GTK_WIDGET_CLASS (object_class),
                                                "/net/gdv/viewerapp/ui/gui/viewer-app-win.ui");
 
-  gtk_widget_class_bind_template_child_private (GTK_WIDGET_CLASS (object_class), GdvViewerAppWindow, main_layer);
-  gtk_widget_class_bind_template_child_private (GTK_WIDGET_CLASS (object_class), GdvViewerAppWindow, file_list);
-  gtk_widget_class_bind_template_child_private (GTK_WIDGET_CLASS (object_class), GdvViewerAppWindow, file_view);
+  gtk_widget_class_bind_template_child_private (GTK_WIDGET_CLASS (object_class),
+                                                GdvViewerAppWindow,
+                                                main_layer);
+  gtk_widget_class_bind_template_child_private (GTK_WIDGET_CLASS (object_class),
+                                                GdvViewerAppWindow,
+                                                file_view);
+  gtk_widget_class_bind_template_child_private (GTK_WIDGET_CLASS (object_class),
+                                                GdvViewerAppWindow,
+                                                file_view_window);
+  gtk_widget_class_bind_template_child_private (GTK_WIDGET_CLASS (object_class),
+                                                GdvViewerAppWindow,
+                                                file_content);
+  gtk_widget_class_bind_template_child_private (GTK_WIDGET_CLASS (object_class),
+                                                GdvViewerAppWindow,
+                                                file_content_window);
+  gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (object_class), bottom_panel_toggled);
+  gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (object_class), left_panel_toggled);
   gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (object_class), on_treeview_selection_changed);
 }
 
 enum
 {
   COLUMN_STRING,
-  COLUMN_INT,
+//  COLUMN_INT,
   COLUMN_BOOLEAN,
   N_COLUMNS
 };
@@ -98,9 +167,9 @@ void
 gdv_viewer_app_window_init (GdvViewerAppWindow *window)
 {
   GtkListStore *new_list;
-  gint i;
-  GtkTreePath *path;
-  GtkTreeIter iter;
+//  gint i;
+//  GtkTreePath *path;
+//  GtkTreeIter iter;
 
   g_type_ensure (gdv_twod_layer_get_type ());
 
@@ -116,9 +185,58 @@ gdv_viewer_app_window_init (GdvViewerAppWindow *window)
 
   new_list = gtk_list_store_new (N_COLUMNS,
                                  G_TYPE_STRING,
-                                 G_TYPE_INT,
+//                                 G_TYPE_INT,
                                  G_TYPE_BOOLEAN);
 
+
+  // Modify a particular row
+//  path = gtk_tree_path_new_from_string ("4");
+//  gtk_tree_model_get_iter (GTK_TREE_MODEL (new_list),
+//                           &iter,
+//                           path);
+//  gtk_tree_path_free (path);
+//  gtk_list_store_set (new_list, &iter,
+//                      COLUMN_BOOLEAN, TRUE,
+//                      -1);
+
+  g_object_set (window->priv->file_view,
+                "model", new_list,
+                NULL);
+}
+
+GdvViewerAppWindow *
+gdv_viewer_app_window_new (GdvViewerApp *app)
+{
+  return g_object_new (GDV_VIEWER_APP_TYPE_WINDOW, "application", app, NULL);
+}
+
+void gdv_viewer_app_window_open (GdvViewerAppWindow *win,
+                                 GFile            *file)
+{
+  GdvViewerAppWindowPrivate *priv;
+  GtkListStore *new_list;
+  gchar *file_name;
+  GtkTreeIter iter;
+
+  priv = gdv_viewer_app_window_get_instance_private (win);
+
+  g_object_get (priv->file_view,
+                "model", &new_list,
+                NULL);
+
+//  some_data = g_strdup_printf ("Helllo: %d", i);
+  file_name = g_file_get_basename (file);
+
+  gtk_list_store_append (new_list, &iter);
+  gtk_list_store_set (new_list, &iter,
+                      COLUMN_STRING, file_name,
+//                      COLUMN_INT, i,
+                      COLUMN_BOOLEAN,  FALSE,
+                      -1);
+  g_free (file_name);
+
+
+/*
   for (i = 0; i < 10; i++)
     {
       gchar *some_data;
@@ -137,24 +255,6 @@ gdv_viewer_app_window_init (GdvViewerAppWindow *window)
       // we free some_data.
       g_free (some_data);
     }
+*/
 
-  // Modify a particular row
-  path = gtk_tree_path_new_from_string ("4");
-  gtk_tree_model_get_iter (GTK_TREE_MODEL (new_list),
-                           &iter,
-                           path);
-  gtk_tree_path_free (path);
-  gtk_list_store_set (new_list, &iter,
-                      COLUMN_BOOLEAN, TRUE,
-                      -1);
-
-  g_object_set (window->priv->file_list,
-                "model", new_list,
-                NULL);
-}
-
-GdvViewerAppWindow *
-gdv_viewer_app_window_new (GdvViewerApp *app)
-{
-  return g_object_new (GDV_VIEWER_APP_TYPE_WINDOW, "application", app, NULL);
 }

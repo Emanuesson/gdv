@@ -18,6 +18,7 @@ viewer_resources = gnome.compile_resources(
 )
 
 subdir('application')
+subdir('file')
 subdir('gui')
 subdir('sourceview')
 

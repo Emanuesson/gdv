@@ -48,3 +48,6 @@ configure
 
 #some additional infos:
 'add_info/possibleApplications/Network Flow Analysis.pdf'
+
+
+data/*
