@@ -125,7 +125,7 @@ open_activated (GSimpleAction *action,
     for (files_begin = files; files; files = files->next)
     {
       GFile *new_file = g_file_new_for_path (files->data);
-      ViewerFile *view_file = viewer_file_new_for_path (files->data);
+//      ViewerFile *view_file = viewer_file_new_for_path (files->data);
 
       g_free (files->data);
       files->data = NULL;

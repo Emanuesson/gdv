@@ -50,6 +50,7 @@ struct _ViewerFilePrivate
 //  GtkSourceLanguage *language;
   gchar             *path;
   GtkSourceFile     *source_file;
+  GtkSourceBuffer   *buffer;
   guint              temporary_id;
 };
 
@@ -70,6 +71,8 @@ G_DEFINE_TYPE_WITH_CODE (ViewerFile, viewer_file, G_TYPE_OBJECT,
                          //                       viewer_file_gfile_interface_init)
                          G_ADD_PRIVATE (ViewerFile));
 
+//G_DEFINE_TYPE_WITH_PRIVATE (ViewerFile, viewer_file, G_TYPE_OBJECT);
+
 //static void viewer_file_gfile_interface_init (GFileIface *iface)
 //{
 //}
@@ -77,7 +80,13 @@ G_DEFINE_TYPE_WITH_CODE (ViewerFile, viewer_file, G_TYPE_OBJECT,
 static void
 viewer_file_init (ViewerFile *view)
 {
+  ViewerFilePrivate *priv;
 
+  priv = viewer_file_get_instance_private (view);
+//  priv = viewer_file_get_private (view);
+
+
+  priv->source_file = NULL;
 }
 
 static GFile *
@@ -93,8 +102,8 @@ viewer_file_get_file (ViewerFile *self)
 }
 
 static void
-viewer_file_set_file (ViewerFile *self,
-                       GFile   *file)
+_set_file (ViewerFile *self,
+                      GFile   *file)
 {
   ViewerFilePrivate *priv;
 
@@ -141,7 +150,7 @@ viewer_file_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_FILE:
-      viewer_file_set_file (self, g_value_get_object (value));
+      _set_file (self, g_value_get_object (value));
       break;
 
     default:
@@ -188,4 +197,32 @@ ViewerFile *viewer_file_new_for_path (const gchar * path)
                       NULL);
 
   return ret;
+}
+
+GtkSourceFile *_viewer_file_get_source_file (ViewerFile *self)
+{
+  ViewerFilePrivate *priv;
+
+  g_return_val_if_fail (VIEWER_IS_FILE (self), NULL);
+
+  priv = viewer_file_get_instance_private (self);
+
+  if (g_once_init_enter (&priv->source_file))
+    {
+      GtkSourceFile *source_file;
+
+      source_file = gtk_source_file_new ();
+      gtk_source_file_set_location (source_file, priv->file);
+
+      g_once_init_leave (&priv->source_file, source_file);
+    }
+
+  return priv->source_file;
+}
+
+void viewer_file_set_file (ViewerFile *self, GFile *file)
+{
+  g_return_if_fail (VIEWER_IS_FILE (self));
+
+  _set_file (self, file);
 }

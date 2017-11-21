@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/* TODO: rename this into "greeter" */
+
 #ifndef __GDV_VIEWER_WELCOME_WINDOW_H_INCLUDED
 #define __GDV_VIEWER_WELCOME_WINDOW_H_INCLUDED
 

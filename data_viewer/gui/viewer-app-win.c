@@ -24,9 +24,24 @@
 #include <config.h>
 #endif
 
+#include <gtksourceview/gtksource.h>
+#include <gio/gio.h>
+
 #include "gui/viewer-app-win.h"
+#include "gui/gdv-viewer-settings-panel.h"
 #include "file/viewer-file.h"
 #include "sourceview/viewer-source-view.h"
+
+
+enum
+{
+  COLUMN_STRING,
+//  COLUMN_INT,
+  COLUMN_FILE,
+  COLUMN_BOOLEAN,
+  N_COLUMNS
+};
+
 
 /* Define Properties */
 enum
@@ -49,6 +64,8 @@ struct _GdvViewerAppWindowPrivate
   ViewerSourceView *file_content;
   GtkScrolledWindow *file_content_window;
 
+  GdvViewerSettingsPanel *setting_panel;
+
 //  ViewerFile *file;
   GList *files;
 
@@ -70,23 +87,72 @@ gdv_viewer_app_window_finalize (GObject *object)
 }
 
 static void
+_progress_file_load_cb (goffset            current_num_bytes,
+                        goffset            full_num_bytes,
+                        ViewerSourceView  *view)
+{
+  g_print ("%ld/%ld\n", current_num_bytes, full_num_bytes);
+}
+
+static void
+_async_file_loaded (GtkSourceFileLoader *source_loader,
+                    GAsyncResult        *res,
+                    ViewerSourceView    *view)
+{
+  GtkSourceBuffer *buffer;
+
+  buffer = gtk_source_file_loader_get_buffer(source_loader);
+
+  if (gtk_source_file_loader_load_finish (source_loader, res, NULL))
+    gtk_text_view_set_buffer (GTK_TEXT_VIEW (view), GTK_TEXT_BUFFER (buffer));
+}
+
+static void
 on_treeview_selection_changed (GtkTreeSelection *tree_selection,
                                gpointer          user_data)
 {
-//  GList *selected_rows;
-//  GtkTreeModel *current_model;
+  GList *selected_rows;
+  GtkTreeModel *current_model;
   GdvViewerAppWindow *window = user_data;
   GdvViewerAppWindowPrivate *priv;
-  //gpointer *user_data_ptr;
+  GtkTreeIter iter;
+  GtkTreePath *path;
+  ViewerFile *file;
+  GtkSourceFile *source_file;
+  GtkSourceFileLoader *source_loader;
+  GtkSourceBuffer *buffer;
 
   priv = gdv_viewer_app_window_get_instance_private (window);
 
-//  current_model = gtk_tree_view_get_model (priv->file_view);
-//  selected_rows = gtk_tree_selection_get_selected_rows (tree_selection, current_model);
+  current_model = gtk_tree_view_get_model (priv->file_view);
+  selected_rows = gtk_tree_selection_get_selected_rows (tree_selection, &current_model);
+  if (!selected_rows)
+    return;
 
-//  user_data_ptr = gtk_tree_selection_get_user_data(tree_selection);
+  path = selected_rows->data;
 
-//  g_print ("Here: %s\n", g_type_name (G_OBJECT_TYPE (user_data_ptr)));
+  if (!gtk_tree_model_get_iter (current_model, &iter, path))
+    return;
+
+   gtk_tree_model_get (current_model, &iter,
+                       COLUMN_FILE, &file,
+                       -1);
+
+  source_file = _viewer_file_get_source_file (file);
+  buffer = gtk_source_buffer_new (NULL);
+  source_loader = gtk_source_file_loader_new (buffer, source_file);
+
+  gtk_source_file_loader_load_async (source_loader,
+                                     G_PRIORITY_HIGH,
+                                     NULL,
+                                     (GFileProgressCallback) _progress_file_load_cb,
+                                     priv->file_content,
+                                     NULL,
+                                     (GAsyncReadyCallback) _async_file_loaded,
+                                     priv->file_content);
+
+  if (file)
+    g_print ("Here: %s\n", g_type_name (G_OBJECT_TYPE (file)));
 }
 
 
@@ -123,6 +189,22 @@ left_panel_toggled (GtkToggleButton *togglebutton,
 }
 
 static void
+right_panel_toggled (GtkToggleButton *togglebutton,
+                     gpointer         user_data)
+{
+  gboolean button_status;
+  GdvViewerAppWindow *window = GDV_VIEWER_APP_WINDOW (user_data);
+  GdvViewerAppWindowPrivate *priv;
+
+  g_object_get (togglebutton, "active", &button_status, NULL);
+
+  priv = gdv_viewer_app_window_get_instance_private (window);
+
+  g_object_set (priv->setting_panel, "visible", button_status, NULL);
+//  g_object_set (priv->file_view_window, "visible", button_status, NULL);
+}
+
+static void
 gdv_viewer_app_window_class_init (GdvViewerAppWindowClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -132,8 +214,9 @@ gdv_viewer_app_window_class_init (GdvViewerAppWindowClass *klass)
 
   g_type_ensure (VIEWER_TYPE_SOURCE_VIEW);
 
-  gtk_widget_class_set_template_from_resource (GTK_WIDGET_CLASS (object_class),
-                                               "/net/gdv/viewerapp/ui/gui/viewer-app-win.ui");
+  gtk_widget_class_set_template_from_resource (
+    GTK_WIDGET_CLASS (object_class),
+    "/net/gdv/viewerapp/ui/gui/viewer-app-win.ui");
 
   gtk_widget_class_bind_template_child_private (GTK_WIDGET_CLASS (object_class),
                                                 GdvViewerAppWindow,
@@ -150,18 +233,18 @@ gdv_viewer_app_window_class_init (GdvViewerAppWindowClass *klass)
   gtk_widget_class_bind_template_child_private (GTK_WIDGET_CLASS (object_class),
                                                 GdvViewerAppWindow,
                                                 file_content_window);
-  gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (object_class), bottom_panel_toggled);
-  gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (object_class), left_panel_toggled);
-  gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (object_class), on_treeview_selection_changed);
+  gtk_widget_class_bind_template_child_private (GTK_WIDGET_CLASS (object_class),
+                                                GdvViewerAppWindow,
+                                                setting_panel);
+  gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (object_class),
+                                           bottom_panel_toggled);
+  gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (object_class),
+                                           left_panel_toggled);
+  gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (object_class),
+                                           right_panel_toggled);
+  gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (object_class),
+                                           on_treeview_selection_changed);
 }
-
-enum
-{
-  COLUMN_STRING,
-//  COLUMN_INT,
-  COLUMN_BOOLEAN,
-  N_COLUMNS
-};
 
 void
 gdv_viewer_app_window_init (GdvViewerAppWindow *window)
@@ -185,7 +268,8 @@ gdv_viewer_app_window_init (GdvViewerAppWindow *window)
 
   new_list = gtk_list_store_new (N_COLUMNS,
                                  G_TYPE_STRING,
-//                                 G_TYPE_INT,
+                                 VIEWER_TYPE_FILE,
+//                                 G_TYPE_FILE,
                                  G_TYPE_BOOLEAN);
 
 
@@ -217,6 +301,7 @@ void gdv_viewer_app_window_open (GdvViewerAppWindow *win,
   GtkListStore *new_list;
   gchar *file_name;
   GtkTreeIter iter;
+  ViewerFile *new_viewer_file;
 
   priv = gdv_viewer_app_window_get_instance_private (win);
 
@@ -224,13 +309,22 @@ void gdv_viewer_app_window_open (GdvViewerAppWindow *win,
                 "model", &new_list,
                 NULL);
 
+
+//  new_viewer_file = viewer_file_new ();
+//  g_object_set (new_viewer_file, "file", file, NULL);
+  new_viewer_file = g_object_new (viewer_file_get_type(), "file", file, NULL);
+
+  viewer_file_set_file (new_viewer_file, file);
+  priv->files = g_list_append (priv->files, new_viewer_file);
+
+
 //  some_data = g_strdup_printf ("Helllo: %d", i);
   file_name = g_file_get_basename (file);
 
   gtk_list_store_append (new_list, &iter);
   gtk_list_store_set (new_list, &iter,
                       COLUMN_STRING, file_name,
-//                      COLUMN_INT, i,
+                      COLUMN_FILE, new_viewer_file,
                       COLUMN_BOOLEAN,  FALSE,
                       -1);
   g_free (file_name);

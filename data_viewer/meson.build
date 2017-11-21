@@ -13,6 +13,7 @@ viewer_resources = gnome.compile_resources(
   'viewer.gresources.xml',
   'gui/viewer-app-win.ui',
   'gui/viewer-welcome-win.ui',
+  'gui/gdv-viewer-settings-panel.ui',
 
   c_name: 'gdv',
 )

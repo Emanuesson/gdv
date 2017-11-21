@@ -1,5 +1,5 @@
 /*
- * viewer-file.h
+ * gdv-viewer-settings-panel.h
  * This file is part of gdv
  *
  * Copyright (C) 2013 - Emanuel Schmidt
@@ -20,33 +20,29 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __VIEWER_FILE_H__
-#define __VIEWER_FILE_H__
+#ifndef __GDV_VIEWER_SETTINGS_PANEL_H_INCLUDED
+#define __GDV_VIEWER_SETTINGS_PANEL_H_INCLUDED
 
-#include <glib-object.h>
+#include <gio/gio.h>
+#include <gtk/gtk.h>
 
-#include <gtksourceview/gtksource.h>
-#include <gtksourceview/gtksourcefile.h>
+#include <gdv/gdv.h>
 
-G_BEGIN_DECLS
+G_BEGIN_DECLS;
 
 /*
  * Type declaration.
  */
-#define VIEWER_TYPE_FILE viewer_file_get_type ()
-G_DECLARE_DERIVABLE_TYPE (ViewerFile, viewer_file, VIEWER, FILE, GObject)
+#define GDV_TYPE_VIEWER_SETTINGS_PANEL (gdv_viewer_settings_panel_get_type ())
+G_DECLARE_DERIVABLE_TYPE (GdvViewerSettingsPanel,
+                          gdv_viewer_settings_panel,
+                          GDV, VIEWER_SETTINGS_PANEL,
+                          GtkBox)
 
-/*
- * Method definitions.
- */
-ViewerFile *viewer_file_new (void);
+/* public methods */
+GdvViewerSettingsPanel *gdv_viewer_settings_panel_new (void);
 
-ViewerFile *viewer_file_new_for_path (const gchar * path);
+/* not exported public methods*/
 
-GtkSourceFile *_viewer_file_get_source_file (ViewerFile *self);// G_GNUC_INTERNAL;
-
-void viewer_file_set_file (ViewerFile *self, GFile *file);
-
-G_END_DECLS
-
-#endif /* __VIEWER_FILE_H__ */
+G_END_DECLS;
+#endif // __GDV_VIEWER_SETTINGS_PANEL_H_INCLUDED

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <!-- interface-requires gtk+ 3.8 -->
+  <!--  <requires lib="gtk+" version="3.14"/> -->
+  <template class="GdvViewerSettingsPanel" parent="GtkBox">
+<!--    <property name="title" translatable="yes">Gdv Application</property>
+    <property name="window_position">center</property>
+    <property name="default_width">800</property>
+    <property name="decorated">True</property>
+    <property name="has-resize-grip">True</property>
+    <property name="default_height">600</property>
+-->
+    <property name="orientation">vertical</property>
+    <property name="margin">5</property>
+    <property name="spacing">5</property>
+
+    <child>
+      <object class="GtkFrame">
+        <property name="label">Graph</property>
+        <property name="visible">True</property>
+        <child>
+          <object class="GtkLabel">
+            <property name="label">hello world</property>
+            <property name="visible">True</property>
+          </object>
+        </child>
+
+      </object>
+    </child>
+    <child>
+      <object class="GtkFrame">
+        <property name="visible">True</property>
+        <child>
+          <object class="GtkLabel">
+            <property name="label">hello world</property>
+            <property name="visible">True</property>
+          </object>
+        </child>
+      </object>
+    </child>
+
+  </template>
+</interface>

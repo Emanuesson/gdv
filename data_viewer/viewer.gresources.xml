@@ -3,6 +3,7 @@
   <gresource prefix="/net/gdv/viewerapp/ui">
     <file preprocess="xml-stripblanks">gui/viewer-app-win.ui</file>
     <file preprocess="xml-stripblanks">gui/viewer-welcome-win.ui</file>
+    <file preprocess="xml-stripblanks">gui/gdv-viewer-settings-panel.ui</file>
     <file preprocess="xml-stripblanks">application/viewer-menu.ui</file>
   </gresource>
 </gresources>

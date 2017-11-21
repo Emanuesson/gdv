@@ -34,6 +34,13 @@
                       <signal name="toggled" handler="bottom_panel_toggled"/>
                   </object>
                 </child>
+                <child>
+                  <object class="GtkToggleButton">
+                      <property name="visible">True</property>
+                      <property name="label">toggle right panel</property>
+                      <signal name="toggled" handler="right_panel_toggled"/>
+                  </object>
+                </child>
               </object>
 
             </child>
@@ -97,74 +104,104 @@
               </packing>
             </child>
 
+
             <child>
-              <object class="GtkPaned">
+              <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="orientation">vertical</property>
-                <property name="position">400</property>
-    <!--            <property name="min-position">1</property>-->
-
+                <property name="orientation">horizontal</property>
+                <!--<property name="wide-handle">True</property>-->
 
                 <child>
-                  <object class="GdvTwodLayer" id="main_layer">
+                  <object class="GtkPaned">
                     <property name="visible">True</property>
-                    <property name="margin">10</property>
+                    <property name="orientation">vertical</property>
+                    <property name="position">400</property>
+        <!--            <property name="min-position">1</property>-->
 
-                  </object>
-
-                  <packing>
-                    <property name="shrink">False</property>
-                  </packing>
-                </child>
-
-
-
-                <child>
-                  <object class="GtkScrolledWindow" id="file_content_window">
-                    <property name="visible">False</property>
-                    <property name="propagate-natural-width">True</property>
-                    <property name="propagate-natural-height">True</property>
-                    <property name="hscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
-                    <property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
 
                     <child>
-                      <object class="ViewerSourceView" id="file_content">
-                        <property name="visible">False</property>
-                        <property name="editable">False</property>
-                        <property name="cursor-visible">False</property>
-                        <property name="background-pattern">GTK_SOURCE_BACKGROUND_PATTERN_TYPE_GRID</property>
-                        <property name="show-line-numbers">True</property>
-<!--                        <property name="tab_width">4</property>
-                        <property name="auto_indent">True</property>
-                        <child internal-child="completion">
-                          <object class="GtkSourceCompletion">
-                            <property name="select_on_show">False</property>
+                      <object class="GtkFrame" id="frame">
+                        <property name="visible">True</property>
+                        <property name="margin">10</property>
+                        <child>
+                          <object class="GdvTwodLayer" id="main_layer">
+                            <property name="visible">True</property>
+
                           </object>
                         </child>
--->
 
                       </object>
+
+                      <packing>
+                        <property name="shrink">False</property>
+                      </packing>
                     </child>
+
+
+
+                    <child>
+                      <object class="GtkScrolledWindow" id="file_content_window">
+                        <property name="visible">False</property>
+                        <property name="propagate-natural-width">True</property>
+                        <property name="propagate-natural-height">True</property>
+                        <property name="hscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
+                        <property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
+
+                        <child>
+                          <object class="ViewerSourceView" id="file_content">
+                            <property name="visible">False</property>
+                            <property name="editable">False</property>
+                            <property name="cursor-visible">False</property>
+    <!--                        <property name="background-pattern">GTK_SOURCE_BACKGROUND_PATTERN_TYPE_GRID</property>-->
+                            <property name="show-line-numbers">True</property>
+    <!--                        <property name="tab_width">4</property>
+                            <property name="auto_indent">True</property>
+                            <child internal-child="completion">
+                              <object class="GtkSourceCompletion">
+                                <property name="select_on_show">False</property>
+                              </object>
+                            </child>
+    -->
+
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="shrink">False</property>
+                      </packing>
+
+                    </child>
+
+
+        <!--            <child>
+                      <object class="GtkTreeView" id="file_list">
+                      </object>
+                    </child>-->
+
                   </object>
                   <packing>
-                    <property name="shrink">False</property>
+                    <property name="fill">True</property>
+                    <property name="expand">True</property>
                   </packing>
+
 
                 </child>
 
-
-    <!--            <child>
-                  <object class="GtkTreeView" id="file_list">
+                <child>
+                  <object class="GdvViewerSettingsPanel" id="setting_panel">
+                    <property name="visible">False</property>
                   </object>
-                </child>-->
-
+                  <packing>
+                    <property name="fill">True</property>
+                    <property name="expand">False</property>
+                  </packing>
+                </child>
               </object>
-              <packing>
-                <property name="shrink">False</property>
-              </packing>
-
-
+<!--                  <packing>
+                    <property name="shrink">False</property>
+                  </packing>-->
             </child>
+
           </object>
 
           <packing>
