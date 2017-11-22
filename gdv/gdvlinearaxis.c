@@ -369,11 +369,12 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
     NULL);
 
 //  if (scale_end_val != 100.0)
-  g_print ("\n");
+//  FIXME: This will be used to debug the retic-problem
+/*  g_print ("\n");
   g_print ("BEGW SC %e %e TI %e %e\n",
     scale_beg_val, scale_end_val,
     tics_beg_val, tics_end_val);
-
+*/
   /* safing all necessary values */
   init_increment_val = scale_increment_val;
 //  init_tic_beg_val = tics_beg_val;
@@ -552,9 +553,10 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
             (gdouble)floor (scale_end_val / down_scaled_difference);
         }
 
-      g_print ("SET SCV DSB %e DSE %e SCB %e SCE %e\n",
+//  FIXME: This will be used to debug the retic-problem
+/*      g_print ("SET SCV DSB %e DSE %e SCB %e SCE %e\n",
                down_scaled_beg, down_scaled_end, scale_beg_val, scale_end_val);
-
+*/
       if (scale_automatic && scale_auto_increment)
         {
           scale_beg_val = down_scaled_beg;
@@ -569,9 +571,11 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
           tics_end_val = scale_end_val;
         }
 
-      g_print ("FIN SCD %e %e TI %e %e\n",
+//  FIXME: This will be used to debug the retic-problem
+/*      g_print ("FIN SCD %e %e TI %e %e\n",
                scale_beg_val, scale_end_val,
                tics_beg_val, tics_end_val);
+*/
 
       /* set the beg/end-tic to the new value */
       /* FIXME: This constrains the geometry-handling here... maybe there is a

@@ -138,6 +138,8 @@ on_treeview_selection_changed (GtkTreeSelection *tree_selection,
                        COLUMN_FILE, &file,
                        -1);
 
+  g_object_set (priv->setting_panel, "file", file, NULL);
+
   source_file = _viewer_file_get_source_file (file);
   buffer = gtk_source_buffer_new (NULL);
   source_loader = gtk_source_file_loader_new (buffer, source_file);
@@ -302,13 +304,15 @@ void gdv_viewer_app_window_open (GdvViewerAppWindow *win,
   gchar *file_name;
   GtkTreeIter iter;
   ViewerFile *new_viewer_file;
+  GtkTreeSelection *selection;
+
+  /* FIXME: Make the actual file-loading in this function and not in selection-changed */
 
   priv = gdv_viewer_app_window_get_instance_private (win);
 
   g_object_get (priv->file_view,
                 "model", &new_list,
                 NULL);
-
 
 //  new_viewer_file = viewer_file_new ();
 //  g_object_set (new_viewer_file, "file", file, NULL);
@@ -317,6 +321,7 @@ void gdv_viewer_app_window_open (GdvViewerAppWindow *win,
   viewer_file_set_file (new_viewer_file, file);
   priv->files = g_list_append (priv->files, new_viewer_file);
 
+  selection = gtk_tree_view_get_selection (priv->file_view);
 
 //  some_data = g_strdup_printf ("Helllo: %d", i);
   file_name = g_file_get_basename (file);
@@ -327,6 +332,9 @@ void gdv_viewer_app_window_open (GdvViewerAppWindow *win,
                       COLUMN_FILE, new_viewer_file,
                       COLUMN_BOOLEAN,  FALSE,
                       -1);
+
+  gtk_tree_selection_select_iter (selection, &iter);
+
   g_free (file_name);
 
 

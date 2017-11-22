@@ -11,29 +11,54 @@
     <property name="default_height">600</property>
 -->
     <property name="orientation">vertical</property>
-    <property name="margin">5</property>
-    <property name="spacing">5</property>
+    <property name="margin">10</property>
+    <property name="spacing">10</property>
 
     <child>
       <object class="GtkFrame">
         <property name="label">Graph</property>
         <property name="visible">True</property>
         <child>
-          <object class="GtkLabel">
-            <property name="label">hello world</property>
+          <object class="GtkGrid">
+            <!--<property name="label">hello world</property>-->
+            <property name="margin">5</property>
             <property name="visible">True</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">hello world</property>
+                <property name="visible">True</property>
+              </object>
+              <packing>
+                <property name="height">1</property>
+                <property name="width">1</property>
+                <!--<property name="shrink">False</property>-->
+              </packing>
+            </child>
           </object>
         </child>
 
       </object>
     </child>
     <child>
-      <object class="GtkFrame">
-        <property name="visible">True</property>
+      <object class="GtkFrame" id="file_frame">
+        <property name="label">New File</property>
+        <property name="visible">False</property>
         <child>
-          <object class="GtkLabel">
-            <property name="label">hello world</property>
+          <object class="GtkGrid">
+            <!--<property name="label">hello world</property>-->
+            <property name="margin">5</property>
             <property name="visible">True</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">hello world</property>
+                <property name="visible">True</property>
+              </object>
+              <packing>
+                <property name="height">1</property>
+                <property name="width">1</property>
+                <!--<property name="shrink">False</property>-->
+              </packing>
+            </child>
           </object>
         </child>
       </object>
