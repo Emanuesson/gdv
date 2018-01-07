@@ -73,6 +73,9 @@ GdvTwodLayer *gdv_twod_layer_new (void);
 void gdv_twod_layer_set_xrange (GdvTwodLayer *layer, gdouble x_beg, gdouble x_end);
 void gdv_twod_layer_set_yrange (GdvTwodLayer *layer, gdouble y_beg, gdouble y_end);
 
+void gdv_twod_layer_get_xrange (GdvTwodLayer *layer, gdouble *x_beg, gdouble *x_end);
+void gdv_twod_layer_get_yrange (GdvTwodLayer *layer, gdouble *y_beg, gdouble *y_end);
+
 GdvAxis *gdv_twod_layer_get_axis (GdvTwodLayer *layer, GdvTwodAxisType axis_type);
 void gdv_twod_layer_set_axis (GdvTwodLayer *layer, GdvAxis *axis, GdvTwodAxisType axis_type);
 void gdv_twod_layer_unset_axis (GdvTwodLayer *layer, GdvTwodAxisType axis_type);

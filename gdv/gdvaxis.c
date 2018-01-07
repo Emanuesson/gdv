@@ -258,7 +258,6 @@ gdv_axis_init (GdvAxis *axis)
     GTK_STYLE_PROVIDER (css_provider),
     GTK_STYLE_PROVIDER_PRIORITY_FALLBACK);
 
-
   gtk_widget_set_can_focus (GTK_WIDGET (axis), TRUE);
   gtk_widget_set_receives_default (GTK_WIDGET (axis), TRUE);
   gtk_widget_set_has_window (GTK_WIDGET (axis), FALSE);
@@ -2249,7 +2248,8 @@ gdv_axis_draw (GtkWidget    *widget,
 //  scale_beg_val = axis->priv->scale_min_val;
 //  scale_end_val = axis->priv->scale_max_val;
 
-  if (axis_line_width && cr != NULL && !axis->priv->resize_during_redraw)
+  if (axis_line_width && cr != NULL &&
+      (!axis->priv->resize_during_redraw || axis->priv->force_beg_end))
   {
     /* plotting axis-line */
     gdv_render_line (
@@ -2260,7 +2260,7 @@ gdv_axis_draw (GtkWidget    *widget,
       (gdouble) end_y);
   }
 
-  if (axis->priv->resize_during_redraw)
+  if (axis->priv->resize_during_redraw && !axis->priv->force_beg_end)
   {
     gtk_widget_queue_resize (GTK_WIDGET (widget));
     axis->priv->resize_during_redraw = FALSE;

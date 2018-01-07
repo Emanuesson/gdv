@@ -25,6 +25,7 @@
 #endif
 
 #include <gtksourceview/gtksource.h>
+//#include <gtksourceview/gtksourcetypes.h>
 #include <gio/gio.h>
 
 #include "gui/viewer-app-win.h"
@@ -39,6 +40,7 @@ enum
 //  COLUMN_INT,
   COLUMN_FILE,
   COLUMN_BOOLEAN,
+  COLUMN_FILE_BUFFER,
   N_COLUMNS
 };
 
@@ -272,7 +274,8 @@ gdv_viewer_app_window_init (GdvViewerAppWindow *window)
                                  G_TYPE_STRING,
                                  VIEWER_TYPE_FILE,
 //                                 G_TYPE_FILE,
-                                 G_TYPE_BOOLEAN);
+                                 G_TYPE_BOOLEAN,
+                                 GTK_SOURCE_TYPE_BUFFER);
 
 
   // Modify a particular row

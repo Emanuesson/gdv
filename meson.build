@@ -25,10 +25,20 @@ endif
 current = gdv_version_minor * 100 + gdv_version_micro - gdv_interface_age
 revision = gdv_interface_age
 libversion = '@0@.@1@.@2@'.format(soversion, current, revision)
+pkgvapidir = join_paths(get_option('datadir'), 'gnome-builder/vapi')
 
 config_h = configuration_data()
 config_h.set_quoted('GETTEXT_PACKAGE', 'libgdv')
 config_h.set_quoted('LOCALEDIR', join_paths(get_option('prefix'), get_option('localedir')))
+
+config_h.set_quoted('PACKAGE_NAME', 'libgdv')
+config_h.set_quoted('PACKAGE_VERSION', meson.project_version())
+config_h.set_quoted('PACKAGE_STRING', 'libgdv-' + meson.project_version())
+config_h.set_quoted('PACKAGE_DATADIR', join_paths(get_option('prefix'), get_option('datadir')))
+config_h.set_quoted('PACKAGE_DOCDIR', join_paths(get_option('prefix'), get_option('datadir'), 'doc/libgdv'))
+config_h.set_quoted('PACKAGE_LIBDIR', join_paths(get_option('prefix'), get_option('libdir')))
+config_h.set_quoted('PACKAGE_LOCALE_DIR', join_paths(get_option('prefix'), get_option('datadir'), 'locale'))
+config_h.set_quoted('PACKAGE_LIBEXECDIR', join_paths(get_option('prefix'), get_option('libexecdir')))
 
 configure_file(
   output: 'config.h',
@@ -104,6 +114,7 @@ endif
 
 gnome = import('gnome')
 
+subdir('data')
 subdir('gdv')
 subdir('data_viewer')
 subdir('tests')

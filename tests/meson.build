@@ -27,4 +27,5 @@ subdir('test5overlay')
 subdir('test6gengui')
 subdir('test7retic')
 subdir('test8timeaxis')
+subdir('test9timebar')
 

@@ -274,5 +274,6 @@ gdv_viewer_app_new (void)
   /*FIXME: change application-id in correct nomenclature; look for other appearence */
   return g_object_new (gdv_viewer_app_get_type (),
                        "application-id", "net.gdv.viewerapp",
+                       "flags", G_APPLICATION_HANDLES_OPEN,
                        NULL);
 }

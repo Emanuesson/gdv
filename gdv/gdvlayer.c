@@ -20,6 +20,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/*
+ * TODO:
+ *  - correct the widget, to simply use GgtkContainerAdd for adding any new LayerContent, instead
+ *    of the current gtk_overlay_add_overlay
+ */
+
 #ifdef HAVE_CONFIG_H
   #include <config.h>
 #endif

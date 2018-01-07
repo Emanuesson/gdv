@@ -130,6 +130,8 @@ main (int argc, char **argv)
 
   gtk_widget_show_all (GTK_WIDGET (main_window));
 
+//  gtk_widget_queue_allocate (GTK_WIDGET (layer));
+
   gtk_main ();
 
   return 0;

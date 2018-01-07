@@ -220,7 +220,7 @@ main (int argc, char **argv)
       GDV_X2_AXIS);
 //  gtk_widget_hide (GTK_WIDGET (tmp_axis));
   g_object_set (tmp_axis,
-    "visible", FALSE,
+    "visible", TRUE,
     NULL);
 
   tmp_axis =
@@ -274,6 +274,7 @@ main (int argc, char **argv)
 
   tmp_axis = 
     GDV_AXIS (g_object_new (gdv_linear_axis_get_type (),
+//    GDV_AXIS (g_object_new (gdv_special_time_axis_get_type (),
           "halign", GTK_ALIGN_START,
           "valign", GTK_ALIGN_FILL,
           "axis-orientation", 0.0,
@@ -297,6 +298,71 @@ main (int argc, char **argv)
   gdv_twod_layer_set_axis (GDV_TWOD_LAYER (layer),
     GDV_AXIS (tmp_axis),
     GDV_Y1_AXIS);
+
+
+
+
+  tmp_axis =
+//    GDV_AXIS (g_object_new (gdv_linear_axis_get_type (),
+    GDV_AXIS (g_object_new (gdv_special_time_axis_get_type (),
+          "valign", GTK_ALIGN_START,
+          "halign", GTK_ALIGN_FILL,
+          "axis-orientation", -0.5*M_PI,
+          "axis-direction-outside", 0.0 * M_PI,
+          "scale-limits-automatic", FALSE,
+          "is-unix-time", TRUE,
+/*          "scale-increment-val", 3600.0,
+          "visible", FALSE,
+          "tics-automatic", TRUE,
+//          "mtics-automatic", FALSE,
+          "scale-limits-automatic", FALSE,
+          "scale-beg-val", 0.0,
+          "scale-end-val", 86400.0,
+//          "scale-auto-increment", FALSE,
+*/
+          NULL));
+  gtk_widget_set_name (GTK_WIDGET (tmp_axis), "x2-axis");
+  gtk_widget_show(GTK_WIDGET (tmp_axis));
+
+  gdv_twod_layer_unset_axis (GDV_TWOD_LAYER (layer), GDV_X2_AXIS);
+
+  g_print ("ADDING\n");
+  gdv_twod_layer_set_axis (GDV_TWOD_LAYER (layer),
+    GDV_AXIS (tmp_axis),
+    GDV_X2_AXIS);
+
+
+  tmp_axis =
+//    GDV_AXIS (g_object_new (gdv_linear_axis_get_type (),
+    GDV_AXIS (g_object_new (gdv_special_time_axis_get_type (),
+          "valign", GTK_ALIGN_END,
+          "halign", GTK_ALIGN_FILL,
+          "axis-orientation", -0.5*M_PI,
+          "axis-direction-outside", 1.0 * M_PI,
+          "scale-limits-automatic", FALSE,
+          "is-unix-time", TRUE,
+/*          "scale-increment-val", 3600.0,
+          "visible", FALSE,
+          "tics-automatic", TRUE,
+//          "mtics-automatic", FALSE,
+          "scale-limits-automatic", FALSE,
+          "scale-beg-val", 0.0,
+          "scale-end-val", 86400.0,
+//          "scale-auto-increment", FALSE,
+*/
+          NULL));
+  gtk_widget_set_name (GTK_WIDGET (tmp_axis), "x1-axis");
+  gtk_widget_show(GTK_WIDGET (tmp_axis));
+
+  gdv_twod_layer_unset_axis (GDV_TWOD_LAYER (layer), GDV_X1_AXIS);
+
+  g_print ("ADDING\n");
+  gdv_twod_layer_set_axis (GDV_TWOD_LAYER (layer),
+    GDV_AXIS (tmp_axis),
+    GDV_X1_AXIS);
+
+
+
 
   added = FALSE;
 //  g_timeout_add (1000, ((GSourceFunc) timeout_cb), layer);

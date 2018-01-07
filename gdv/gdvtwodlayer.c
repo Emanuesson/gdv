@@ -23,6 +23,10 @@
 /*
  * TODO:
  *  - overwrite widget-draw function
+ *  - set halign and valign automatically, as well as the widget-name, when replacing an axis
+ *  - or at least detect anything, that is set incorrectly
+ *  - same problem with the orientations
+ *  - write a replacing-function to unref the existingn axis
  *
  */
 
@@ -32,6 +36,7 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <gsl/gsl_math.h>
 
 #include "gdvtwodlayer.h"
 #include "gdvlinearaxis.h"
@@ -426,6 +431,12 @@ gdv_twod_layer_size_allocate (
 
   gtk_widget_set_allocation (GTK_WIDGET (layer), allocation);
 
+  /*
+  g_print ("RUN ALLOC FROM START: X(%d, %d) - Y(%d, %d)\n",
+           allocation->x, allocation->width,
+           allocation->y, allocation->height);
+   */
+
   /* Measuring the x1-axis */
   if (priv->x1_axis &&
       gtk_widget_get_visible (GTK_WIDGET(priv->x1_axis)))
@@ -598,8 +609,25 @@ gdv_twod_layer_size_allocate (
                         &y2_end_space[3], &y2_end_space_nat[3], NULL);
   }
 
+  /*
+  g_print ("\tX1 SPACE: (%d, %d, %d, %d) - (%d, %d, %d, %d)\n",
+           x1_beg_space[0], x1_beg_space[1], x1_beg_space[2], x1_beg_space[3],
+           x1_end_space[0], x1_end_space[1], x1_end_space[2], x1_end_space[3]);
+  g_print ("\tX2 SPACE: (%d, %d, %d, %d) - (%d, %d, %d, %d)\n",
+           x2_beg_space[0], x2_beg_space[1], x2_beg_space[2], x2_beg_space[3],
+           x2_end_space[0], x2_end_space[1], x2_end_space[2], x2_end_space[3]);
+  g_print ("\tY1 SPACE: (%d, %d, %d, %d) - (%d, %d, %d, %d)\n",
+           y1_beg_space[0], y1_beg_space[1], y1_beg_space[2], y1_beg_space[3],
+           y1_end_space[0], y1_end_space[1], y1_end_space[2], y1_end_space[3]);
+  g_print ("\tY2 SPACE: (%d, %d, %d, %d) - (%d, %d, %d, %d)\n",
+           y2_beg_space[0], y2_beg_space[1], y2_beg_space[2], y2_beg_space[3],
+           y2_end_space[0], y2_end_space[1], y2_end_space[2], y2_end_space[3]);
+  */
+
   /* aligning crossing-points between x- and y-axes */
   /* FIXME: Use different functions than self-defined min-max-functions! */
+  /* FIXME: Use extensive tests (at best even unittests) to test these functionalities */
+  /* TODO: Write more documentation here */
   y1_allocation.x +=
     max (
       max(x2_beg_space[2] - y1_end_space[2], 0),
@@ -620,7 +648,7 @@ gdv_twod_layer_size_allocate (
       max(x1_end_space[3] - y2_beg_space[3], 0));
   y2_allocation.y -=
     min (
-      min(x2_beg_space[0] - y1_end_space[0], 0),
+      min(x2_beg_space[0] - y1_end_space[0], 0),// + min(x2_end_space[0] - y2_end_space[0], 0),
       min(y2_end_space[0] - x2_end_space[0], 0));
   y2_allocation.height -=
     max (max(x2_end_space[0] - y2_end_space[0], 0),
@@ -630,7 +658,7 @@ gdv_twod_layer_size_allocate (
 
   x2_allocation.x +=
     max (
-      max(x1_beg_space[2] - y1_beg_space[2], 0),
+      max(x1_beg_space[2] - y1_beg_space[2], 0) + max(y1_end_space[2] - x2_beg_space[2], 0),
       max(y1_end_space[2] - x2_beg_space[2], 0));
   x2_allocation.y -=
     min (
@@ -642,12 +670,12 @@ gdv_twod_layer_size_allocate (
       max(x1_end_space[3] - y2_beg_space[3], 0)) +
     max (
       max(y1_end_space[2] - x2_beg_space[2], 0),
-      max(x1_beg_space[2] - y1_beg_space[2], 0));
+      max(x1_beg_space[2] - y1_beg_space[2], 0) + max(y1_end_space[2] - x2_beg_space[2], 0));
 
   x1_allocation.x +=
     max (
       max (y1_beg_space[2] - x1_beg_space[2], 0),
-      max (x2_beg_space[2] - y1_end_space[2], 0));
+      max (x2_beg_space[2] - y1_end_space[2], 0) + max(y1_beg_space[2] - x1_beg_space[2], 0));
   x1_allocation.y -=
     max (
       max (y1_beg_space[1] - x1_beg_space[1], 0),
@@ -658,7 +686,22 @@ gdv_twod_layer_size_allocate (
       max(x2_beg_space[3] - y2_end_space[3], 0)) +
     max (
       max(y1_beg_space[2] - x1_beg_space[2], 0),
-      max(x2_beg_space[2] - y1_end_space[2], 0));
+      max(x2_beg_space[2] - y1_end_space[2], 0) + max(y1_beg_space[2] - x1_beg_space[2], 0));
+
+  /*
+  g_print ("\tX1 ALLOC: X(%d, %d) - Y(%d, %d)\n",
+           x1_allocation.x, x1_allocation.width,
+           x1_allocation.y, x1_allocation.height);
+  g_print ("\tX2 ALLOC: X(%d, %d) - Y(%d, %d)\n",
+           x2_allocation.x, x2_allocation.width,
+           x2_allocation.y, x2_allocation.height);
+  g_print ("\tY1 ALLOC: X(%d, %d) - Y(%d, %d)\n",
+           y1_allocation.x, y1_allocation.width,
+           y1_allocation.y, y1_allocation.height);
+  g_print ("\tY2 ALLOC: X(%d, %d) - Y(%d, %d)\n",
+           y2_allocation.x, y2_allocation.width,
+           y2_allocation.y, y2_allocation.height);
+  */
 
   if (priv->x1_axis &&
       gtk_widget_get_visible (GTK_WIDGET(priv->x1_axis)))
@@ -934,6 +977,144 @@ void gdv_twod_layer_set_yrange (GdvTwodLayer *layer,
                   "scale-beg-val", y_beg,
                   "scale-end-val", y_end,
                   NULL);
+}
+
+/**
+ * gdv_twod_layer_get_xrange:
+ * @layer: a #GdvTwodLayer
+ * @x_beg: the position to store the begin of this layer in x-direction
+ * @x_end: the position to store the end of this layer in x-direction
+ *
+ * Returns the maximum and minimum of both x-axes.
+ *
+ **/
+void gdv_twod_layer_get_xrange (GdvTwodLayer *layer, gdouble *x_beg, gdouble *x_end)
+{
+  gboolean x1_axis_avl = FALSE;
+  gboolean x2_axis_avl = FALSE;
+  gdouble x1_beg, x1_end;
+  gdouble x2_beg, x2_end;
+
+  g_return_if_fail(GDV_TWOD_IS_LAYER (layer));
+
+  if (layer->priv->x1_axis &&
+      gtk_widget_is_visible(GTK_WIDGET(layer->priv->x1_axis)))
+  {
+    x1_axis_avl = TRUE;
+    g_object_get (G_OBJECT(layer->priv->x1_axis),
+                  "scale-beg-val", &x1_beg,
+                  "scale-end-val", &x1_end,
+                  NULL);
+  }
+
+  if (layer->priv->x2_axis &&
+      gtk_widget_is_visible(GTK_WIDGET(layer->priv->x2_axis)))
+  {
+    x2_axis_avl = TRUE;
+    g_object_get (G_OBJECT(layer->priv->x2_axis),
+                  "scale-beg-val", &x2_beg,
+                  "scale-end-val", &x2_end,
+                  NULL);
+  }
+
+  if (x1_axis_avl && x2_axis_avl)
+  {
+    if (x1_beg >= x1_end)
+    {
+      *x_beg = GSL_MAX(x1_beg, x2_beg);
+      *x_end = GSL_MIN(x1_end, x2_end);
+      return;
+    }
+    else
+    {
+      *x_beg = GSL_MIN(x1_beg, x2_beg);
+      *x_end = GSL_MAX(x1_end, x2_end);
+      return;
+    }
+  }
+  else if (x1_axis_avl)
+  {
+      *x_beg = x1_beg;
+      *x_end = x1_end;
+      return;
+  }
+  else if (x2_axis_avl)
+  {
+      *x_beg = x2_beg;
+      *x_end = x2_end;
+      return;
+  }
+
+  return;
+}
+
+/**
+ * gdv_twod_layer_get_yrange:
+ * @layer: a #GdvTwodLayer
+ * @y_beg: the position to store the begin of this layer in y-direction
+ * @y_end: the position to store the end of this layer in y-direction
+ *
+ * Returns the maximum and minimum of both y-axes.
+ *
+ **/
+void gdv_twod_layer_get_yrange (GdvTwodLayer *layer, gdouble *y_beg, gdouble *y_end)
+{
+  gboolean y1_axis_avl = FALSE;
+  gboolean y2_axis_avl = FALSE;
+  gdouble y1_beg, y1_end;
+  gdouble y2_beg, y2_end;
+
+  g_return_if_fail(GDV_TWOD_IS_LAYER (layer));
+
+  if (layer->priv->y1_axis &&
+      gtk_widget_is_visible(GTK_WIDGET(layer->priv->y1_axis)))
+  {
+    y1_axis_avl = TRUE;
+    g_object_get (G_OBJECT(layer->priv->y1_axis),
+                  "scale-beg-val", &y1_beg,
+                  "scale-end-val", &y1_end,
+                  NULL);
+  }
+
+  if (layer->priv->y2_axis &&
+      gtk_widget_is_visible(GTK_WIDGET(layer->priv->y2_axis)))
+  {
+    y2_axis_avl = TRUE;
+    g_object_get (G_OBJECT(layer->priv->y2_axis),
+                  "scale-beg-val", &y2_beg,
+                  "scale-end-val", &y2_end,
+                  NULL);
+  }
+
+  if (y1_axis_avl && y2_axis_avl)
+  {
+    if (y1_beg >= y1_end)
+    {
+      *y_beg = GSL_MAX(y1_beg, y2_beg);
+      *y_end = GSL_MIN(y1_end, y2_end);
+      return;
+    }
+    else
+    {
+      *y_beg = GSL_MIN(y1_beg, y2_beg);
+      *y_end = GSL_MAX(y1_end, y2_end);
+      return;
+    }
+  }
+  else if (y1_axis_avl)
+  {
+      *y_beg = y1_beg;
+      *y_end = y1_end;
+      return;
+  }
+  else if (y2_axis_avl)
+  {
+      *y_beg = y2_beg;
+      *y_end = y2_end;
+      return;
+  }
+
+  return;
 }
 
 /**

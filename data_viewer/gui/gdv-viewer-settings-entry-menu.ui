@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<interface>
+  <!-- interface-requires gtk+ 3.0 -->
+  <menu id="entry-menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">widespace</attribute>
+        <attribute name="action">entry.widespace-changed</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">tabulator</attribute>
+        <attribute name="action">entry.tabulator-changed</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">line-feed</attribute>
+        <attribute name="action">entry.line-feed-changed</attribute>
+      </item>
+    </section>
+  </menu>
+</interface>

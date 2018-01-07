@@ -16,17 +16,32 @@
 
     <child>
       <object class="GtkFrame">
-        <property name="label">Graph</property>
+        <property name="label" translatable="yes">Graph</property>
         <property name="visible">True</property>
+        <property name="label-xalign">0.1</property>
         <child>
           <object class="GtkGrid">
             <!--<property name="label">hello world</property>-->
             <property name="margin">5</property>
             <property name="visible">True</property>
+            <property name="column-spacing">10</property>
+            <property name="row-spacing">10</property>
             <child>
               <object class="GtkLabel">
-                <property name="label">hello world</property>
+                <property name="label" translatable="yes">Show legend</property>
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
+              </object>
+              <packing>
+                <property name="height">1</property>
+                <property name="width">1</property>
+                <!--<property name="shrink">False</property>-->
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSwitch">
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
               </object>
               <packing>
                 <property name="height">1</property>
@@ -41,24 +56,108 @@
     </child>
     <child>
       <object class="GtkFrame" id="file_frame">
-        <property name="label">New File</property>
+        <property name="label" translatable="yes">New File</property>
         <property name="visible">False</property>
+        <property name="label-xalign">0.1</property>
         <child>
           <object class="GtkGrid">
             <!--<property name="label">hello world</property>-->
             <property name="margin">5</property>
             <property name="visible">True</property>
+            <property name="column-spacing">10</property>
+            <property name="row-spacing">10</property>
             <child>
               <object class="GtkLabel">
-                <property name="label">hello world</property>
+                <property name="label" translatable="yes">Auto-refresh file</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+              </object>
+              <packing>
+                <property name="height">1</property>
+                <property name="width">1</property>
+                <property name="left-attach">0</property>
+                <property name="top-attach">0</property>
+                <!--<property name="shrink">False</property>-->
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSwitch">
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+              </object>
+              <packing>
+                <property name="height">1</property>
+                <property name="width">1</property>
+                <property name="left-attach">1</property>
+                <property name="top-attach">0</property>
+                <!--<property name="shrink">False</property>-->
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="label" translatable="yes">column-separator</property>
                 <property name="visible">True</property>
               </object>
               <packing>
                 <property name="height">1</property>
                 <property name="width">1</property>
+                <property name="left-attach">0</property>
+                <property name="top-attach">1</property>
                 <!--<property name="shrink">False</property>-->
               </packing>
             </child>
+
+            <child>
+              <object class="GtkEntry">
+                <property name="visible">True</property>
+                <property name="text" translatable="yes">[ ]</property>
+                <property name="secondary-icon-name">go-down</property>
+                <property name="secondary-icon-activatable">True</property>
+                <signal name="activate" handler="on_col_settings_pan_activate"/>
+                <signal name="icon-press" handler="on_settings_pan_icon_press"/>
+                <signal name="icon-release" handler="on_settings_pan_icon_release"/>
+              </object>
+
+              <packing>
+                <property name="height">1</property>
+                <property name="width">1</property>
+                <property name="left-attach">1</property>
+                <property name="top-attach">1</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkLabel">
+                <property name="label" translatable="yes">row-separator</property>
+                <property name="visible">True</property>
+              </object>
+              <packing>
+                <property name="height">1</property>
+                <property name="width">1</property>
+                <property name="left-attach">0</property>
+                <property name="top-attach">2</property>
+                <!--<property name="shrink">False</property>-->
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkEntry">
+                <property name="visible">True</property>
+                <property name="text" translatable="yes">[\n]</property>
+                <property name="secondary-icon-name">go-down</property>
+                <property name="secondary-icon-activatable">True</property>
+                <signal name="activate" handler="on_row_settings_pan_activate"/>
+                <signal name="icon-press" handler="on_settings_pan_icon_press"/>
+                <signal name="icon-release" handler="on_settings_pan_icon_release"/>
+              </object>
+              <packing>
+                <property name="height">1</property>
+                <property name="width">1</property>
+                <property name="left-attach">1</property>
+                <property name="top-attach">2</property>
+              </packing>
+            </child>
+
           </object>
         </child>
       </object>

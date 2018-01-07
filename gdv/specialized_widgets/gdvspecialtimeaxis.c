@@ -35,26 +35,31 @@ enum
 {
   PROP_0,
 
+  PROP_IS_UNIX_TIME,
+
   N_PROPERTIES
 };
+
+static GParamSpec *special_time_axis_properties[N_PROPERTIES] = { NULL, };
 
 struct _GdvSpecialTimeAxisPrivate
 {
   gint placeholder;
+  gboolean unix_time;
   GtkWidget *socket;
 };
 
 /* Method declaration */
 //static void gdv_special_time_axis_dispose (GObject *object);
 //static void gdv_special_time_axis_finalize (GObject *object);
-//static void gdv_special_time_axis_set_property (GObject      *object,
-//                                      guint         property_id,
-//                                      const GValue *value,
-//                                      GParamSpec   *pspec);
-//static void gdv_special_time_axis_get_property (GObject    *object,
-//                                      guint       property_id,
-//                                      GValue     *value,
-//                                      GParamSpec *pspec);
+static void gdv_special_time_axis_set_property (GObject      *object,
+                                                guint         property_id,
+                                                const GValue *value,
+                                                GParamSpec   *pspec);
+static void gdv_special_time_axis_get_property (GObject    *object,
+                                                guint       property_id,
+                                                GValue     *value,
+                                                GParamSpec *pspec);
 
 G_DEFINE_TYPE_WITH_PRIVATE (GdvSpecialTimeAxis, gdv_special_time_axis,
   gdv_linear_axis_get_type());
@@ -71,9 +76,11 @@ gdv_special_time_axis_class_init (GdvSpecialTimeAxisClass *klass)
 {
   GtkWidgetClass *widget_class;
   GdvAxisClass *axis_class;
+  GObjectClass *object_class;
 
   widget_class = GTK_WIDGET_CLASS (klass);
   axis_class = GDV_AXIS_CLASS (klass);
+  object_class = G_OBJECT_CLASS (klass);
 
 //  widget_class->size_allocate = gdv_special_time_axis_size_allocate;
 
@@ -82,20 +89,22 @@ gdv_special_time_axis_class_init (GdvSpecialTimeAxisClass *klass)
 
 //  gobject_class->dispose = gdv_special_time_axis_dispose;
 //  gobject_class->finalize = gdv_special_time_axis_finalize;
-//  gobject_class->set_property = gdv_special_time_axis_set_property;
-//  gobject_class->get_property = gdv_special_time_axis_get_property;
+  object_class->set_property = gdv_special_time_axis_set_property;
+  object_class->get_property = gdv_special_time_axis_get_property;
 
   /* Properties */
-//  view_properties[PROP_MULTIPLOT] =
-//    g_param_spec_boolean ("multiplot",
-//                          "multiplotting more than one layer",
-//                          "activates or deactivates multiplotting",
-//                          FALSE,
-//                          G_PARAM_READWRITE);
+  special_time_axis_properties[PROP_IS_UNIX_TIME] =
+    g_param_spec_boolean ("is-unix-time",
+                          "axis-values will be interpreted in local unit-time",
+                          "axis-values will be interpreted as the time in seconds "
+                          "since 1970-01-01 00:00:00 UTC (value is interpreted as "
+                          "UTC-time)",
+                          FALSE,
+                          G_PARAM_READWRITE);
 
-//  g_object_class_install_properties (gobject_class,
-//                                     N_PROPERTIES,
-//                                     view_properties);
+  g_object_class_install_properties (object_class,
+                                     N_PROPERTIES,
+                                     special_time_axis_properties);
 
 //  gtk_widget_class_install_style_property (widget_class,
 //    g_param_spec_double ("custom-property",
@@ -144,7 +153,7 @@ gdv_special_time_axis_init (GdvSpecialTimeAxis *time_axis)
 
 }
 
-/*
+
 static void gdv_special_time_axis_set_property (GObject      *object,
                                       guint         property_id,
                                       const GValue *value,
@@ -154,13 +163,13 @@ static void gdv_special_time_axis_set_property (GObject      *object,
 
   switch (property_id)
     {
-//    case PROP_MULTIPLOT:
-//      self->priv->multiplot = g_value_get_boolean (value);
-//      break;
+    case PROP_IS_UNIX_TIME:
+      self->priv->unix_time = g_value_get_boolean (value);
+      break;
 
     default:
-*/      /* unknown property */
-/*      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      /* unknown property */
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
     }
 }
@@ -174,18 +183,18 @@ static void gdv_special_time_axis_get_property (GObject    *object,
 
   switch (property_id)
     {
-//    case PROP_MULTIPLOT:
-//      g_value_set_boolean (value, self->priv->multiplot);
-//      break;
+    case PROP_IS_UNIX_TIME:
+      g_value_set_boolean (value, self->priv->unix_time);
+      break;
 
     default:
-*/      /* unknown property */
-/*      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      /* unknown property */
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
 
     }
 }
-*/
+
 
 /*
 static void
@@ -199,17 +208,86 @@ gdv_special_time_axis_size_allocate (GtkWidget           *widget,
 }
 */
 
+static const gchar *
+_get_month_name (gint month)
+{
+    switch (month)
+    {
+    case 1:
+      return "Jan";
+    case 2:
+      return "Feb";
+    case 3:
+      return "Mar";
+    case 4:
+      return "Apr";
+    case 5:
+      return "May";
+    case 6:
+      return "Jun";
+    case 7:
+      return "Jul";
+    case 8:
+      return "Aug";
+    case 9:
+      return "Sep";
+    case 10:
+      return "Oct";
+    case 11:
+      return "Nov";
+    case 12:
+      return "Dec";
+    default:
+      return "UKN";
+    }
+}
+
 static gchar *
 gdv_special_time_axis_make_tic_label_markup (GdvAxis *axis, gdouble  value)
 {
   gchar *return_string = NULL;
+  GdvSpecialTimeAxis *time_axis = GDV_SPECIAL_TIME_AXIS (axis);
 
-  return_string =
-    g_strdup_printf ("%2.0lf:%02.0lf:%02.0lf",
-//      floor (value / 3600.0), 0.0, 0.0);
-      floor (value / 3600.0),
-      floor (fmod (value, 3600.0) / 60.0),
-      floor (fmod (value, 60.0)));
+  if (time_axis->priv->unix_time)
+  {
+    GDateTime *dtime = g_date_time_new_from_unix_utc ((gint64)value);
+//    GDateTime *dtime_cpy;
+    gint yr, mth, day;
+    gdouble sec;
+//    dtime_cpy = g_date_time_add_full (dtime, 0, 0, 0, 0, 0, fmod(value, 1.0));
+//    g_date_time_unref(dtime);
+
+    if (dtime == NULL)
+      return g_strdup("NA");
+
+    sec = fmod(value, 1.0);
+    sec += g_date_time_get_seconds (dtime);
+    g_date_time_get_ymd (dtime, &yr, &mth, &day);
+
+    if (sec > 0.0)
+      return_string =
+        g_strdup_printf ("%d %s %d, %02d:%02d:%02.1lf",
+                         day, _get_month_name (mth), yr,
+                         g_date_time_get_hour (dtime), g_date_time_get_minute (dtime),
+                         sec);
+    else
+      return_string =
+        g_strdup_printf ("%d %s %d, %02d:%02d",
+                         day, _get_month_name (mth), yr,
+                         g_date_time_get_hour (dtime), g_date_time_get_minute (dtime));
+
+    g_date_time_unref(dtime);
+  }
+  else
+  {
+    return_string =
+      g_strdup_printf ("%2.0lf:%02.0lf:%02.0lf",
+  //      floor (value / 3600.0), 0.0, 0.0);
+        floor (value / 3600.0),
+        floor (fmod (value, 3600.0) / 60.0),
+        floor (fmod (value, 60.0)));
+
+  }
 
   return return_string;
 }

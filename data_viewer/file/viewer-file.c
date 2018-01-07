@@ -52,11 +52,15 @@ struct _ViewerFilePrivate
   GtkSourceFile     *source_file;
   GtkSourceBuffer   *buffer;
   guint              temporary_id;
+  gchar             *column_separator;
+  gchar             *row_separator;
 };
 
 enum {
   PROP_0,
   PROP_FILE,
+  PROP_COL_SEPARATOR,
+  PROP_ROW_SEPARATOR,
 //  PROP_IS_TEMPORARY,
 //  PROP_LANGUAGE,
 //  PROP_PATH,
@@ -87,6 +91,9 @@ viewer_file_init (ViewerFile *view)
 
 
   priv->source_file = NULL;
+  priv->column_separator = g_strdup ("\t");
+  priv->row_separator = g_strdup ("\n");
+
 }
 
 static GFile *
@@ -127,11 +134,20 @@ viewer_file_get_property (GObject    *object,
                           GParamSpec *pspec)
 {
   ViewerFile *self = (ViewerFile *)object;
+  ViewerFilePrivate *priv;
+
+  priv = viewer_file_get_instance_private (self);
 
   switch (prop_id)
     {
     case PROP_FILE:
       g_value_set_object (value, viewer_file_get_file (self));
+      break;
+    case PROP_COL_SEPARATOR:
+      g_value_set_string (value, priv->column_separator);
+      break;
+    case PROP_ROW_SEPARATOR:
+      g_value_set_string (value, priv->row_separator);
       break;
 
     default:
@@ -146,11 +162,24 @@ viewer_file_set_property (GObject      *object,
                           GParamSpec   *pspec)
 {
   ViewerFile *self = (ViewerFile *)object;
+  ViewerFilePrivate *priv;
+
+  priv = viewer_file_get_instance_private (self);
 
   switch (prop_id)
     {
     case PROP_FILE:
       _set_file (self, g_value_get_object (value));
+      break;
+    case PROP_COL_SEPARATOR:
+      if (priv->column_separator)
+        g_free (priv->column_separator);
+      priv->column_separator = g_value_dup_string (value);
+      break;
+    case PROP_ROW_SEPARATOR:
+      if (priv->row_separator)
+        g_free (priv->row_separator);
+      priv->row_separator = g_value_dup_string (value);
       break;
 
     default:
@@ -174,6 +203,20 @@ viewer_file_class_init (ViewerFileClass *klass)
                          (G_PARAM_READWRITE |
                           G_PARAM_CONSTRUCT_ONLY |
                           G_PARAM_STATIC_STRINGS));
+
+  properties [PROP_COL_SEPARATOR] =
+    g_param_spec_string ("column-separator",
+                         "The column separator",
+                         "The separator for columns.",
+                         "\t",
+                         G_PARAM_READWRITE);
+
+  properties [PROP_ROW_SEPARATOR] =
+    g_param_spec_string ("row-separator",
+                         "The row separator",
+                         "The separator for rows.",
+                         "\n",
+                         G_PARAM_READWRITE);
 
   g_object_class_install_properties (object_class, LAST_PROP, properties);
 }

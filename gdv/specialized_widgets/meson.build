@@ -2,12 +2,14 @@ specialized_headers = [
   'gdvspecialcheckedindicator.h',
   'gdvspecialdrumdisplay.h',
   'gdvspecialtimeaxis.h',
+  'gdvspecialcontentaxis.h',
 ]
 
 specialized_sources = [
   'gdvspecialcheckedindicator.c',
   'gdvspecialdrumdisplay.c',
   'gdvspecialtimeaxis.c',
+  'gdvspecialcontentaxis.c',
 ]
 
 libgdv_public_headers += files(specialized_headers)

@@ -23,22 +23,47 @@
                 <child>
                   <object class="GtkToggleButton">
                       <property name="visible">True</property>
-                      <property name="label">toggle left panel</property>
+                      <!--<property name="label">toggle left panel</property>-->
                       <signal name="toggled" handler="left_panel_toggled"/>
+                      <child>
+                        <object class="GtkImage">
+                          <property name="visible">True</property>
+<!--                          <property name="icon-name">libpeas-plugin</property>-->
+                          <property name="icon-name">builder-view-left-pane-symbolic</property>
+                          <property name="icon-size">4</property>
+                          <property name="margin">4</property>
+                        </object>
+                      </child>
                   </object>
                 </child>
                 <child>
                   <object class="GtkToggleButton">
                       <property name="visible">True</property>
-                      <property name="label">toggle bottom panel</property>
                       <signal name="toggled" handler="bottom_panel_toggled"/>
+                      <child>
+                        <object class="GtkImage">
+                          <property name="visible">True</property>
+<!--                          <property name="icon-name">libpeas-plugin</property>-->
+                          <property name="icon-name">builder-view-bottom-pane-symbolic</property>
+                          <property name="icon-size">4</property>
+                          <property name="margin">4</property>
+                        </object>
+                      </child>
                   </object>
                 </child>
                 <child>
                   <object class="GtkToggleButton">
                       <property name="visible">True</property>
-                      <property name="label">toggle right panel</property>
                       <signal name="toggled" handler="right_panel_toggled"/>
+                      <child>
+                        <object class="GtkImage">
+                          <property name="visible">True</property>
+<!--                          <property name="icon-name">libpeas-plugin</property>-->
+                          <property name="icon-name">builder-view-right-pane-symbolic</property>
+                          <property name="icon-size">4</property>
+                          <property name="margin">4</property>
+                        </object>
+                      </child>
                   </object>
                 </child>
               </object>
@@ -200,7 +225,14 @@
 <!--                  <packing>
                     <property name="shrink">False</property>
                   </packing>-->
-            </child>
+
+
+              <packing>
+                <property name="shrink">False</property>
+              </packing>
+
+
+              </child>
 
           </object>
 

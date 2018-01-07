@@ -1,5 +1,5 @@
 
-libgdv_header_subdir = join_paths(package_subdir, 'libgdv-' + apiversion)
+libgdv_header_subdir = join_paths(package_subdir, 'libgdv-' + apiversion, 'gdv')
 libgdv_header_dir = join_paths(get_option('includedir'), libgdv_header_subdir)
 
 libgdv_resources = gnome.compile_resources(
@@ -55,6 +55,7 @@ gdvcore_headers = [
   'gdvrender.h',
   'gdvtic.h',
   'gdvtwodlayer.h',
+  'gdvcentral.h',
 ]
 
 gdvcore_sources = [
@@ -77,7 +78,7 @@ gdvcore_sources = [
 ]
 
 gdvcore_private = [
-  'gdvcentral.h',
+#  'gdvcentral.h',
 ]
 
 # Filled out in the subdirs
