@@ -72,11 +72,14 @@ struct _GdvLegendPrivate
 
   /* Click-events and interaction */
   GdkWindow *event_window;
-
 };
 
 static void
 gdv_legend_refresh (GdvLegend *legend);
+
+static void
+gdv_legend_set_layer (GdvLegend *legend,
+                      GdvLayer  *layer);
 
 G_DEFINE_TYPE_WITH_PRIVATE (GdvLegend, gdv_legend, GTK_TYPE_FRAME);
 
@@ -136,8 +139,7 @@ gdv_legend_set_property (GObject      *object,
   switch (property_id)
   {
   case PROP_LAYER:
-    self->priv->attached_layer = g_value_get_object (value);
-    gdv_legend_refresh (self);
+    gdv_legend_set_layer (self, g_value_get_object (value));
     break;
 
   case PROP_ORIENTATION:
@@ -205,6 +207,9 @@ gdv_legend_dispose (GObject *object)
 static void
 gdv_legend_finalize (GObject *object)
 {
+  //GdvLegend *legend = GDV_LEGEND (object);
+
+  //g_hash_table_unref (legend->priv->signal_identifier);
   G_OBJECT_CLASS (gdv_legend_parent_class)->finalize (object);
 }
 
@@ -368,10 +373,10 @@ gdv_legend_refresh (GdvLegend *legend)
         gtk_grid_get_child_at (GTK_GRID (legend->priv->main_box),
                                example_current_grid_column,
                                example_current_grid_row),
-        current_legend_descriptor =
-          gtk_grid_get_child_at (GTK_GRID (legend->priv->main_box),
-                                 descriptor_current_grid_column,
-                                 descriptor_current_grid_row);
+      current_legend_descriptor =
+        gtk_grid_get_child_at (GTK_GRID (legend->priv->main_box),
+                               descriptor_current_grid_column,
+                               descriptor_current_grid_row);
 
       /* receiving the next element */
       /* TODO: receive "show-in-legend"-property and toggle over elements */
@@ -397,7 +402,11 @@ gdv_legend_refresh (GdvLegend *legend)
             GTK_CONTAINER (legend->priv->main_box),
             GTK_WIDGET (current_legend_descriptor));
 
-        return;
+        if (current_legend_example == NULL &&
+            current_legend_descriptor == NULL)
+          return;
+
+        continue;
       }
 
       /* correction/initialisation of the example-elements */
@@ -408,8 +417,6 @@ gdv_legend_refresh (GdvLegend *legend)
 
         if (connected_element != current_element)
           g_object_set (current_legend_example, "element", current_element, NULL);
-
-//        g_print ("overwrite existing element\n");
       }
       else
       {
@@ -452,6 +459,7 @@ gdv_legend_refresh (GdvLegend *legend)
                          descriptor_current_grid_column,
                          descriptor_current_grid_row,
                          1, 1);
+        g_object_set (current_legend_example, "descriptor", current_legend_descriptor, NULL);
       }
 
     }
@@ -459,4 +467,15 @@ gdv_legend_refresh (GdvLegend *legend)
 
   g_list_free (contents_copy);
   g_list_free (indicators_copy);
+}
+
+static void
+gdv_legend_set_layer (GdvLegend *legend,
+                      GdvLayer  *layer)
+{
+  legend->priv->attached_layer = layer;
+  gdv_legend_refresh (legend);
+
+  /* FIXME: This will lead to a small memory-leak */
+//  g_signal_connect_swapped (layer, "add", (GCallback) gdv_legend_refresh, legend);
 }

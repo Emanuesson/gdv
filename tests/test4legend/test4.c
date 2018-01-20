@@ -36,6 +36,12 @@ static void destroy( GtkWidget *widget,
   gtk_main_quit ();
 }
 
+static gboolean rename_content (GdvLayerContent *content)
+{
+//  g_object_set (content, "title", g_strdup("Hello World"), NULL);
+  return FALSE;
+}
+
 int
 main (int argc, char **argv)
 {
@@ -44,7 +50,7 @@ main (int argc, char **argv)
   GtkWidget *main_window;
   GtkWidget *frame;
   GdvLegend *test_legend;
-  GdvOnedLayer *layer;
+  GdvTwodLayer *layer;
   GdvLayerContent *content1, *content2;
   gint i;
 
@@ -63,40 +69,6 @@ main (int argc, char **argv)
   gtk_container_add (GTK_CONTAINER (main_window), GTK_WIDGET (frame));
 
   layer = g_object_new (gdv_twod_layer_get_type (), NULL);
-//  g_object_get (layer, "axis", &test_axis, NULL);
-//  g_object_set (test_axis, "scale-min-val", -100.0, NULL);
-
-//  report_axis_props (test_axis);
-
-/*
-  gint64 test_int64 = G_MAXDOUBLE;
-  gdouble test_double = G_MAXINT64;
-  g_print ("compare size: double=%d; int64=%e\n",
-    test_double, test_int64);
-
-  GTimeZone *new_timezone = g_time_zone_new_local();
-  GDateTime *curr_time = g_date_time_new_now (new_timezone);
-  g_print ("current time: %d:%d:%d %d:%d:%d\n",
-    g_date_time_get_day_of_month (curr_time),
-    g_date_time_get_month (curr_time),
-    g_date_time_get_year (curr_time),
-    g_date_time_get_hour (curr_time),
-    g_date_time_get_minute (curr_time),
-    g_date_time_get_second (curr_time));
-  test_int64 = g_date_time_to_unix (curr_time);
-  test_double = g_date_time_to_unix (curr_time);
-  g_print ("int64 Unix-time: %d\n", test_int64);
-  g_print ("double Unix-time: %e\n", test_double);
-  g_print ("TC Unix-time: %d\n", test_double);
-  GDateTime *back_time = g_date_time_new_from_unix_local (test_double);
-  g_print ("current time: %d:%d:%d %d:%d:%d\n",
-    g_date_time_get_day_of_month (back_time),
-    g_date_time_get_month (back_time),
-    g_date_time_get_year (back_time),
-    g_date_time_get_hour (back_time),
-    g_date_time_get_minute (back_time),
-    g_date_time_get_second (back_time));
-*/
 
   gtk_widget_set_name (GTK_WIDGET (layer), "test-layer");
 
@@ -124,13 +96,17 @@ main (int argc, char **argv)
       content2,
       M_PI * (gdouble) i / 200.0,
       cos (M_PI * ((gdouble) i) / 200.0), 0.0);
+//    g_print("VALS: %e %e\n", M_PI * (gdouble) i / 200.0,sin (M_PI * ((gdouble) i) / 200.0));
   }
 
   g_object_set (test_legend, "layer", layer, NULL);
 
-  gtk_widget_show_all (GTK_WIDGET (main_window));
+  gdv_twod_layer_set_xrange(layer, 0.0, 2.0 * M_PI);
+  gdv_twod_layer_set_yrange(layer, -10.0, 10.0);
 
-//  gtk_widget_queue_allocate (GTK_WIDGET (layer));
+  g_timeout_add (1000, (GSourceFunc) rename_content, content1);
+
+  gtk_widget_show_all (GTK_WIDGET (main_window));
 
   gtk_main ();
 

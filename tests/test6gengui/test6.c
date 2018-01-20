@@ -173,6 +173,13 @@ main (int argc, char **argv)
   layer = g_object_new (gdv_twod_layer_get_type(), NULL);
 //  gtk_container_add (GTK_CONTAINER (main_window), GTK_WIDGET (layer));
 
+  gtk_box_pack_start (GTK_BOX (left_box), GTK_WIDGET (layer), TRUE, TRUE, 0);
+
+  new_legend = gdv_legend_new();
+  g_object_set (new_legend, "layer", layer, NULL);
+  gtk_box_pack_start (GTK_BOX (right_box), GTK_WIDGET (new_legend), TRUE, FALSE, 2);
+
+
 //  gtk_window_set_title (GTK_WINDOW (main_window), "gdv test-app");
 
   g_signal_connect (main_window, "destroy",
@@ -260,7 +267,6 @@ main (int argc, char **argv)
   gtk_label_set_angle (GTK_LABEL (tmp_label), -90.0);
   gdv_axis_set_title_widget (GDV_AXIS (current_axis), tmp_label);
 
-  gtk_box_pack_start (GTK_BOX (left_box), GTK_WIDGET (layer), TRUE, TRUE, 0);
 //  gtk_container_add (GTK_CONTAINER (left_box), GTK_WIDGET (layer));
 
 
@@ -355,11 +361,13 @@ main (int argc, char **argv)
 //  gdv_layer_content_add_data_point (new_content, 48.0, 50.0, 50.0);
 
   gtk_widget_show(GTK_WIDGET (new_content));
-  gtk_overlay_add_overlay (GTK_OVERLAY (layer), GTK_WIDGET (new_content));
+//  gtk_overlay_add_overlay (GTK_OVERLAY (layer), GTK_WIDGET (new_content));
+  gtk_container_add (GTK_CONTAINER (layer), GTK_WIDGET (new_content));
   gtk_overlay_reorder_overlay (GTK_OVERLAY (layer), GTK_WIDGET (new_content), -1);
 
   gtk_widget_show(GTK_WIDGET (new_content2));
-  gtk_overlay_add_overlay (GTK_OVERLAY (layer), GTK_WIDGET (new_content2));
+//  gtk_overlay_add_overlay (GTK_OVERLAY (layer), GTK_WIDGET (new_content2));
+  gtk_container_add (GTK_CONTAINER (layer), GTK_WIDGET (new_content2));
   gtk_overlay_reorder_overlay (GTK_OVERLAY (layer), GTK_WIDGET (new_content2), -1);
 
 
@@ -378,14 +386,6 @@ main (int argc, char **argv)
     style_context,
     GTK_STYLE_PROVIDER (css_provider),
     GTK_STYLE_PROVIDER_PRIORITY_FALLBACK);
-/*  
-
-*/
-
-  new_legend = gdv_legend_new();
-  g_object_set (new_legend, "layer", layer, NULL);
-  gtk_box_pack_start (GTK_BOX (right_box), GTK_WIDGET (new_legend), TRUE, FALSE, 2);
-
 
 //  g_object_set (axes_list->data,
 //                "scale-auto-increment", TRUE,
@@ -569,6 +569,11 @@ main (int argc, char **argv)
 
 //  g_object_set (test_legend, "layer", layer, NULL);
 */
+
+//  new_legend = gdv_legend_new();
+//  g_object_set (new_legend, "layer", layer, NULL);
+//  gtk_box_pack_start (GTK_BOX (right_box), GTK_WIDGET (new_legend), TRUE, FALSE, 2);
+
   gtk_widget_show_all (GTK_WIDGET (main_window));
 
 //  report_axis_props (x2_axis);

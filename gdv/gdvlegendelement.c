@@ -55,6 +55,7 @@ enum
 
   PROP_CONNECTED_ELEMENT,
   PROP_SAMPLEN,
+  PROP_DESCRIPTOR,
 
   N_PROPERTIES
 };
@@ -65,6 +66,7 @@ struct _GdvLegendElementPrivate
 {
   /* list with indicators */
   GtkWidget *connected_element;
+  GtkWidget *descriptor;
 
   gint samplelen;
 };
@@ -137,11 +139,12 @@ gdv_legend_element_set_property (GObject      *object,
   case PROP_CONNECTED_ELEMENT:
     self->priv->connected_element = g_value_get_object (value);
     break;
-
   case PROP_SAMPLEN:
     self->priv->samplelen = g_value_get_int (value);
     break;
-
+  case PROP_DESCRIPTOR:
+    self->priv->descriptor = g_value_get_object (value);
+    break;
   default:
     /* unknown property */
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -163,11 +166,12 @@ gdv_legend_element_get_property (GObject    *object,
   case PROP_CONNECTED_ELEMENT:
     g_value_set_object (value, self->priv->connected_element);
     break;
-
   case PROP_SAMPLEN:
     g_value_set_int (value, self->priv->samplelen);
     break;
-
+  case PROP_DESCRIPTOR:
+    g_value_set_object (value, self->priv->descriptor);
+    break;
   default:
     /* unknown property */
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -252,6 +256,20 @@ gdv_legend_element_class_init (GdvLegendElementClass *klass)
                       20,
                       G_PARAM_READWRITE);
 
+  /**
+   * GdvLegend:descriptor:
+   *
+   * The widget to describe the legend-element. In most cases this is smply a @GtkLabel with the
+   * title of the related layer-content.
+   *
+   * Since: 0.1
+   */
+  legend_element_properties[PROP_DESCRIPTOR] =
+    g_param_spec_object ("descriptor",
+                         "the descriptor-widget",
+                         "The widget to describe the legend-element",
+                         GTK_TYPE_WIDGET,
+                         G_PARAM_READWRITE);
 
   g_object_class_install_properties (object_class,
                                      N_PROPERTIES,
