@@ -177,7 +177,27 @@ main (int argc, char **argv)
 
   new_legend = gdv_legend_new();
   g_object_set (new_legend, "layer", layer, NULL);
-  gtk_box_pack_start (GTK_BOX (right_box), GTK_WIDGET (new_legend), TRUE, FALSE, 2);
+  gtk_box_pack_start (GTK_BOX (right_box),
+                      GTK_WIDGET (new_legend),
+                      TRUE,
+                      FALSE,
+                      2);
+
+//  gemu_glib_util_connect_to_all_signals (axis_list->data,
+//                                         gemu_glib_util_show_details,
+//                                         NULL,
+//                                         NULL);
+
+//  gemu_gtk_util_signal_connect_to_widget_children (
+//    axis_list->data,
+//    gemu_glib_util_show_details,
+//    NULL, NULL);
+
+  gemu_glib_util_connect_to_all_signals (
+   G_OBJECT (layer),
+   gemu_glib_util_show_details,
+   NULL,
+   NULL);
 
 
 //  gtk_window_set_title (GTK_WINDOW (main_window), "gdv test-app");

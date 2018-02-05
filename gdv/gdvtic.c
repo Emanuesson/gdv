@@ -26,8 +26,6 @@
 
 #include <math.h>
 
-#include <gsl/gsl_math.h>
-
 /**
  * SECTION:gdvtic
  * @title: GdvTic
@@ -851,7 +849,7 @@ gdv_tic_get_space_to_tic_position (
   if (direction == GTK_POS_LEFT)
   {
     returned_space +=
-      GSL_MAX (
+      fmax (
         -1 * normalized_x_inner_dir * tics_inner_length,
         normalized_x_inner_dir *
         (tics_outer_length +
@@ -867,7 +865,7 @@ gdv_tic_get_space_to_tic_position (
   else if (direction == GTK_POS_RIGHT)
   {
     returned_space +=
-      GSL_MAX (
+      fmax (
         normalized_x_inner_dir * tics_inner_length,
         -1.0 * normalized_x_inner_dir *
         (tics_outer_length +
@@ -883,7 +881,7 @@ gdv_tic_get_space_to_tic_position (
   else if (direction == GTK_POS_TOP)
   {
     returned_space +=
-      GSL_MAX (
+      fmax (
         -1 * normalized_y_inner_dir * tics_inner_length,
         normalized_y_inner_dir *
         (tics_outer_length +
@@ -899,7 +897,7 @@ gdv_tic_get_space_to_tic_position (
   else if (direction == GTK_POS_BOTTOM)
   {
     returned_space +=
-      GSL_MAX (
+      fmax (
         normalized_y_inner_dir * (tics_inner_length),
         -1 * normalized_y_inner_dir *
         (tics_outer_length +

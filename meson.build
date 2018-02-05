@@ -57,7 +57,7 @@ src_inc = include_directories('gdv')
 cc = meson.get_compiler('c')
 
 global_c_args = []
-test_c_args = [
+gdv_test_c_args = [
   '-Wcast-align',
   '-Wdeclaration-after-statement',
   ['-Werror=format-security', '-Werror=format=2'],
@@ -79,13 +79,13 @@ test_c_args = [
   '-Wall',
 ]
 if get_option('buildtype') != 'plain'
-  test_c_args += '-fstack-protector-strong'
+  gdv_test_c_args += '-fstack-protector-strong'
 endif
 if get_option('enable_profiling')
-  test_c_args += '-pg'
+  gdv_test_c_args += '-pg'
 endif
 
-foreach arg: test_c_args
+foreach arg: gdv_test_c_args
   if cc.has_multi_arguments(arg)
     global_c_args += arg
   endif
@@ -117,7 +117,10 @@ gnome = import('gnome')
 subdir('data')
 subdir('gdv')
 subdir('data_viewer')
-subdir('tests')
+
+if get_option('enable_tests')
+  subdir('tests')
+endif
 
 if get_option('enable_gtk_doc')
   subdir('doc_in')

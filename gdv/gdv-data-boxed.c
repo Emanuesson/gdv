@@ -24,14 +24,12 @@
   #include <config.h>
 #endif
 
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_vector.h>
-#include <gsl/gsl_matrix.h>
-
 #include <math.h>
 #include <stdio.h>
 
 #include "gdv/gdv-data-boxed.h"
+
+#define SQUARE(x) ((x)*(x))
 
 /* Point element */
 /**
@@ -69,9 +67,9 @@ gdv_data_point_metric (const GdvDataPoint *point1,
                        const GdvDataPoint *point2)
 {
   return sqrt (
-    gsl_pow_2 (point1->x - point2->x) +
-    gsl_pow_2 (point1->y - point2->y) +
-    gsl_pow_2 (point1->z - point2->z)
+    SQUARE (point1->x - point2->x) +
+    SQUARE (point1->y - point2->y) +
+    SQUARE (point1->z - point2->z)
               );
 }
 
@@ -79,9 +77,9 @@ gdouble
 gdv_data_point_distance_to_origin (const GdvDataPoint *point)
 {
   return sqrt (
-    gsl_pow_2 (point->x) +
-    gsl_pow_2 (point->y) +
-    gsl_pow_2 (point->z)
+    SQUARE (point->x) +
+    SQUARE (point->y) +
+    SQUARE (point->z)
               );
 }
 
@@ -222,7 +220,7 @@ gdv_data_n_point_metric (const GdvDataNPoint *point1,
 
   for (i = 0; i < point1->N; i++)
     {
-      metric += gsl_pow_2 (point1->x [i] - point2->x [i]);
+      metric += SQUARE (point1->x [i] - point2->x [i]);
     }
 
   return metric;
@@ -282,7 +280,7 @@ gdv_data_n_point_distance_to_origin (const GdvDataNPoint *point)
 
   for (i = 0; i < point->N; i++)
     {
-      return_val += gsl_pow_2 (point->x [i]);
+      return_val += SQUARE (point->x [i]);
     }
 
   return return_val;

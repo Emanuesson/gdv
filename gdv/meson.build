@@ -39,8 +39,8 @@ libgdv_generated_headers = [
 gdvcore_headers = [
   'gdv.h',
   'gdv-data-boxed.h',
-  'gdv-data-matrix.h',
-  'gdv-data-vector.h',
+#  'gdv-data-matrix.h',
+#  'gdv-data-vector.h',
   'gdv-enums.h',
   'gdvaxis.h',
   'gdvindicator.h',
@@ -60,8 +60,8 @@ gdvcore_headers = [
 
 gdvcore_sources = [
   'gdv-data-boxed.c',
-  'gdv-data-matrix.c',
-  'gdv-data-vector.c',
+#  'gdv-data-matrix.c',
+#  'gdv-data-vector.c',
   'gdvaxis.c',
   'gdvindicator.c',
   'gdvlayer.c',
@@ -75,6 +75,7 @@ gdvcore_sources = [
   'gdvrender.c',
   'gdvtic.c',
   'gdvtwodlayer.c',
+  'gdvcentral.c',
 ]
 
 gdvcore_private = [
@@ -106,7 +107,7 @@ libgdv_deps = [
   dependency('gmodule-2.0'),
   dependency('gtk+-3.0'),
 #  dependency('gtksourceview-3.0'),
-  dependency('gsl'),
+#  dependency('gsl'),
   cc.find_library('m', required: false),
 #  cc.find_library('rt', required: false),
 #  cc.find_library('hdf5', required: false),

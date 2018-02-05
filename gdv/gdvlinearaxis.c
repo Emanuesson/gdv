@@ -25,7 +25,6 @@
 #endif
 
 #include <math.h>
-#include <gsl/gsl_math.h>
 
 #include "gdvaxis.h"
 #include "gdvlayer.h"
@@ -156,7 +155,7 @@ gdv_linear_axis_class_init (GdvLinearAxisClass *klass)
    * scale-increment-value during automatic setting. Usually this is 10.0.
    * However, in some cases it is usefull to change this value, e.g. when
    * you want to implement a time-scale with the base of 60sec or an
-   * angle-distirubtion with axis-tics on multiples of Pi.
+   * angle-distribution with axis-tics on multiples of Pi.
    *
    */
   linear_axis_properties [PROP_SC_INCR_BASE] =
@@ -182,16 +181,16 @@ gdv_linear_axis_set_property (GObject      *object,
   GdvLinearAxis *self = GDV_LINEAR_AXIS (object);
 
   switch (property_id)
-    {
-    case PROP_SC_INCR_BASE:
-      self->priv->scale_increment_base = g_value_get_double (value);
-      break;
+  {
+  case PROP_SC_INCR_BASE:
+    self->priv->scale_increment_base = g_value_get_double (value);
+    break;
 
-    default:
-      /* unknown property */
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
-    }
+  default:
+    /* unknown property */
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    break;
+  }
 }
 
 static void
@@ -203,16 +202,16 @@ gdv_linear_axis_get_property (GObject    *object,
   GdvLinearAxis *self = GDV_LINEAR_AXIS (object);
 
   switch (property_id)
-    {
-    case PROP_SC_INCR_BASE:
-      g_value_set_double (value, self->priv->scale_increment_base);
-      break;
+  {
+  case PROP_SC_INCR_BASE:
+    g_value_set_double (value, self->priv->scale_increment_base);
+    break;
 
-    default:
-      /* unknown property */
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
-    }
+  default:
+    /* unknown property */
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    break;
+  }
 }
 
 static gboolean
@@ -225,18 +224,18 @@ _is_present_in_approved_list (GdvTic *tic, GList *list)
 
   /* Removing the excess of tic s*/
   for (list_copy = list; list_copy; list_copy = list_copy->next)
-    {
-      gdouble current_tic_value;
+  {
+    gdouble current_tic_value;
 
-      g_object_get (
-        G_OBJECT (list_copy->data), "value", &current_tic_value, NULL);
+    g_object_get (
+      G_OBJECT (list_copy->data), "value", &current_tic_value, NULL);
 
-      /* FIXME: This is dangerous - it should be substituted by a more
-       *        tolerant solution
-       */
-      if (tic_value == current_tic_value)
-        return TRUE;
-    }
+    /* FIXME: This is dangerous - it should be substituted by a more
+     *        tolerant solution
+     */
+    if (tic_value == current_tic_value)
+      return TRUE;
+  }
 
   return FALSE;
 }
@@ -271,10 +270,8 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
   gdouble angle_to_outer_dir, angle_to_start;
 
   gdouble init_increment_val;
-//  gdouble   init_tic_beg_val, init_tic_end_val;
 
   gdouble inner_dir_x = 0.0, inner_dir_y = 0.0;
-//  gdouble   axis_dir_x = 0.0, axis_dir_y = 0.0;
 
   gboolean force_beg_end;
 
@@ -323,14 +320,14 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
   gboolean visible;
 
   /* Some annotations:
-   *   The allocation process is the point where axes determine the
+   *   The allocation process is the point where axes determines the
    *   available space for the tics. This process can be controlled by
    *   the user/developer with the public widget properties. The process of
    *   automatic tic-setting is rather complex. Therefore a short sketch will
    *   illustrate the several steps:
    *    - receive the properties and starting values
    *    - determine the begin and end of the scale and produce first
-   *      temporary tics for these values
+   *      temporary tics for just these two values
    *    - measure the temporary begin- and end-tics and determine the
    *      available space for the other tics assuming the current scale
    *      settings (beg-, end- and increment-values)
@@ -340,6 +337,9 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
    *      using larger increment values and repeat the measurement process
    *    - if the abortion criteria is met, the other tics wwill be added/removed
    *      from the axis and their position will be calculated and allocated
+   *    - it is definitely necessary to redetermine the space needed by the axis
+   *      after this process, due to the newly added tics. This is made by the
+   *      internal resize-during-redraw property
    */
 
   /* setting the allocation at the real beginning */
@@ -368,17 +368,8 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
     "visible", &visible,
     NULL);
 
-//  if (scale_end_val != 100.0)
-//  FIXME: This will be used to debug the retic-problem
-/*  g_print ("\n");
-  g_print ("BEGW SC %e %e TI %e %e\n",
-    scale_beg_val, scale_end_val,
-    tics_beg_val, tics_end_val);
-*/
   /* safing all necessary values */
   init_increment_val = scale_increment_val;
-//  init_tic_beg_val = tics_beg_val;
-//  init_tic_end_val = tics_end_val;
 
   init_scale_beg_val = scale_beg_val;
   init_scale_end_val = scale_end_val;
@@ -400,8 +391,6 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
   /* calculating basic geometric values */
   inner_dir_x = -1.0 * sin (angle_to_outer_dir);
   inner_dir_y = cos (angle_to_outer_dir);
-//  axis_dir_x = -1.0 * sin (angle_to_start);
-//  axis_dir_y = cos (angle_to_start);
 
   tic_label_halign = -0.5 * fabs (inner_dir_y);
   tic_label_valign = -0.5 * fabs (inner_dir_x);
@@ -411,451 +400,427 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
   /* FIXME: it might be a faster algorithm to implement the inverse case */
   set_tics =
     (tics_automatic || /* FIXME: potentially wrong! */
-     !((tics_beg_val <= GSL_MIN (scale_beg_val, scale_end_val) &&
-        tics_end_val <= GSL_MIN (scale_beg_val, scale_end_val)) ||
-       (tics_beg_val >= GSL_MAX (scale_beg_val, scale_end_val) &&
-        tics_end_val >= GSL_MAX (scale_beg_val, scale_end_val))));
+     !((tics_beg_val <= fmin (scale_beg_val, scale_end_val) &&
+        tics_end_val <= fmin (scale_beg_val, scale_end_val)) ||
+       (tics_beg_val >= fmax (scale_beg_val, scale_end_val) &&
+        tics_end_val >= fmax (scale_beg_val, scale_end_val))));
 
   if (set_tics)
+  {
+    /* looking for the beg- and end-tic */
+    tic_list = gdv_axis_get_tic_list (GDV_AXIS (linear_axis));
+    tic_list_start = tic_list;
+
+    while (tic_list)
     {
-      /* looking for the beg- and end-tic */
-      tic_list = gdv_axis_get_tic_list (GDV_AXIS (linear_axis));
-      tic_list_start = tic_list;
+      gdouble current_value;
+      g_object_get (G_OBJECT (tic_list->data), "value", &current_value, NULL);
 
-      while (tic_list)
-        {
-          gdouble current_value;
-          g_object_get (G_OBJECT (tic_list->data), "value", &current_value, NULL);
+      /* FIXME: this might not be correctly reached due to round-off errors */
+      if (current_value == tics_beg_val)
+        beg_tic = tic_list->data;
 
-          /* FIXME: this might not be correctly reached due to round-off errors */
-          if (current_value == tics_beg_val)
-            beg_tic = tic_list->data;
+      if (current_value == tics_end_val)
+        end_tic = tic_list->data;
 
-          if (current_value == tics_end_val)
-            end_tic = tic_list->data;
-
-          tic_list = tic_list->next;
-        }
-
-      g_list_free (tic_list_start);
-
-      /* if not present, make new beg- and end-tics */
-      if (!beg_tic)
-        {
-          beg_tic = g_object_new (GDV_TYPE_TIC, NULL);
-          gtk_container_add (GTK_CONTAINER (linear_axis), GTK_WIDGET (beg_tic));
-          beg_is_new = TRUE;
-        }
-
-      g_object_set (beg_tic,
-                    "axis-inner-dir-x", inner_dir_x,
-                    "axis-inner-dir-y", inner_dir_y,
-                    "label-xalign", tic_label_halign,
-                    "label-yalign", tic_label_valign,
-                    NULL);
-
-      if (!end_tic)
-        {
-          end_tic = g_object_new (GDV_TYPE_TIC, NULL);
-          gtk_container_add (GTK_CONTAINER (linear_axis), GTK_WIDGET (end_tic));
-          end_is_new = TRUE;
-        }
-
-      g_object_set (end_tic,
-                    "axis-inner-dir-x", inner_dir_x,
-                    "axis-inner-dir-y", inner_dir_y,
-                    "label-xalign", tic_label_halign,
-                    "label-yalign", tic_label_valign,
-                    NULL);
+      tic_list = tic_list->next;
     }
+
+    g_list_free (tic_list_start);
+
+    /* if not present, make new beg- and end-tics */
+    if (!beg_tic)
+    {
+      beg_tic = g_object_new (GDV_TYPE_TIC, NULL);
+      gtk_container_add (GTK_CONTAINER (linear_axis), GTK_WIDGET (beg_tic));
+      beg_is_new = TRUE;
+    }
+
+    g_object_set (beg_tic,
+                  "axis-inner-dir-x", inner_dir_x,
+                  "axis-inner-dir-y", inner_dir_y,
+                  "label-xalign", tic_label_halign,
+                  "label-yalign", tic_label_valign,
+                  NULL);
+
+    if (!end_tic)
+    {
+      end_tic = g_object_new (GDV_TYPE_TIC, NULL);
+      gtk_container_add (GTK_CONTAINER (linear_axis), GTK_WIDGET (end_tic));
+      end_is_new = TRUE;
+    }
+
+    g_object_set (end_tic,
+                  "axis-inner-dir-x", inner_dir_x,
+                  "axis-inner-dir-y", inner_dir_y,
+                  "label-xalign", tic_label_halign,
+                  "label-yalign", tic_label_valign,
+                  NULL);
+  }
 
   /* this optimises the scale-parameters, until scale-min-diff-pix are
    * reached */
   while (set_tics)
+  {
+    /* negative sign -> exponent grows, positive sign vice versa */
+    gdouble base_value =
+      pow (10.0, exponent) * (sign < 0.0 ? mantissa : 1.0 / mantissa);
+    gdouble down_scaled_difference;
+    gdouble down_scaled_beg, down_scaled_end;
+    gchar *new_tic_label;
+    gint tmp_min, tmp_nat;
+    gdouble scale_length;
+
+    /* FIXME: catch trivial case (scale_end_val == scale_beg_val) */
+//    down_scaled_difference =
+//        base_value *
+//        pow (scale_increment_base,
+//             floor (
+//               log (fabs (scale_end_val - scale_beg_val)) /
+//               log (scale_increment_base)
+//                   ));
+
+    if (sign < 0.0)
+      down_scaled_difference =
+        base_value *
+        pow (scale_increment_base,
+             floor (
+               log (fabs (scale_end_val - scale_beg_val)) /
+               log (scale_increment_base)
+                   ));
+    else
+      down_scaled_difference =
+        base_value *
+        pow (scale_increment_base,
+             ceil (
+               log (fabs (scale_end_val - scale_beg_val)) /
+               log (scale_increment_base)
+                  ));
+
+    /* FIXME: This is not usefull! */
+    if (isnan (down_scaled_difference))
     {
-      gdouble base_value =
-        pow (10.0, exponent) * (sign > 0.0 ? mantissa : 1.0 / mantissa);
-      gdouble down_scaled_difference;
-      gdouble down_scaled_beg, down_scaled_end;
-      gchar *new_tic_label;
-      gint tmp_min, tmp_nat;
-      gdouble scale_length;
-
-      /* FIXME: catch trivial case (scale_end_val == scale_beg_val) */
-      if (sign < 0.0)
-        down_scaled_difference =
-          base_value *
-          pow (scale_increment_base,
-               floor (
-                 log (fabs (scale_end_val - scale_beg_val)) /
-                 log (scale_increment_base)
-                     ));
-      else
-        down_scaled_difference =
-          base_value *
-          pow (scale_increment_base,
-               ceil (
-                 log (fabs (scale_end_val - scale_beg_val)) /
-                 log (scale_increment_base)
-                    ));
-
-//    g_print ("NEW IT: DSD %e BAV %e SCB %e SCE %e\n",
-//      down_scaled_difference, base_value, scale_beg_val, scale_end_val);
-
-      /* FIXME: This is not usefull! */
-      if (isnan (down_scaled_difference))
-        exit (0);
-
-      if (scale_auto_increment)
-        {
-          scale_increment_val = down_scaled_difference;
-          signed_scale_increment_val =
-            scale_increment_val * (scale_beg_val < scale_end_val ? 1.0 : -1.0);
-        }
-
-      /* Calculating the scale begin- and end-values */
-      if ((scale_automatic && (scale_beg_val <= scale_end_val)) ||
-          (!scale_automatic && (scale_beg_val > scale_end_val)))
-        {
-          scale_beg_val =
-            (gdouble)floor (init_scale_beg_val / scale_increment_val);
-          scale_end_val =
-            (gdouble)ceil (init_scale_end_val / scale_increment_val);
-        }
-      else
-        {
-          scale_beg_val =
-            (gdouble)ceil (init_scale_beg_val / scale_increment_val);
-          scale_end_val =
-            (gdouble)floor (init_scale_end_val / scale_increment_val);
-        }
-
-      scale_beg_val *= scale_increment_val;
-      scale_end_val *= scale_increment_val;
-
-      /* Scaling the begin and end */
-      if (scale_beg_val <= scale_end_val)
-        {
-          down_scaled_beg =
-            down_scaled_difference *
-            (gdouble)floor (scale_beg_val / down_scaled_difference);
-          down_scaled_end =
-            down_scaled_difference *
-            (gdouble)ceil (scale_end_val / down_scaled_difference);
-        }
-      else
-        {
-          down_scaled_beg =
-            down_scaled_difference *
-            (gdouble)ceil (scale_beg_val / down_scaled_difference);
-          down_scaled_end =
-            down_scaled_difference *
-            (gdouble)floor (scale_end_val / down_scaled_difference);
-        }
-
-//  FIXME: This will be used to debug the retic-problem
-/*      g_print ("SET SCV DSB %e DSE %e SCB %e SCE %e\n",
-               down_scaled_beg, down_scaled_end, scale_beg_val, scale_end_val);
-*/
-      if (scale_automatic && scale_auto_increment)
-        {
-          scale_beg_val = down_scaled_beg;
-          scale_end_val = down_scaled_end;
-        }
-
-      if (tics_automatic)
-        {
-//      tics_beg_val = down_scaled_beg;
-//      tics_end_val = down_scaled_end;
-          tics_beg_val = scale_beg_val;
-          tics_end_val = scale_end_val;
-        }
-
-//  FIXME: This will be used to debug the retic-problem
-/*      g_print ("FIN SCD %e %e TI %e %e\n",
-               scale_beg_val, scale_end_val,
-               tics_beg_val, tics_end_val);
-*/
-
-      /* set the beg/end-tic to the new value */
-      /* FIXME: This constrains the geometry-handling here... maybe there is a
-       *        more robust solution in the future
-       */
-      g_object_get (G_OBJECT (beg_tic),
-                    "value", &tmp_tics_val_beg,
-                    NULL);
-
-      if (beg_is_new)
-        {
-          g_object_set (G_OBJECT (beg_tic),
-                        "value", tics_beg_val,
-                        "visible", visible,
-                        NULL);
-          new_tic_label =
-            GDV_AXIS_GET_CLASS (GDV_AXIS (linear_axis))->make_tic_label_markup (
-              GDV_AXIS (linear_axis), tics_beg_val);
-          gdv_tic_label_set_markup (beg_tic, new_tic_label);
-          g_free (new_tic_label);
-        }
-
-      g_object_get (G_OBJECT (end_tic),
-                    "value", &tmp_tics_val_end,
-                    NULL);
-
-      if (end_is_new)
-        {
-          g_object_set (G_OBJECT (end_tic),
-                        "value", tics_end_val,
-                        "visible", visible,
-                        NULL);
-          new_tic_label =
-            GDV_AXIS_GET_CLASS (GDV_AXIS (linear_axis))->make_tic_label_markup (
-              GDV_AXIS (linear_axis), tics_end_val);
-          gdv_tic_label_set_markup (end_tic, new_tic_label);
-          g_free (new_tic_label);
-        }
-
-      /* lookup the space that the beg- and end-tic need
-       * Please remind: this is not looking for the very narrowest solution.
-       *                It's just a good way to organise the tics at minimum
-       *                cost's
-       */
-      if (force_beg_end)
-        {
-          gdouble rel_beg_x, rel_beg_y, rel_end_x, rel_end_y;
-
-          /* FIXME: This whole setup here! */
-
-          g_object_get (G_OBJECT (linear_axis),
-                        "axis-beg-pix-x", &rel_beg_x,
-                        "axis-beg-pix-y", &rel_beg_y,
-                        "axis-end-pix-x", &rel_end_x,
-                        "axis-end-pix-y", &rel_end_y,
-                        NULL);
-
-          space_without_border.x = (gint)(rel_beg_x);
-          space_without_border.y = (gint)(rel_beg_y);
-          space_without_border.width =
-            (gint)(GSL_MIN (rel_end_x - rel_beg_x, 1.0));
-          space_without_border.height =
-            (gint)(GSL_MIN (rel_end_y - rel_beg_y, 1.0));
-        }
-      else
-        {
-          gdv_tic_get_space_to_tic_position (
-            GDV_TIC (beg_tic), GTK_POS_TOP, -1, &tmp_min, &tmp_nat, NULL);
-          max_top_border = (tmp_min > tmp_nat ? tmp_min : tmp_nat);
-          gdv_tic_get_space_to_tic_position (
-            GDV_TIC (end_tic), GTK_POS_TOP, -1, &tmp_min, &tmp_nat, NULL);
-          max_top_border = (max_top_border > tmp_nat ? max_top_border : tmp_nat);
-          max_top_border = (tmp_min > max_top_border ? tmp_min : max_top_border);
-
-          gdv_tic_get_space_to_tic_position (
-            GDV_TIC (beg_tic), GTK_POS_BOTTOM, -1, &tmp_min, &tmp_nat, NULL);
-          max_bot_border = (tmp_min > tmp_nat ? tmp_min : tmp_nat);
-          gdv_tic_get_space_to_tic_position (
-            GDV_TIC (end_tic), GTK_POS_BOTTOM, -1, &tmp_min, &tmp_nat, NULL);
-          max_bot_border = (max_bot_border > tmp_nat ? max_bot_border : tmp_nat);
-          max_bot_border = (tmp_min > max_bot_border ? tmp_min : max_bot_border);
-
-          gdv_tic_get_space_to_tic_position (
-            GDV_TIC (beg_tic), GTK_POS_LEFT, -1, &tmp_min, &tmp_nat, NULL);
-          max_left_border = (tmp_min > tmp_nat ? tmp_min : tmp_nat);
-          gdv_tic_get_space_to_tic_position (
-            GDV_TIC (end_tic), GTK_POS_LEFT, -1, &tmp_min, &tmp_nat, NULL);
-          max_left_border =
-            (max_left_border > tmp_nat ? max_left_border : tmp_nat);
-          max_left_border =
-            (tmp_min > max_left_border ? tmp_min : max_left_border);
-
-          gdv_tic_get_space_to_tic_position (
-            GDV_TIC (beg_tic), GTK_POS_RIGHT, -1, &tmp_min, &tmp_nat, NULL);
-          max_right_border = (tmp_min > tmp_nat ? tmp_min : tmp_nat);
-          gdv_tic_get_space_to_tic_position (
-            GDV_TIC (end_tic), GTK_POS_RIGHT, -1, &tmp_min, &tmp_nat, NULL);
-          max_right_border =
-            (max_right_border > tmp_nat ? max_right_border : tmp_nat);
-          max_right_border =
-            (tmp_min > max_right_border ? tmp_min : max_right_border);
-
-          /* calculating the free space */
-          space_without_border.x = max_left_border;
-          space_without_border.y = max_top_border;
-          space_without_border.width =
-            allocation->width - max_left_border - max_right_border;
-          space_without_border.height =
-            allocation->height - max_top_border - max_bot_border;
-
-          /* measuring title */
-          if (axis_title_on)
-            {
-              gtk_widget_get_preferred_width (
-                title_widget, &title_width, &title_width_nat);
-              gtk_widget_get_preferred_height (
-                title_widget, &title_height, &title_height_nat);
-
-              space_without_border.width -=
-                (gint)(fabs (sin (angle_to_outer_dir)) * (gdouble)title_width);
-              space_without_border.height -=
-                (gint)(fabs (cos (angle_to_outer_dir)) * (gdouble)title_height);
-
-              if (sin (angle_to_outer_dir) < 0.0)
-                space_without_border.x +=
-                  (gint)(-1.0 * sin (angle_to_outer_dir) * (gdouble)title_width);
-
-              if (cos (angle_to_outer_dir) >= 0.0)
-                space_without_border.y +=
-                  (gint)(+1.0 * cos (angle_to_outer_dir) * (gdouble)title_height);
-            }
-
-          /* binning to zero */
-          space_without_border.width =
-            space_without_border.width < 0 ? 0 : space_without_border.width;
-          space_without_border.height =
-            space_without_border.height < 0 ? 0 : space_without_border.height;
-        }
-
-      /* FIXME: This must be adapted, if we manage the geometry-handling by the
-       * layer
-       */
-      line_height =
-        fmin (fabs (tan (0.5 * M_PI - angle_to_start)) *
-              (gdouble)(space_without_border.width + 0.5),
-              (gdouble)space_without_border.height);
-      line_width =
-        fmin (fabs (tan (angle_to_start)) *
-              (gdouble)(space_without_border.height + 0.5),
-              (gdouble)space_without_border.width);
-      line_length = sqrt (line_width * line_width + line_height * line_height);
-
-      /* compare difference to scale_min_diff_pix */
-      scale_length = fabs (scale_end_val - scale_beg_val);
-      current_diff_pix = line_length * scale_increment_val / scale_length;
-
-//    g_print ("REACHPOS W CDP %f SID %d SAD %d\n",
-//      current_diff_pix, scale_min_diff_pix, scale_max_diff_pix);
-
-      /* aborting criteria - optimisation successful */
-      if (((current_diff_pix < (gdouble)scale_min_diff_pix &&
-            sign < 0.0) ||
-           (current_diff_pix > (gdouble)scale_max_diff_pix &&
-            sign > 0.0)) &&
-          !first_iteration)
-//      g_print ("BREAK\n");
-//      if ((!scale_automatic))
-        break;
-      /* autoscaling successfull; setting all parameters to the axis */
-      else if ((current_diff_pix >= (gdouble)scale_min_diff_pix &&
-                current_diff_pix <= (gdouble)scale_max_diff_pix))
-        {
-//      g_print ("SUCC SET\n");
-
-          if (scale_auto_increment)
-            g_object_set (G_OBJECT (linear_axis),
-                          "scale-increment-val", scale_increment_val,
-                          NULL);
-
-          if (scale_automatic)
-            g_object_set (G_OBJECT (linear_axis),
-                          "scale-beg-val", scale_beg_val,
-                          "scale-end-val", scale_end_val,
-                          NULL);
-
-          if (tics_automatic)
-            g_object_set (G_OBJECT (linear_axis),
-                          "tics-beg-val", tics_beg_val,
-                          "tics-end-val", tics_end_val,
-                          NULL);
-
-          /* this is a nasty hack to prevent wrong settings for a correct
-           * solution */
-          first_iteration = FALSE;
-        }
-
-      if (first_iteration)
-        {
-          if (current_diff_pix >= (gdouble)scale_min_diff_pix)
-            sign = -1.0;
-          else
-            {
-              exponent = -1.0;
-              sign = 1.0;
-            }
-        }
-
-      if (first_iteration && sign > 0.0)
-        {
-          first_iteration = FALSE;
-//      g_print ("FIRST ITER CONT\n");
-          continue;
-        }
-      else
-        first_iteration = FALSE;
-
-      /* abort if the style-property cannot be reached */
-      /* FIXME: the statement in the last line implies, that there will be no
-       * changes to scale_increment_val under the conditions, even if necessary!
-       * Thats unlikeliy to be correct - however, it is a very fast fix to the
-       * issue.
-       */
-      if (((down_scaled_difference == fabs (down_scaled_end - down_scaled_beg)) &&
-           ((current_diff_pix < (gdouble)scale_min_diff_pix) ||
-            (sign > 0.0))) ||
-          !scale_auto_increment || force_beg_end ||
-          (!scale_automatic))
-        {
-//      g_print ("SUCC2 SET\n");
-
-          if (scale_auto_increment)
-            g_object_set (G_OBJECT (linear_axis),
-                          "scale-increment-val", scale_increment_val,
-                          NULL);
-
-          if (scale_automatic)
-            g_object_set (G_OBJECT (linear_axis),
-                          "scale-beg-val", scale_beg_val,
-                          "scale-end-val", scale_end_val,
-                          NULL);
-
-          if (tics_automatic)
-            g_object_set (G_OBJECT (linear_axis),
-                          "tics-beg-val", tics_beg_val,
-                          "tics-end-val", tics_end_val,
-                          NULL);
-
-          if (gtk_widget_get_realized (widget) &&
-              !scale_auto_increment &&
-              (current_diff_pix < (gdouble)scale_min_diff_pix ||
-               current_diff_pix > (gdouble)scale_max_diff_pix))
-            g_warning ("Style-property GdvAxis::scale-min-diff-pix or "
-                       "GdvAxis::scale-max-diff-pix cannot be fullfilled. "
-                       "Reconsider change of automatic axis-properties");
-
-          break;
-        }
-
-      /* preparing the next base value */
-      if (mantissa == 1.0)
-        mantissa = 2.0;
-      else if (mantissa == 2.0)
-        mantissa = 4.0;
-      else if (mantissa == 4.0)
-        mantissa = 5.0;
-      else if (mantissa == 5.0)
-        {
-          mantissa = 1.0;
-
-          if (sign > 0.0)
-            exponent++;
-          else
-            exponent--;
-        }
+      g_warning ("Unhandled problem with the linear-axis, this should be reworked internally\n");
+      return;
     }
 
-//  if (scale_end_val != 100.0)
-//    g_print ("BEFR SC %e %e TI %e %e\n",
-//      scale_beg_val, scale_end_val,
-//      tics_beg_val, tics_end_val);
+    if (scale_auto_increment)
+    {
+      scale_increment_val = down_scaled_difference;
+      signed_scale_increment_val =
+        scale_increment_val * (scale_beg_val < scale_end_val ? 1.0 : -1.0);
+    }
+
+    /* Calculating the scale begin- and end-values */
+    if ((scale_automatic && (scale_beg_val <= scale_end_val)) ||
+        (!scale_automatic && (scale_beg_val > scale_end_val)))
+    {
+      scale_beg_val =
+        (gdouble)floor (init_scale_beg_val / scale_increment_val);
+      scale_end_val =
+        (gdouble)ceil (init_scale_end_val / scale_increment_val);
+    }
+    else
+    {
+      scale_beg_val =
+        (gdouble)ceil (init_scale_beg_val / scale_increment_val);
+      scale_end_val =
+        (gdouble)floor (init_scale_end_val / scale_increment_val);
+    }
+
+    scale_beg_val *= scale_increment_val;
+    scale_end_val *= scale_increment_val;
+
+    /* Scaling the begin and end */
+    if (scale_beg_val <= scale_end_val)
+    {
+      down_scaled_beg =
+        down_scaled_difference *
+        (gdouble)floor (scale_beg_val / down_scaled_difference);
+      down_scaled_end =
+        down_scaled_difference *
+        (gdouble)ceil (scale_end_val / down_scaled_difference);
+    }
+    else
+    {
+      down_scaled_beg =
+        down_scaled_difference *
+        (gdouble)ceil (scale_beg_val / down_scaled_difference);
+      down_scaled_end =
+        down_scaled_difference *
+        (gdouble)floor (scale_end_val / down_scaled_difference);
+    }
+
+    if (scale_automatic && scale_auto_increment)
+    {
+      scale_beg_val = down_scaled_beg;
+      scale_end_val = down_scaled_end;
+    }
+
+    if (tics_automatic)
+    {
+      tics_beg_val = scale_beg_val;
+      tics_end_val = scale_end_val;
+    }
+
+    /* set the beg/end-tic to the new value */
+    /* FIXME: This constrains the geometry-handling here... maybe there is a
+     *        more robust solution in the future
+     */
+    g_object_get (G_OBJECT (beg_tic),
+                  "value", &tmp_tics_val_beg,
+                  NULL);
+
+    if (beg_is_new)
+    {
+      g_object_set (G_OBJECT (beg_tic),
+                    "value", tics_beg_val,
+                    "visible", visible,
+                    NULL);
+      new_tic_label =
+        GDV_AXIS_GET_CLASS (GDV_AXIS (linear_axis))->make_tic_label_markup (
+          GDV_AXIS (linear_axis), tics_beg_val);
+      gdv_tic_label_set_markup (beg_tic, new_tic_label);
+      g_free (new_tic_label);
+    }
+
+    g_object_get (G_OBJECT (end_tic),
+                  "value", &tmp_tics_val_end,
+                  NULL);
+
+    if (end_is_new)
+    {
+      g_object_set (G_OBJECT (end_tic),
+                    "value", tics_end_val,
+                    "visible", visible,
+                    NULL);
+      new_tic_label =
+        GDV_AXIS_GET_CLASS (GDV_AXIS (linear_axis))->make_tic_label_markup (
+          GDV_AXIS (linear_axis), tics_end_val);
+      gdv_tic_label_set_markup (end_tic, new_tic_label);
+      g_free (new_tic_label);
+    }
+
+    /* lookup the space that the beg- and end-tic need
+     * Please remind: this is not looking for the very narrowest solution.
+     *                It's just a good way to organise the tics at minimum
+     *                cost's
+     */
+    if (force_beg_end)
+    {
+      gdouble rel_beg_x, rel_beg_y, rel_end_x, rel_end_y;
+
+      /* FIXME: This whole setup here! */
+
+      g_object_get (G_OBJECT (linear_axis),
+                    "axis-beg-pix-x", &rel_beg_x,
+                    "axis-beg-pix-y", &rel_beg_y,
+                    "axis-end-pix-x", &rel_end_x,
+                    "axis-end-pix-y", &rel_end_y,
+                    NULL);
+
+      space_without_border.x = (gint)(rel_beg_x);
+      space_without_border.y = (gint)(rel_beg_y);
+      space_without_border.width =
+        (gint)(fmin (rel_end_x - rel_beg_x, 1.0));
+      space_without_border.height =
+        (gint)(fmin (rel_end_y - rel_beg_y, 1.0));
+    }
+    else
+    {
+      gdv_tic_get_space_to_tic_position (
+        GDV_TIC (beg_tic), GTK_POS_TOP, -1, &tmp_min, &tmp_nat, NULL);
+      max_top_border = (tmp_min > tmp_nat ? tmp_min : tmp_nat);
+      gdv_tic_get_space_to_tic_position (
+        GDV_TIC (end_tic), GTK_POS_TOP, -1, &tmp_min, &tmp_nat, NULL);
+      max_top_border = (max_top_border > tmp_nat ? max_top_border : tmp_nat);
+      max_top_border = (tmp_min > max_top_border ? tmp_min : max_top_border);
+
+      gdv_tic_get_space_to_tic_position (
+        GDV_TIC (beg_tic), GTK_POS_BOTTOM, -1, &tmp_min, &tmp_nat, NULL);
+      max_bot_border = (tmp_min > tmp_nat ? tmp_min : tmp_nat);
+      gdv_tic_get_space_to_tic_position (
+        GDV_TIC (end_tic), GTK_POS_BOTTOM, -1, &tmp_min, &tmp_nat, NULL);
+      max_bot_border = (max_bot_border > tmp_nat ? max_bot_border : tmp_nat);
+      max_bot_border = (tmp_min > max_bot_border ? tmp_min : max_bot_border);
+
+      gdv_tic_get_space_to_tic_position (
+        GDV_TIC (beg_tic), GTK_POS_LEFT, -1, &tmp_min, &tmp_nat, NULL);
+      max_left_border = (tmp_min > tmp_nat ? tmp_min : tmp_nat);
+      gdv_tic_get_space_to_tic_position (
+        GDV_TIC (end_tic), GTK_POS_LEFT, -1, &tmp_min, &tmp_nat, NULL);
+      max_left_border =
+        (max_left_border > tmp_nat ? max_left_border : tmp_nat);
+      max_left_border =
+        (tmp_min > max_left_border ? tmp_min : max_left_border);
+
+      gdv_tic_get_space_to_tic_position (
+        GDV_TIC (beg_tic), GTK_POS_RIGHT, -1, &tmp_min, &tmp_nat, NULL);
+      max_right_border = (tmp_min > tmp_nat ? tmp_min : tmp_nat);
+      gdv_tic_get_space_to_tic_position (
+        GDV_TIC (end_tic), GTK_POS_RIGHT, -1, &tmp_min, &tmp_nat, NULL);
+      max_right_border =
+        (max_right_border > tmp_nat ? max_right_border : tmp_nat);
+      max_right_border =
+        (tmp_min > max_right_border ? tmp_min : max_right_border);
+
+      /* calculating the free space */
+      space_without_border.x = max_left_border;
+      space_without_border.y = max_top_border;
+      space_without_border.width =
+        allocation->width - max_left_border - max_right_border;
+      space_without_border.height =
+        allocation->height - max_top_border - max_bot_border;
+
+      /* measuring title */
+      if (axis_title_on)
+      {
+        gtk_widget_get_preferred_width (
+          title_widget, &title_width, &title_width_nat);
+        gtk_widget_get_preferred_height (
+          title_widget, &title_height, &title_height_nat);
+
+        space_without_border.width -=
+          (gint)(fabs (sin (angle_to_outer_dir)) * (gdouble)title_width);
+        space_without_border.height -=
+          (gint)(fabs (cos (angle_to_outer_dir)) * (gdouble)title_height);
+
+        if (sin (angle_to_outer_dir) < 0.0)
+          space_without_border.x +=
+            (gint)(-1.0 * sin (angle_to_outer_dir) * (gdouble)title_width);
+
+        if (cos (angle_to_outer_dir) >= 0.0)
+          space_without_border.y +=
+            (gint)(+1.0 * cos (angle_to_outer_dir) * (gdouble)title_height);
+      }
+
+      /* binning to zero */
+      space_without_border.width =
+        space_without_border.width < 0 ? 0 : space_without_border.width;
+      space_without_border.height =
+        space_without_border.height < 0 ? 0 : space_without_border.height;
+    }
+
+    /* FIXME: This must be adapted, if we manage the geometry-handling by the
+     * layer
+     */
+    line_height =
+      fmin (fabs (tan (0.5 * M_PI - angle_to_start)) *
+            (gdouble)(space_without_border.width + 0.5),
+            (gdouble)space_without_border.height);
+    line_width =
+      fmin (fabs (tan (angle_to_start)) *
+            (gdouble)(space_without_border.height + 0.5),
+            (gdouble)space_without_border.width);
+    line_length = sqrt (line_width * line_width + line_height * line_height);
+
+    /* compare difference to scale_min_diff_pix */
+    scale_length = fabs (scale_end_val - scale_beg_val);
+    current_diff_pix = line_length * scale_increment_val / scale_length;
+
+    /* aborting criteria - optimisation successful */
+    if (((current_diff_pix < (gdouble)scale_min_diff_pix &&
+          sign > 0.0) ||
+         (current_diff_pix > (gdouble)scale_max_diff_pix &&
+          sign < 0.0)) &&
+        !first_iteration)
+      break;
+    /* autoscaling successfull; setting all parameters to the axis */
+    else if ((current_diff_pix >= (gdouble)scale_min_diff_pix &&
+              current_diff_pix <= (gdouble)scale_max_diff_pix))
+    {
+
+      if (scale_auto_increment)
+        g_object_set (G_OBJECT (linear_axis),
+                      "scale-increment-val", scale_increment_val,
+                      NULL);
+
+      if (scale_automatic)
+        g_object_set (G_OBJECT (linear_axis),
+                      "scale-beg-val", scale_beg_val,
+                      "scale-end-val", scale_end_val,
+                      NULL);
+
+      if (tics_automatic)
+        g_object_set (G_OBJECT (linear_axis),
+                      "tics-beg-val", tics_beg_val,
+                      "tics-end-val", tics_end_val,
+                      NULL);
+
+      /* this is a nasty hack to prevent wrong settings for a correct
+       * solution */
+      first_iteration = FALSE;
+    }
+
+    /* abort if the style-property cannot be reached */
+    /* FIXME: the statement in the last line implies, that there will be no
+     * changes to scale_increment_val under the conditions, even if necessary!
+     * Thats unlikeliy to be correct - however, it is a very fast fix to the
+     * issue.
+     */
+    if (((down_scaled_difference == fabs (down_scaled_end - down_scaled_beg)) &&
+         (((current_diff_pix < (gdouble)scale_min_diff_pix) ||
+          (!first_iteration && sign > 0.0))||
+          ((current_diff_pix > (gdouble)scale_max_diff_pix) ||
+          (!first_iteration && sign < 0.0)))) ||
+        !scale_auto_increment || force_beg_end || !scale_automatic)
+    {
+      if (scale_auto_increment)
+        g_object_set (G_OBJECT (linear_axis),
+                      "scale-increment-val", scale_increment_val,
+                      NULL);
+
+      if (scale_automatic)
+        g_object_set (G_OBJECT (linear_axis),
+                      "scale-beg-val", scale_beg_val,
+                      "scale-end-val", scale_end_val,
+                      NULL);
+
+      if (tics_automatic)
+        g_object_set (G_OBJECT (linear_axis),
+                      "tics-beg-val", tics_beg_val,
+                      "tics-end-val", tics_end_val,
+                      NULL);
+
+      if (gtk_widget_get_realized (widget) &&
+          !scale_auto_increment &&
+          (current_diff_pix < (gdouble)scale_min_diff_pix ||
+           current_diff_pix > (gdouble)scale_max_diff_pix))
+        g_warning ("Style-property GdvAxis::scale-min-diff-pix or "
+                   "GdvAxis::scale-max-diff-pix cannot be fullfilled. "
+                   "Reconsider change of automatic axis-properties");
+
+      break;
+    }
+
+    /* setting the sign-value */
+    if (first_iteration &&
+        current_diff_pix <= (gdouble)scale_min_diff_pix)
+      sign = -1.0;
+    else if (first_iteration)
+    {
+      sign = 1.0;
+    }
+
+    /* preparing the next base value */
+    if (mantissa == 1.0)
+      mantissa = 2.0;
+    else if (mantissa == 2.0)
+      mantissa = 4.0;
+    else if (mantissa == 4.0)
+      mantissa = 5.0;
+    else if (mantissa == 5.0)
+    {
+      mantissa = 1.0;
+
+      if (sign < 0.0)
+        exponent++;
+      else
+        exponent--;
+    }
+
+    first_iteration = FALSE;
+  }
 
   /* Restoring properties after break condition */
   g_object_get (G_OBJECT (linear_axis),
@@ -870,52 +835,47 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
                 "tics-end-val", &tics_end_val,
                 NULL);
 
-//  if (scale_end_val != 100.0)
-//    g_print ("AFTR SC %e %e TI %e %e\n",
-//      scale_beg_val, scale_end_val,
-//      tics_beg_val, tics_end_val);
-
   if (set_tics)
+  {
+    /* Just in case the scale is different from last settings */
+    g_object_get (G_OBJECT (beg_tic),
+                  "value", &tmp_tics_val_beg,
+                  NULL);
+
+    if (init_increment_val != scale_increment_val ||
+        tmp_tics_val_beg != tics_beg_val)
     {
-      /* Just in case the scale is different from last settings */
-      g_object_get (G_OBJECT (beg_tic),
-                    "value", &tmp_tics_val_beg,
+      gchar *new_tic_label =
+        GDV_AXIS_GET_CLASS (GDV_AXIS (linear_axis))->make_tic_label_markup (
+          GDV_AXIS (linear_axis), tics_beg_val);
+      gdv_tic_label_set_markup (beg_tic, new_tic_label);
+      g_free (new_tic_label);
+
+      g_object_set (G_OBJECT (beg_tic),
+                    "value", tics_beg_val,
+                    "visible", visible,
                     NULL);
-
-      if (init_increment_val != scale_increment_val ||
-          tmp_tics_val_beg != tics_beg_val)
-        {
-          gchar *new_tic_label =
-            GDV_AXIS_GET_CLASS (GDV_AXIS (linear_axis))->make_tic_label_markup (
-              GDV_AXIS (linear_axis), tics_beg_val);
-          gdv_tic_label_set_markup (beg_tic, new_tic_label);
-          g_free (new_tic_label);
-
-          g_object_set (G_OBJECT (beg_tic),
-                        "value", tics_beg_val,
-                        "visible", visible,
-                        NULL);
-        }
-
-      g_object_get (G_OBJECT (end_tic),
-                    "value", &tmp_tics_val_end,
-                    NULL);
-
-      if (init_increment_val != scale_increment_val ||
-          tmp_tics_val_end != tics_end_val)
-        {
-          gchar *new_tic_label =
-            GDV_AXIS_GET_CLASS (GDV_AXIS (linear_axis))->make_tic_label_markup (
-              GDV_AXIS (linear_axis), tics_end_val);
-          gdv_tic_label_set_markup (end_tic, new_tic_label);
-          g_free (new_tic_label);
-
-          g_object_set (G_OBJECT (end_tic),
-                        "value", tics_end_val,
-                        "visible", visible,
-                        NULL);
-        }
     }
+
+    g_object_get (G_OBJECT (end_tic),
+                  "value", &tmp_tics_val_end,
+                  NULL);
+
+    if (init_increment_val != scale_increment_val ||
+        tmp_tics_val_end != tics_end_val)
+    {
+      gchar *new_tic_label =
+        GDV_AXIS_GET_CLASS (GDV_AXIS (linear_axis))->make_tic_label_markup (
+          GDV_AXIS (linear_axis), tics_end_val);
+      gdv_tic_label_set_markup (end_tic, new_tic_label);
+      g_free (new_tic_label);
+
+      g_object_set (G_OBJECT (end_tic),
+                    "value", tics_end_val,
+                    "visible", visible,
+                    NULL);
+    }
+  }
 
   signed_scale_increment_val =
     scale_increment_val * (scale_beg_val < scale_end_val ? 1.0 : -1.0);
@@ -924,32 +884,32 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
    * (will adjust automatically to the base)
    */
   if (mtics_automatic && set_tics)
-    {
-      mtics_beg_val = scale_beg_val;
-      mtics_end_val = scale_end_val;
+  {
+    mtics_beg_val = scale_beg_val;
+    mtics_end_val = scale_end_val;
 
-      exponent = floor (log (scale_increment_val) / log (scale_increment_base));
-      mantissa = scale_increment_val / pow (scale_increment_base, exponent);
+    exponent = floor (log (scale_increment_val) / log (scale_increment_base));
+    mantissa = scale_increment_val / pow (scale_increment_base, exponent);
 
-      /* This is just a best practice, if a different engine of automatism is
-       * required, it should be implemented by an own class-type.
-       */
-      if (mantissa == 2.5 || mantissa == 5.0)
-        mtics_number = 4;
-      else if (mantissa == 4.0 || mantissa == 2.0)
-        mtics_number = 3;
-      else if (mantissa == 1.0)
-        mtics_number = 9;
-      else
-        /* FIXME: make this somehow usefull! */
-        mtics_number = 3;
+    /* This is just a best practice, if a different engine of automatism is
+     * required, it should be implemented by an own class-type.
+     */
+    if (mantissa == 2.5 || mantissa == 5.0)
+      mtics_number = 4;
+    else if (mantissa == 4.0 || mantissa == 2.0)
+      mtics_number = 3;
+    else if (mantissa == 1.0)
+      mtics_number = 9;
+    else
+      /* FIXME: make this somehow usefull! */
+      mtics_number = 3;
 
-      g_object_set (G_OBJECT (linear_axis),
-                    "mtics", mtics_number,
-                    "mtics-beg-val", mtics_beg_val,
-                    "mtics-end-val", mtics_end_val,
-                    NULL);
-    }
+    g_object_set (G_OBJECT (linear_axis),
+                  "mtics", mtics_number,
+                  "mtics-beg-val", mtics_beg_val,
+                  "mtics-end-val", mtics_end_val,
+                  NULL);
+  }
 
   /*
    * FIXME: This should check for any doubled values!
@@ -959,29 +919,29 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
   tics_copy = previouse_tics;
 
   while (tics_copy)
-    {
-      gdouble local_tic_value;
-      gdouble local_val_resid;
+  {
+    gdouble local_tic_value;
+    gdouble local_val_resid;
 
-      g_object_get (tics_copy->data, "value", &local_tic_value, NULL);
-      local_val_resid =
-        fmod ((local_tic_value - tics_beg_val) / signed_scale_increment_val, 1.0);
+    g_object_get (tics_copy->data, "value", &local_tic_value, NULL);
+    local_val_resid =
+      fmod ((local_tic_value - tics_beg_val) / signed_scale_increment_val, 1.0);
 
-      if (local_tic_value < GSL_MIN (tics_beg_val, tics_end_val) ||
-          local_tic_value < GSL_MIN (scale_beg_val, scale_end_val) ||
-          local_tic_value > GSL_MAX (tics_beg_val, tics_end_val) ||
-          local_tic_value > GSL_MAX (scale_beg_val, scale_end_val) ||
-          !((local_val_resid < 1e-13 && local_val_resid > -1e-13) ||
-            ((1.0 - local_val_resid) < 1e-13 &&
-             (1.0 - local_val_resid) > -1e-13)) ||
-          _is_present_in_approved_list (tics_copy->data, tics_approved_list))
-        /* TODO: separate the round-off problems to own function */
-        gtk_container_remove (GTK_CONTAINER (linear_axis), tics_copy->data);
-      else
-        tics_approved_list = g_list_append (tics_approved_list, tics_copy->data);
+    if (local_tic_value < fmin (tics_beg_val, tics_end_val) ||
+        local_tic_value < fmin (scale_beg_val, scale_end_val) ||
+        local_tic_value > fmax (tics_beg_val, tics_end_val) ||
+        local_tic_value > fmax (scale_beg_val, scale_end_val) ||
+        !((local_val_resid < 1e-13 && local_val_resid > -1e-13) ||
+          ((1.0 - local_val_resid) < 1e-13 &&
+           (1.0 - local_val_resid) > -1e-13)) ||
+        _is_present_in_approved_list (tics_copy->data, tics_approved_list))
+      /* TODO: separate the round-off problems to own function */
+      gtk_container_remove (GTK_CONTAINER (linear_axis), tics_copy->data);
+    else
+      tics_approved_list = g_list_append (tics_approved_list, tics_copy->data);
 
-      tics_copy = tics_copy->next;
-    }
+    tics_copy = tics_copy->next;
+  }
 
   g_list_free (previouse_tics);
   g_list_free (tics_approved_list);
@@ -995,34 +955,34 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
   mtics_copy = previouse_mtics;
 
   while (mtics_copy)
-    {
-      gdouble local_mtic_value;
-      gdouble local_val_resid, local_mtic_resid;
+  {
+    gdouble local_mtic_value;
+    gdouble local_val_resid, local_mtic_resid;
 
-      g_object_get (mtics_copy->data, "value", &local_mtic_value, NULL);
-      local_val_resid =
-        fmod (local_mtic_value - tics_beg_val, signed_scale_increment_val);
-      local_mtic_resid =
-        fmod (local_val_resid / (scale_increment_val / (mtics_number + 1)), 1.0);
+    g_object_get (mtics_copy->data, "value", &local_mtic_value, NULL);
+    local_val_resid =
+      fmod (local_mtic_value - tics_beg_val, signed_scale_increment_val);
+    local_mtic_resid =
+      fmod (local_val_resid / (scale_increment_val / (mtics_number + 1)), 1.0);
 
-      if (local_mtic_value < GSL_MIN (mtics_beg_val, mtics_end_val) ||
-          local_mtic_value < GSL_MIN (scale_beg_val, scale_end_val) ||
-          local_mtic_value > GSL_MAX (mtics_beg_val, mtics_end_val) ||
-          local_mtic_value > GSL_MAX (scale_beg_val, scale_end_val) ||
-          !((local_mtic_resid < 1e-13 && local_mtic_resid > -1e-13) ||
-            ((1.0 - local_mtic_resid) < 1e-13 &&
-             (1.0 - local_mtic_resid) > -1e-13)) ||
-          fabs (local_val_resid / scale_increment_val) < 1e-13 ||
-          fabs ((scale_increment_val - local_val_resid) /
-                scale_increment_val) < 1e-13 ||
-          _is_present_in_approved_list (mtics_copy->data, tics_approved_list))
-        /* round-off problems */
-        gtk_container_remove (GTK_CONTAINER (linear_axis), mtics_copy->data);
-      else
-        tics_approved_list = g_list_append (tics_approved_list, mtics_copy->data);
+    if (local_mtic_value < fmin (mtics_beg_val, mtics_end_val) ||
+        local_mtic_value < fmin (scale_beg_val, scale_end_val) ||
+        local_mtic_value > fmax (mtics_beg_val, mtics_end_val) ||
+        local_mtic_value > fmax (scale_beg_val, scale_end_val) ||
+        !((local_mtic_resid < 1e-13 && local_mtic_resid > -1e-13) ||
+          ((1.0 - local_mtic_resid) < 1e-13 &&
+           (1.0 - local_mtic_resid) > -1e-13)) ||
+        fabs (local_val_resid / scale_increment_val) < 1e-13 ||
+        fabs ((scale_increment_val - local_val_resid) /
+              scale_increment_val) < 1e-13 ||
+        _is_present_in_approved_list (mtics_copy->data, tics_approved_list))
+      /* round-off problems */
+      gtk_container_remove (GTK_CONTAINER (linear_axis), mtics_copy->data);
+    else
+      tics_approved_list = g_list_append (tics_approved_list, mtics_copy->data);
 
-      mtics_copy = mtics_copy->next;
-    }
+    mtics_copy = mtics_copy->next;
+  }
 
   g_list_free (previouse_mtics);
   g_list_free (tics_approved_list);
@@ -1032,192 +992,192 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
   actual_pos_val = tics_beg_val - signed_scale_increment_val;
 
   if (set_tics)
+  {
+    gint i;
+
+    /* Setting the mtics */
+    previouse_mtics = gdv_axis_get_mtic_list (GDV_AXIS (linear_axis));
+
+    for (i = 1; i < mtics_number + 1; i++)
     {
-      gint i;
+      GdvTic *local_mtic = NULL;
+      gdouble local_mtic_val =
+        actual_pos_val + i * signed_scale_increment_val / (mtics_number + 1);
 
-      /* Setting the mtics */
-      previouse_mtics = gdv_axis_get_mtic_list (GDV_AXIS (linear_axis));
+      /* get the correct mtic and check and delete all unnecessary mtics of
+       * the axis-instance!
+       */
+      mtics_copy = previouse_mtics;
 
-      for (i = 1; i < mtics_number + 1; i++)
+      while (mtics_copy)
+      {
+        gdouble local_mtic_value;
+
+        gdouble local_val_resid;
+
+        /* floating-point precision struggle */
+        g_object_get (mtics_copy->data, "value", &local_mtic_value, NULL);
+
+        local_val_resid =
+          (local_mtic_value - local_mtic_val) / scale_increment_val;
+
+        if (local_val_resid < 1e-13 && local_val_resid > -1e-13)
         {
-          GdvTic *local_mtic = NULL;
-          gdouble local_mtic_val =
-            actual_pos_val + i * signed_scale_increment_val / (mtics_number + 1);
-
-          /* get the correct mtic and check and delete all unnecessary mtics of
-           * the axis-instance!
-           */
-          mtics_copy = previouse_mtics;
-
-          while (mtics_copy)
-            {
-              gdouble local_mtic_value;
-
-              gdouble local_val_resid;
-
-              /* floating-point precision struggle */
-              g_object_get (mtics_copy->data, "value", &local_mtic_value, NULL);
-
-              local_val_resid =
-                (local_mtic_value - local_mtic_val) / scale_increment_val;
-
-              if (local_val_resid < 1e-13 && local_val_resid > -1e-13)
-                {
-                  local_mtic = mtics_copy->data;
-                  break;
-                }
-
-              mtics_copy = mtics_copy->next;
-            }
-
-          /* we are not discussing about one pixel again ! */
-          if (
-            local_mtic_val <= GSL_MAX (mtics_end_val, mtics_beg_val) &&
-            local_mtic_val <= GSL_MAX (scale_beg_val, scale_end_val) &&
-            local_mtic_val >= GSL_MIN (mtics_end_val, mtics_beg_val) &&
-            local_mtic_val >= GSL_MIN (scale_beg_val, scale_end_val))
-            {
-              if (!local_mtic)
-                {
-                  local_mtic =
-                    g_object_new (gdv_mtic_get_type (),
-                                  "value", local_mtic_val,
-                                  "visible", visible,
-                                  NULL);
-                  gtk_container_add (
-                    GTK_CONTAINER (linear_axis), GTK_WIDGET (local_mtic));
-                }
-            }
-          else if (local_mtic)
-            gtk_container_remove (GTK_CONTAINER (linear_axis),
-                                  GTK_WIDGET (local_mtic));
+          local_mtic = mtics_copy->data;
+          break;
         }
 
-      g_list_free (previouse_mtics);
+        mtics_copy = mtics_copy->next;
+      }
+
+      /* we are not discussing about one pixel again ! */
+      if (
+        local_mtic_val <= fmax (mtics_end_val, mtics_beg_val) &&
+        local_mtic_val <= fmax (scale_beg_val, scale_end_val) &&
+        local_mtic_val >= fmin (mtics_end_val, mtics_beg_val) &&
+        local_mtic_val >= fmin (scale_beg_val, scale_end_val))
+      {
+        if (!local_mtic)
+        {
+          local_mtic =
+            g_object_new (gdv_mtic_get_type (),
+                          "value", local_mtic_val,
+                          "visible", visible,
+                          NULL);
+          gtk_container_add (
+            GTK_CONTAINER (linear_axis), GTK_WIDGET (local_mtic));
+        }
+      }
+      else if (local_mtic)
+        gtk_container_remove (GTK_CONTAINER (linear_axis),
+                              GTK_WIDGET (local_mtic));
     }
+
+    g_list_free (previouse_mtics);
+  }
 
   actual_pos_val = tics_beg_val;
 
   /* adding axis-tics */
-  while (actual_pos_val <= GSL_MAX (tics_end_val, tics_beg_val) &&
-         actual_pos_val <= GSL_MAX (scale_beg_val, scale_end_val) &&
-         actual_pos_val >= GSL_MIN (tics_end_val, tics_beg_val) &&
-         actual_pos_val >= GSL_MIN (scale_beg_val, scale_end_val) &&
+  while (actual_pos_val <= fmax (tics_end_val, tics_beg_val) &&
+         actual_pos_val <= fmax (scale_beg_val, scale_end_val) &&
+         actual_pos_val >= fmin (tics_end_val, tics_beg_val) &&
+         actual_pos_val >= fmin (scale_beg_val, scale_end_val) &&
          set_tics)
-    {
-      GdvTic *local_tic = NULL;
-      gint i;
+  {
+    GdvTic *local_tic = NULL;
+    gint i;
 
-      /* get the correct mtic and check and delete all unnecessary tics of
+    /* get the correct mtic and check and delete all unnecessary tics of
+     * the axis-instance!
+     */
+    previouse_tics = gdv_axis_get_tic_list (GDV_AXIS (linear_axis));
+    tics_copy = previouse_tics;
+
+    while (tics_copy)
+    {
+      gdouble local_tic_value;
+      gdouble local_val_resid;
+
+      /* floating-point precision struggle */
+      g_object_get (tics_copy->data, "value", &local_tic_value, NULL);
+
+      local_val_resid =
+        fabs (actual_pos_val - local_tic_value) / scale_increment_val;
+
+      if (local_val_resid < 1e-13 && local_val_resid > -1e-13)
+      {
+        local_tic = tics_copy->data;
+        break;
+      }
+
+      tics_copy = tics_copy->next;
+    }
+
+    g_list_free (previouse_tics);
+
+    if (!local_tic)
+    {
+      gchar *new_tic_label;
+
+      local_tic =
+        g_object_new (gdv_tic_get_type (),
+                      "value", actual_pos_val,
+                      "visible", visible,
+                      NULL);
+      new_tic_label =
+        GDV_AXIS_GET_CLASS (GDV_AXIS (linear_axis))->make_tic_label_markup (
+          GDV_AXIS (linear_axis), actual_pos_val);
+
+      gdv_tic_label_set_markup (local_tic, new_tic_label);
+      g_free (new_tic_label);
+
+      gtk_container_add (GTK_CONTAINER (linear_axis), GTK_WIDGET (local_tic));
+    }
+
+    /* Setting the mtics */
+    previouse_mtics = gdv_axis_get_mtic_list (GDV_AXIS (linear_axis));
+
+    for (i = 1; i < mtics_number + 1; i++)
+    {
+      GdvTic *local_mtic = NULL;
+      gdouble local_mtic_val =
+        actual_pos_val + i * signed_scale_increment_val / (mtics_number + 1);
+
+      /* get the correct mtic and check and delete all unnecessary mtics of
        * the axis-instance!
        */
-      previouse_tics = gdv_axis_get_tic_list (GDV_AXIS (linear_axis));
-      tics_copy = previouse_tics;
+      mtics_copy = previouse_mtics;
 
-      while (tics_copy)
+      while (mtics_copy)
+      {
+        gdouble local_mtic_value;
+
+        gdouble local_val_resid;
+
+        /* floating-point precision struggle */
+        g_object_get (mtics_copy->data, "value", &local_mtic_value, NULL);
+
+        local_val_resid =
+          (local_mtic_value - local_mtic_val) / scale_increment_val;
+
+        if (local_val_resid < 1e-13 && local_val_resid > -1e-13)
         {
-          gdouble local_tic_value;
-          gdouble local_val_resid;
-
-          /* floating-point precision struggle */
-          g_object_get (tics_copy->data, "value", &local_tic_value, NULL);
-
-          local_val_resid =
-            fabs (actual_pos_val - local_tic_value) / scale_increment_val;
-
-          if (local_val_resid < 1e-13 && local_val_resid > -1e-13)
-            {
-              local_tic = tics_copy->data;
-              break;
-            }
-
-          tics_copy = tics_copy->next;
+          local_mtic = mtics_copy->data;
+          break;
         }
 
-      g_list_free (previouse_tics);
+        mtics_copy = mtics_copy->next;
+      }
 
-      if (!local_tic)
+      /* we are not discussing about one pixel again ! */
+      if (
+        local_mtic_val <= fmax (mtics_end_val, mtics_beg_val) &&
+        local_mtic_val <= fmax (scale_beg_val, scale_end_val) &&
+        local_mtic_val >= fmin (mtics_end_val, mtics_beg_val) &&
+        local_mtic_val >= fmin (scale_beg_val, scale_end_val))
+      {
+        if (!local_mtic)
         {
-          gchar *new_tic_label;
-
-          local_tic =
-            g_object_new (gdv_tic_get_type (),
-                          "value", actual_pos_val,
+          local_mtic =
+            g_object_new (gdv_mtic_get_type (),
+                          "value", local_mtic_val,
                           "visible", visible,
                           NULL);
-          new_tic_label =
-            GDV_AXIS_GET_CLASS (GDV_AXIS (linear_axis))->make_tic_label_markup (
-              GDV_AXIS (linear_axis), actual_pos_val);
-
-          gdv_tic_label_set_markup (local_tic, new_tic_label);
-          g_free (new_tic_label);
-
-          gtk_container_add (GTK_CONTAINER (linear_axis), GTK_WIDGET (local_tic));
+          gtk_container_add (
+            GTK_CONTAINER (linear_axis), GTK_WIDGET (local_mtic));
         }
-
-      /* Setting the mtics */
-      previouse_mtics = gdv_axis_get_mtic_list (GDV_AXIS (linear_axis));
-
-      for (i = 1; i < mtics_number + 1; i++)
-        {
-          GdvTic *local_mtic = NULL;
-          gdouble local_mtic_val =
-            actual_pos_val + i * signed_scale_increment_val / (mtics_number + 1);
-
-          /* get the correct mtic and check and delete all unnecessary mtics of
-           * the axis-instance!
-           */
-          mtics_copy = previouse_mtics;
-
-          while (mtics_copy)
-            {
-              gdouble local_mtic_value;
-
-              gdouble local_val_resid;
-
-              /* floating-point precision struggle */
-              g_object_get (mtics_copy->data, "value", &local_mtic_value, NULL);
-
-              local_val_resid =
-                (local_mtic_value - local_mtic_val) / scale_increment_val;
-
-              if (local_val_resid < 1e-13 && local_val_resid > -1e-13)
-                {
-                  local_mtic = mtics_copy->data;
-                  break;
-                }
-
-              mtics_copy = mtics_copy->next;
-            }
-
-          /* we are not discussing about one pixel again ! */
-          if (
-            local_mtic_val <= GSL_MAX (mtics_end_val, mtics_beg_val) &&
-            local_mtic_val <= GSL_MAX (scale_beg_val, scale_end_val) &&
-            local_mtic_val >= GSL_MIN (mtics_end_val, mtics_beg_val) &&
-            local_mtic_val >= GSL_MIN (scale_beg_val, scale_end_val))
-            {
-              if (!local_mtic)
-                {
-                  local_mtic =
-                    g_object_new (gdv_mtic_get_type (),
-                                  "value", local_mtic_val,
-                                  "visible", visible,
-                                  NULL);
-                  gtk_container_add (
-                    GTK_CONTAINER (linear_axis), GTK_WIDGET (local_mtic));
-                }
-            }
-          else if (local_mtic)
-            gtk_container_remove (GTK_CONTAINER (linear_axis),
-                                  GTK_WIDGET (local_mtic));
-        }
-
-      g_list_free (previouse_mtics);
-
-      /* stepping to next scale-point */
-      actual_pos_val += signed_scale_increment_val;
+      }
+      else if (local_mtic)
+        gtk_container_remove (GTK_CONTAINER (linear_axis),
+                              GTK_WIDGET (local_mtic));
     }
+
+    g_list_free (previouse_mtics);
+
+    /* stepping to next scale-point */
+    actual_pos_val += signed_scale_increment_val;
+  }
 
   /* make the final measurement of all tics! */
   max_top_border = 0;
@@ -1227,49 +1187,49 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
 
   /* Determine free space */
   if (!force_beg_end)
+  {
+    previouse_tics = gdv_axis_get_tic_list (GDV_AXIS (linear_axis));
+
+    for (tics_copy = previouse_tics; tics_copy; tics_copy = tics_copy->next)
     {
-      previouse_tics = gdv_axis_get_tic_list (GDV_AXIS (linear_axis));
+      gint tmp_min, tmp_nat;
 
-      for (tics_copy = previouse_tics; tics_copy; tics_copy = tics_copy->next)
-        {
-          gint tmp_min, tmp_nat;
+      /* lookup the space that the beg- and end-tic need
+       * Please remind: this is not about looking for the very narrowest
+       *                solution. It's just a good way to organise the tics
+       *                at minimum cost's
+       */
 
-          /* lookup the space that the beg- and end-tic need
-           * Please remind: this is not about looking for the very narrowest
-           *                solution. It's just a good way to organise the tics
-           *                at minimum cost's
-           */
+      /* Top space */
+      gdv_tic_get_space_to_tic_position (
+        GDV_TIC (tics_copy->data), GTK_POS_TOP, -1, &tmp_min, &tmp_nat, NULL);
+      max_top_border = (max_top_border > tmp_nat ? max_top_border : tmp_nat);
+      max_top_border = (tmp_min > max_top_border ? tmp_min : max_top_border);
 
-          /* Top space */
-          gdv_tic_get_space_to_tic_position (
-            GDV_TIC (tics_copy->data), GTK_POS_TOP, -1, &tmp_min, &tmp_nat, NULL);
-          max_top_border = (max_top_border > tmp_nat ? max_top_border : tmp_nat);
-          max_top_border = (tmp_min > max_top_border ? tmp_min : max_top_border);
+      /* Bottom space */
+      gdv_tic_get_space_to_tic_position (
+        GDV_TIC (tics_copy->data), GTK_POS_BOTTOM, -1, &tmp_min, &tmp_nat,
+        NULL);
+      max_bot_border = (max_bot_border > tmp_nat ? max_bot_border : tmp_nat);
+      max_bot_border = (tmp_min > max_bot_border ? tmp_min : max_bot_border);
 
-          /* Bottom space */
-          gdv_tic_get_space_to_tic_position (
-            GDV_TIC (tics_copy->data), GTK_POS_BOTTOM, -1, &tmp_min, &tmp_nat,
-            NULL);
-          max_bot_border = (max_bot_border > tmp_nat ? max_bot_border : tmp_nat);
-          max_bot_border = (tmp_min > max_bot_border ? tmp_min : max_bot_border);
+      /* Left space */
+      gdv_tic_get_space_to_tic_position (
+        GDV_TIC (tics_copy->data), GTK_POS_LEFT, -1, &tmp_min, &tmp_nat, NULL);
+      max_left_border = (max_left_border > tmp_nat ? max_left_border : tmp_nat);
+      max_left_border = (tmp_min > max_left_border ? tmp_min : max_left_border);
 
-          /* Left space */
-          gdv_tic_get_space_to_tic_position (
-            GDV_TIC (tics_copy->data), GTK_POS_LEFT, -1, &tmp_min, &tmp_nat, NULL);
-          max_left_border = (max_left_border > tmp_nat ? max_left_border : tmp_nat);
-          max_left_border = (tmp_min > max_left_border ? tmp_min : max_left_border);
-
-          /* Right space */
-          gdv_tic_get_space_to_tic_position (
-            GDV_TIC (tics_copy->data), GTK_POS_RIGHT, -1, &tmp_min, &tmp_nat, NULL);
-          max_right_border =
-            (max_right_border > tmp_nat ? max_right_border : tmp_nat);
-          max_right_border =
-            (tmp_min > max_right_border ? tmp_min : max_right_border);
-        }
-
-      g_list_free (previouse_tics);
+      /* Right space */
+      gdv_tic_get_space_to_tic_position (
+        GDV_TIC (tics_copy->data), GTK_POS_RIGHT, -1, &tmp_min, &tmp_nat, NULL);
+      max_right_border =
+        (max_right_border > tmp_nat ? max_right_border : tmp_nat);
+      max_right_border =
+        (tmp_min > max_right_border ? tmp_min : max_right_border);
     }
+
+    g_list_free (previouse_tics);
+  }
 
   /* calculating the free space */
   space_without_border.x = max_left_border;
@@ -1287,109 +1247,104 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
 
   /* allocating the title */
   if (axis_title_on)
+  {
+    title_allocation.width = title_width;
+    title_allocation.height = title_height;
+
+    gtk_widget_get_preferred_width (
+      title_widget, &title_width, &title_width_nat);
+    gtk_widget_get_preferred_height (
+      title_widget, &title_height, &title_height_nat);
+
+    if (!force_beg_end)
     {
-      title_allocation.width = title_width;
-      title_allocation.height = title_height;
+      space_without_border.width -=
+        (gint)(fabs (sin (angle_to_outer_dir)) * (gdouble)title_width);
+      space_without_border.height -=
+        (gint)(fabs (cos (angle_to_outer_dir)) * (gdouble)title_height);
 
-      gtk_widget_get_preferred_width (
-        title_widget, &title_width, &title_width_nat);
-      gtk_widget_get_preferred_height (
-        title_widget, &title_height, &title_height_nat);
+      if (sin (angle_to_outer_dir) < 0.0)
+        space_without_border.x +=
+          (gint)(-1.0 * sin (angle_to_outer_dir) * (gdouble)title_width);
 
-      if (!force_beg_end)
-        {
-          space_without_border.width -=
-            (gint)(fabs (sin (angle_to_outer_dir)) * (gdouble)title_width);
-          space_without_border.height -=
-            (gint)(fabs (cos (angle_to_outer_dir)) * (gdouble)title_height);
-
-          if (sin (angle_to_outer_dir) < 0.0)
-            space_without_border.x +=
-              (gint)(-1.0 * sin (angle_to_outer_dir) * (gdouble)title_width);
-
-          if (cos (angle_to_outer_dir) >= 0.0)
-            space_without_border.y +=
-              (gint)(+1.0 * cos (angle_to_outer_dir) * (gdouble)title_height);
-        }
-
-      /* FIXME: This is not the function I intented */
-      title_allocation.x =
-        allocation->x +
-        space_without_border.x - max_left_border - title_width +
-        (gint)((0.5 + 0.5 * sin (angle_to_outer_dir)) *
-               (gdouble)(
-                 space_without_border.width +
-                 max_right_border +
-                 max_left_border +
-                 title_width));
-
-      title_allocation.y =
-        allocation->y +
-        space_without_border.y - max_top_border - title_height +
-        (gint)((0.5 - 0.5 * cos (angle_to_outer_dir)) *
-               (gdouble)(
-                 space_without_border.height +
-                 max_bot_border +
-                 max_top_border +
-                 title_height));
-
-      gtk_widget_size_allocate (
-        GTK_WIDGET (title_widget), &title_allocation);
+      if (cos (angle_to_outer_dir) >= 0.0)
+        space_without_border.y +=
+          (gint)(+1.0 * cos (angle_to_outer_dir) * (gdouble)title_height);
     }
+
+    /* FIXME: This is not the function I intented */
+    title_allocation.x =
+      allocation->x +
+      space_without_border.x - max_left_border - title_width +
+      (gint)((0.5 + 0.5 * sin (angle_to_outer_dir)) *
+             (gdouble)(
+               space_without_border.width +
+               max_right_border +
+               max_left_border +
+               title_width));
+
+    title_allocation.y =
+      allocation->y +
+      space_without_border.y - max_top_border - title_height +
+      (gint)((0.5 - 0.5 * cos (angle_to_outer_dir)) *
+             (gdouble)(
+               space_without_border.height +
+               max_bot_border +
+               max_top_border +
+               title_height));
+
+    gtk_widget_size_allocate (
+      GTK_WIDGET (title_widget), &title_allocation);
+  }
 
   if (!force_beg_end)
-    {
-      /* FIXME: this should be guarded, to ensure correct setting by layer */
-      scale_beg_x =
-        fmax (fmin (
-                (sin (angle_to_start) / fabs (cos (angle_to_start))) *
-                0.5 * ((gdouble)space_without_border.height + 0.5) +
-                (gdouble)(space_without_border.x +
-                          0.5 * space_without_border.width),
-                (gdouble)(space_without_border.x + space_without_border.width)),
-              (gdouble)space_without_border.x);
-      scale_end_x =
-        fmax (fmin (
-                (-1.0 * sin (angle_to_start) / fabs (cos (angle_to_start))) *
-                0.5 * ((gdouble)space_without_border.height + 0.5) +
-                (gdouble)(space_without_border.x +
-                          0.5 * space_without_border.width),
-                (gdouble)(space_without_border.x + space_without_border.width)),
-              (gdouble)space_without_border.x);
+  {
+    /* FIXME: this should be guarded, to ensure correct setting by layer */
+    scale_beg_x =
+      fmax (fmin (
+              (sin (angle_to_start) / fabs (cos (angle_to_start))) *
+              0.5 * ((gdouble)space_without_border.height + 0.5) +
+              (gdouble)(space_without_border.x +
+                        0.5 * space_without_border.width),
+              (gdouble)(space_without_border.x + space_without_border.width)),
+            (gdouble)space_without_border.x);
+    scale_end_x =
+      fmax (fmin (
+              (-1.0 * sin (angle_to_start) / fabs (cos (angle_to_start))) *
+              0.5 * ((gdouble)space_without_border.height + 0.5) +
+              (gdouble)(space_without_border.x +
+                        0.5 * space_without_border.width),
+              (gdouble)(space_without_border.x + space_without_border.width)),
+            (gdouble)space_without_border.x);
 
-      scale_beg_y =
-        fmax (fmin (
-                (-1.0 * cos (angle_to_start) / fabs (sin (angle_to_start))) *
-                0.5 * ((gdouble)space_without_border.width + 0.5) +
-                (gdouble)(space_without_border.y +
-                          0.5 * space_without_border.height),
-                (gdouble)(space_without_border.y + space_without_border.height)),
-              (gdouble)space_without_border.y);
+    scale_beg_y =
+      fmax (fmin (
+              (-1.0 * cos (angle_to_start) / fabs (sin (angle_to_start))) *
+              0.5 * ((gdouble)space_without_border.width + 0.5) +
+              (gdouble)(space_without_border.y +
+                        0.5 * space_without_border.height),
+              (gdouble)(space_without_border.y + space_without_border.height)),
+            (gdouble)space_without_border.y);
 
-      scale_end_y =
-        fmax (fmin (
-                (cos (angle_to_start) / fabs (sin (angle_to_start))) *
-                0.5 * ((gdouble)space_without_border.width + 0.5) +
-                (gdouble)(space_without_border.y +
-                          0.5 * space_without_border.height),
-                (gdouble)(space_without_border.y + space_without_border.height)),
-              (gdouble)space_without_border.y);
+    scale_end_y =
+      fmax (fmin (
+              (cos (angle_to_start) / fabs (sin (angle_to_start))) *
+              0.5 * ((gdouble)space_without_border.width + 0.5) +
+              (gdouble)(space_without_border.y +
+                        0.5 * space_without_border.height),
+              (gdouble)(space_without_border.y + space_without_border.height)),
+            (gdouble)space_without_border.y);
 
-      /* FIXME: These type-casts might be the reason for the differences of
-       *        single pixels by drawing a 2d-layer!
-       */
-      g_object_set (G_OBJECT (widget),
-                    "axis-beg-pix-x", scale_beg_x,
-                    "axis-beg-pix-y", scale_beg_y,
-                    "axis-end-pix-x", scale_end_x,
-                    "axis-end-pix-y", scale_end_y,
-                    NULL);
-    }
-
-//  if (scale_end_val != 100.0)
-//    g_print ("FINW SC %e %e TI %e %e\n",
-//      scale_beg_val, scale_end_val,
-//      tics_beg_val, tics_end_val);
+    /* FIXME: These type-casts might be the reason for the differences of
+     *        single pixels by drawing a 2d-layer!
+     */
+    g_object_set (G_OBJECT (widget),
+                  "axis-beg-pix-x", scale_beg_x,
+                  "axis-beg-pix-y", scale_beg_y,
+                  "axis-end-pix-x", scale_end_x,
+                  "axis-end-pix-y", scale_end_y,
+                  NULL);
+  }
 
   #endif /* S_SPLINT_S */
 
@@ -1418,15 +1373,15 @@ gdv_linear_axis_make_tic_label_markup (GdvAxis *axis, gdouble value)
            ((fabs (tics_beg) <= 1e-3 || fabs (tics_end) <= 1e-3) &&
             fabs (tics_beg - tics_end) <= 1e-3) ||
            (fabs (tics_beg - tics_end) <= 1.0e-3 * fabs (tics_beg)))
-    {
-      gdouble exponent, mantissa;
+  {
+    gdouble exponent, mantissa;
 
-      exponent = floor (log10 (fabs (value)));
-      mantissa = value / pow (10.0, exponent);
+    exponent = floor (log10 (fabs (value)));
+    mantissa = value / pow (10.0, exponent);
 
-      return_string =
-        g_markup_printf_escaped ("%gx10<sup>%g</sup>", mantissa, exponent);
-    }
+    return_string =
+      g_markup_printf_escaped ("%gx10<sup>%g</sup>", mantissa, exponent);
+  }
   else
     return_string = g_strdup_printf ("%g", value);
 
@@ -1457,18 +1412,18 @@ gdv_linear_axis_on_get_point (GdvAxis *axis,
                 NULL);
 
   if (begin_x != end_x && begin_val != end_val)
-    {
-      tmp_slope_x = (begin_val - end_val) / (begin_x - end_x);
-      *pos_x = begin_x + (value - begin_val) / tmp_slope_x;
-    }
+  {
+    tmp_slope_x = (begin_val - end_val) / (begin_x - end_x);
+    *pos_x = begin_x + (value - begin_val) / tmp_slope_x;
+  }
   else
     *pos_x = begin_x;
 
   if (begin_y != end_y && begin_val != end_val)
-    {
-      tmp_slope_y = (begin_val - end_val) / (begin_y - end_y);
-      *pos_y = begin_y + (value - begin_val) / tmp_slope_y;
-    }
+  {
+    tmp_slope_y = (begin_val - end_val) / (begin_y - end_y);
+    *pos_y = begin_y + (value - begin_val) / tmp_slope_y;
+  }
   else
     *pos_y = begin_y;
 
@@ -1555,86 +1510,86 @@ gdv_linear_axis_get_space_to_beg_position (GdvAxis        *axis,
   tic_list_start = tic_list;
 
   while (tic_list)
+  {
+    gint local_min, local_nat;
+
+    /* FIXME: this might not be correctly reached due to round-off errors */
+    if (tic_list->data)
     {
-      gint local_min, local_nat;
+      gdouble local_val;
 
-      /* FIXME: this might not be correctly reached due to round-off errors */
-      if (tic_list->data)
-        {
-          gdouble local_val;
+      g_object_get (tic_list->data, "value", &local_val, NULL);
 
-          g_object_get (tic_list->data, "value", &local_val, NULL);
+      gdv_tic_get_space_to_tic_position (
+        tic_list->data, direction, for_size,
+        &local_min, &local_nat, data);
 
-          gdv_tic_get_space_to_tic_position (
-            tic_list->data, direction, for_size,
-            &local_min, &local_nat, data);
-
-          *minimum = *minimum < local_min ? local_min : *minimum;
-          *natural = *natural < local_nat ? local_nat : *natural;
-        }
-
-      tic_list = tic_list->next;
+      *minimum = *minimum < local_min ? local_min : *minimum;
+      *natural = *natural < local_nat ? local_nat : *natural;
     }
+
+    tic_list = tic_list->next;
+  }
 
   g_list_free (tic_list_start);
 
   /* Measuring the title */
   if (axis_title_on)
+  {
+    if (direction == GTK_POS_LEFT || direction == GTK_POS_RIGHT)
     {
-      if (direction == GTK_POS_LEFT || direction == GTK_POS_RIGHT)
-        {
-          if (for_size > 0)
-            gtk_widget_get_preferred_width_for_height (
-              title_widget, for_size, &title_width, &title_width_nat);
-          else
-            gtk_widget_get_preferred_width (
-              title_widget, &title_width, &title_width_nat);
-        }
+      if (for_size > 0)
+        gtk_widget_get_preferred_width_for_height (
+          title_widget, for_size, &title_width, &title_width_nat);
       else
-        {
-          if (for_size > 0)
-            gtk_widget_get_preferred_height_for_width (
-              title_widget, for_size, &title_height, &title_height_nat);
-          else
-            gtk_widget_get_preferred_height (
-              title_widget, &title_height, &title_height_nat);
-        }
-
-      if (direction == GTK_POS_LEFT || direction == GTK_POS_RIGHT)
-        {
-          if (direction == GTK_POS_LEFT && sin (outside_dir) < 0.0)
-            {
-              *minimum +=
-                (gint)(-1.0 * sin (outside_dir) * (gdouble)title_width);
-              *natural +=
-                (gint)(-1.0 * sin (outside_dir) * (gdouble)title_width_nat);
-            }
-          else if (direction == GTK_POS_RIGHT && sin (outside_dir) > 0.0)
-            {
-              *minimum +=
-                (gint)(sin (outside_dir) * (gdouble)title_width);
-              *natural +=
-                (gint)(sin (outside_dir) * (gdouble)title_width_nat);
-            }
-        }
-      else
-        {
-          if (direction == GTK_POS_BOTTOM && cos (outside_dir) < 0.0)
-            {
-              *minimum +=
-                (gint)(-1.0 * cos (outside_dir) * (gdouble)title_height);
-              *natural +=
-                (gint)(-1.0 * cos (outside_dir) * (gdouble)title_height_nat);
-            }
-          else if (direction == GTK_POS_TOP && cos (outside_dir) > 0.0)
-            {
-              *minimum +=
-                (gint)(cos (outside_dir) * (gdouble)title_height);
-              *natural +=
-                (gint)(cos (outside_dir) * (gdouble)title_height_nat);
-            }
-        }
+        gtk_widget_get_preferred_width (
+          title_widget, &title_width, &title_width_nat);
     }
+    else
+    {
+      if (for_size > 0)
+        gtk_widget_get_preferred_height_for_width (
+          title_widget, for_size, &title_height, &title_height_nat);
+      else
+        gtk_widget_get_preferred_height (
+          title_widget, &title_height, &title_height_nat);
+    }
+
+    if (direction == GTK_POS_LEFT || direction == GTK_POS_RIGHT)
+    {
+      if (direction == GTK_POS_LEFT && sin (outside_dir) < 0.0)
+      {
+        *minimum +=
+          (gint)(-1.0 * sin (outside_dir) * (gdouble)title_width);
+        *natural +=
+          (gint)(-1.0 * sin (outside_dir) * (gdouble)title_width_nat);
+      }
+      else if (direction == GTK_POS_RIGHT && sin (outside_dir) > 0.0)
+      {
+        *minimum +=
+          (gint)(sin (outside_dir) * (gdouble)title_width);
+        *natural +=
+          (gint)(sin (outside_dir) * (gdouble)title_width_nat);
+      }
+    }
+    else
+    {
+      if (direction == GTK_POS_BOTTOM && cos (outside_dir) < 0.0)
+      {
+        *minimum +=
+          (gint)(-1.0 * cos (outside_dir) * (gdouble)title_height);
+        *natural +=
+          (gint)(-1.0 * cos (outside_dir) * (gdouble)title_height_nat);
+      }
+      else if (direction == GTK_POS_TOP && cos (outside_dir) > 0.0)
+      {
+        *minimum +=
+          (gint)(cos (outside_dir) * (gdouble)title_height);
+        *natural +=
+          (gint)(cos (outside_dir) * (gdouble)title_height_nat);
+      }
+    }
+  }
 }
 
 /* FIXME: This is just a working solution and nothing solid! */
@@ -1686,86 +1641,86 @@ gdv_linear_axis_get_space_to_end_position (GdvAxis        *axis,
   tic_list_start = tic_list;
 
   while (tic_list)
+  {
+    gint local_min, local_nat;
+
+    /* FIXME: this might not be correctly reached due to round-off errors */
+    if (tic_list->data)
     {
-      gint local_min, local_nat;
+      gdouble local_val;
 
-      /* FIXME: this might not be correctly reached due to round-off errors */
-      if (tic_list->data)
-        {
-          gdouble local_val;
+      g_object_get (tic_list->data, "value", &local_val, NULL);
 
-          g_object_get (tic_list->data, "value", &local_val, NULL);
+      gdv_tic_get_space_to_tic_position (
+        tic_list->data, direction, for_size,
+        &local_min, &local_nat, data);
 
-          gdv_tic_get_space_to_tic_position (
-            tic_list->data, direction, for_size,
-            &local_min, &local_nat, data);
-
-          *minimum = *minimum < local_min ? local_min : *minimum;
-          *natural = *natural < local_nat ? local_nat : *natural;
-        }
-
-      tic_list = tic_list->next;
+      *minimum = *minimum < local_min ? local_min : *minimum;
+      *natural = *natural < local_nat ? local_nat : *natural;
     }
+
+    tic_list = tic_list->next;
+  }
 
   g_list_free (tic_list_start);
 
   /* Measuring the title */
   if (axis_title_on)
+  {
+    if (direction == GTK_POS_LEFT || direction == GTK_POS_RIGHT)
     {
-      if (direction == GTK_POS_LEFT || direction == GTK_POS_RIGHT)
-        {
-          if (for_size > 0)
-            gtk_widget_get_preferred_width_for_height (
-              title_widget, for_size, &title_width, &title_width_nat);
-          else
-            gtk_widget_get_preferred_width (
-              title_widget, &title_width, &title_width_nat);
-        }
+      if (for_size > 0)
+        gtk_widget_get_preferred_width_for_height (
+          title_widget, for_size, &title_width, &title_width_nat);
       else
-        {
-          if (for_size > 0)
-            gtk_widget_get_preferred_height_for_width (
-              title_widget, for_size, &title_height, &title_height_nat);
-          else
-            gtk_widget_get_preferred_height (
-              title_widget, &title_height, &title_height_nat);
-        }
-
-      if (direction == GTK_POS_LEFT || direction == GTK_POS_RIGHT)
-        {
-          if (direction == GTK_POS_LEFT && sin (outside_dir) < 0.0)
-            {
-              *minimum +=
-                (gint)(-1.0 * sin (outside_dir) * (gdouble)title_width);
-              *natural +=
-                (gint)(-1.0 * sin (outside_dir) * (gdouble)title_width_nat);
-            }
-          else if (direction == GTK_POS_RIGHT && sin (outside_dir) > 0.0)
-            {
-              *minimum +=
-                (gint)(sin (outside_dir) * (gdouble)title_width);
-              *natural +=
-                (gint)(sin (outside_dir) * (gdouble)title_width_nat);
-            }
-        }
-      else
-        {
-          if (direction == GTK_POS_BOTTOM && cos (outside_dir) < 0.0)
-            {
-              *minimum +=
-                (gint)(-1.0 * cos (outside_dir) * (gdouble)title_height);
-              *natural +=
-                (gint)(-1.0 * cos (outside_dir) * (gdouble)title_height_nat);
-            }
-          else if (direction == GTK_POS_TOP && cos (outside_dir) > 0.0)
-            {
-              *minimum +=
-                (gint)(cos (outside_dir) * (gdouble)title_height);
-              *natural +=
-                (gint)(cos (outside_dir) * (gdouble)title_height_nat);
-            }
-        }
+        gtk_widget_get_preferred_width (
+          title_widget, &title_width, &title_width_nat);
     }
+    else
+    {
+      if (for_size > 0)
+        gtk_widget_get_preferred_height_for_width (
+          title_widget, for_size, &title_height, &title_height_nat);
+      else
+        gtk_widget_get_preferred_height (
+          title_widget, &title_height, &title_height_nat);
+    }
+
+    if (direction == GTK_POS_LEFT || direction == GTK_POS_RIGHT)
+    {
+      if (direction == GTK_POS_LEFT && sin (outside_dir) < 0.0)
+      {
+        *minimum +=
+          (gint)(-1.0 * sin (outside_dir) * (gdouble)title_width);
+        *natural +=
+          (gint)(-1.0 * sin (outside_dir) * (gdouble)title_width_nat);
+      }
+      else if (direction == GTK_POS_RIGHT && sin (outside_dir) > 0.0)
+      {
+        *minimum +=
+          (gint)(sin (outside_dir) * (gdouble)title_width);
+        *natural +=
+          (gint)(sin (outside_dir) * (gdouble)title_width_nat);
+      }
+    }
+    else
+    {
+      if (direction == GTK_POS_BOTTOM && cos (outside_dir) < 0.0)
+      {
+        *minimum +=
+          (gint)(-1.0 * cos (outside_dir) * (gdouble)title_height);
+        *natural +=
+          (gint)(-1.0 * cos (outside_dir) * (gdouble)title_height_nat);
+      }
+      else if (direction == GTK_POS_TOP && cos (outside_dir) > 0.0)
+      {
+        *minimum +=
+          (gint)(cos (outside_dir) * (gdouble)title_height);
+        *natural +=
+          (gint)(cos (outside_dir) * (gdouble)title_height_nat);
+      }
+    }
+  }
 }
 
 /**

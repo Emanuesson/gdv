@@ -27,8 +27,6 @@
 #include <math.h>
 #include <cairo-gobject.h>
 
-#include <gsl/gsl_math.h>
-
 #include "gdvindicator.h"
 #include "gdv/gdv-data-boxed.h"
 #include "gdvaxis.h"

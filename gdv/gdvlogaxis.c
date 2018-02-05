@@ -25,7 +25,6 @@
 #endif
 
 #include <math.h>
-#include <gsl/gsl_math.h>
 
 /**
  * SECTION:gdvlogaxis
@@ -688,8 +687,8 @@ gdv_log_axis_size_allocate (GtkWidget           *widget,
     local_val_resid =
       fmod(log10(local_tic_value / tics_beg_val) / log10(signed_scale_increment_val), 1.0);
 
-    if (local_tic_value < GSL_MIN (tics_beg_val, tics_end_val) ||
-        local_tic_value > GSL_MAX (tics_beg_val, tics_end_val) ||
+    if (local_tic_value < fmin (tics_beg_val, tics_end_val) ||
+        local_tic_value > fmax (tics_beg_val, tics_end_val) ||
         !((local_val_resid < 1e-13 && local_val_resid > -1e-13) ||
           ((1.0 - local_val_resid) < 1e-13 &&
            (1.0 - local_val_resid) > -1e-13)))
@@ -721,8 +720,8 @@ gdv_log_axis_size_allocate (GtkWidget           *widget,
     local_mtic_resid =
       fmod(local_val_resid / (scale_increment_val / (mtics_number + 1)), 1.0);
 
-    if (local_mtic_value < GSL_MIN (mtics_beg_val, mtics_end_val) ||
-        local_mtic_value > GSL_MAX (mtics_beg_val, mtics_end_val) ||
+    if (local_mtic_value < fmin (mtics_beg_val, mtics_end_val) ||
+        local_mtic_value > fmax (mtics_beg_val, mtics_end_val) ||
         !((local_mtic_resid < 1e-13 && local_mtic_resid > -1e-13) ||
           ((1.0 - local_mtic_resid) < 1e-13 &&
            (1.0 - local_mtic_resid) > -1e-13) ||
@@ -742,8 +741,8 @@ gdv_log_axis_size_allocate (GtkWidget           *widget,
   actual_pos_val = tics_beg_val;
 
   /* adding all tics and mtics between the begin and end value */
-  while (actual_pos_val <= GSL_MAX (tics_end_val, tics_beg_val) &&
-         actual_pos_val >= GSL_MIN (tics_end_val, tics_beg_val))
+  while (actual_pos_val <= fmax (tics_end_val, tics_beg_val) &&
+         actual_pos_val >= fmin (tics_end_val, tics_beg_val))
   {
     GdvTic *local_tic = NULL;
     gint i;
@@ -828,8 +827,8 @@ gdv_log_axis_size_allocate (GtkWidget           *widget,
 
       /* we are not discussing about one pixel again ! */
       if (
-        local_mtic_val <= GSL_MAX (mtics_end_val, mtics_beg_val) &&
-        local_mtic_val >= GSL_MIN (mtics_end_val, mtics_beg_val))
+        local_mtic_val <= fmax (mtics_end_val, mtics_beg_val) &&
+        local_mtic_val >= fmin (mtics_end_val, mtics_beg_val))
       {
         if (!local_mtic)
         {

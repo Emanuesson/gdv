@@ -62,6 +62,7 @@ struct _GdvLegendPrivate
   /* data */
   GdvLayer        *attached_layer;
   GtkWidget       *main_box;
+  gulong           layer_changed_signal_id;
 
   gint samplelen;
 
@@ -106,9 +107,9 @@ gdv_legend_init (GdvLegend *legend)
     GTK_STYLE_PROVIDER (css_provider),
     GTK_STYLE_PROVIDER_PRIORITY_FALLBACK);
 
-
   /* data */
   legend->priv->attached_layer = NULL;
+  legend->priv->layer_changed_signal_id = 0;
   legend->priv->main_box =
     g_object_new (GTK_TYPE_GRID,
                   "border-width", 5,
@@ -473,9 +474,21 @@ static void
 gdv_legend_set_layer (GdvLegend *legend,
                       GdvLayer  *layer)
 {
-  legend->priv->attached_layer = layer;
+  GdvLegendPrivate *priv;
+
+  priv = gdv_legend_get_instance_private (legend);
+
+  if (priv->attached_layer != NULL)
+  {
+//    g_object_unref (priv->attached_layer);
+    g_signal_handler_disconnect (layer, priv->layer_changed_signal_id);
+  }
+
+  priv->attached_layer = layer;
+//  g_object_ref (priv->attached_layer);
   gdv_legend_refresh (legend);
 
   /* FIXME: This will lead to a small memory-leak */
-//  g_signal_connect_swapped (layer, "add", (GCallback) gdv_legend_refresh, legend);
+  priv->layer_changed_signal_id =
+    g_signal_connect_swapped (layer, "add", (GCallback) gdv_legend_refresh, legend);
 }

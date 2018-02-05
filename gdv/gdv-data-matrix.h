@@ -28,7 +28,6 @@
 #include <gio/gio.h>
 #include <string.h>
 #include <unistd.h>
-#include <stdlib.h>
 #include <locale.h>
 
 #include <gdv/gdv-data-vector.h>

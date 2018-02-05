@@ -27,8 +27,6 @@
 #include <math.h>
 #include <cairo-gobject.h>
 
-#include <gsl/gsl_math.h>
-
 /**
  * SECTION:gdvlegendelement
  * @title: GdvLegendElement
@@ -66,6 +64,7 @@ struct _GdvLegendElementPrivate
 {
   /* list with indicators */
   GtkWidget *connected_element;
+  gulong     connected_element_changed_id;
   GtkWidget *descriptor;
 
   gint samplelen;
@@ -73,6 +72,9 @@ struct _GdvLegendElementPrivate
 
 static GParamSpec *legend_element_properties[N_PROPERTIES] = { NULL, };
 
+static void
+gdv_legend_element_set_conn_element (GdvLegendElement *element,
+                                     GtkWidget        *connected_element);
 static void
 gdv_legend_element_realize (GtkWidget *widget);
 static void
@@ -122,6 +124,8 @@ gdv_legend_element_init (GdvLegendElement *legend_element)
 
   legend_element->priv->connected_element = NULL;
   legend_element->priv->samplelen = 20;
+  legend_element->priv->connected_element_changed_id = 0;
+  legend_element->priv->descriptor = NULL;
 }
 
 static void
@@ -137,7 +141,8 @@ gdv_legend_element_set_property (GObject      *object,
   switch (property_id)
   {
   case PROP_CONNECTED_ELEMENT:
-    self->priv->connected_element = g_value_get_object (value);
+    gdv_legend_element_set_conn_element (self,
+                                         g_value_get_object (value));
     break;
   case PROP_SAMPLEN:
     self->priv->samplelen = g_value_get_int (value);
@@ -171,6 +176,8 @@ gdv_legend_element_get_property (GObject    *object,
     break;
   case PROP_DESCRIPTOR:
     g_value_set_object (value, self->priv->descriptor);
+//    if (self->priv->descriptor != NULL && G_IS_OBJECT (self->priv->descriptor))
+//      g_object_ref (self->priv->descriptor);
     break;
   default:
     /* unknown property */
@@ -182,6 +189,18 @@ gdv_legend_element_get_property (GObject    *object,
 static void
 gdv_legend_element_dispose (GObject *object)
 {
+  GdvLegendElementPrivate *priv;
+  GdvLegendElement *element = GDV_LEGEND_ELEMENT (object);
+
+  priv = gdv_legend_element_get_instance_private (element);
+
+  if (priv->connected_element != NULL)
+  {
+    g_object_unref (priv->connected_element);
+    g_signal_handler_disconnect (element, priv->connected_element_changed_id);
+    priv->connected_element = NULL;
+  }
+
   G_OBJECT_CLASS (gdv_legend_element_parent_class)->dispose (object);
 }
 
@@ -334,11 +353,11 @@ gdv_legend_element_measure (
       if (for_size > 0)
         gtk_widget_get_preferred_width_for_height (
           GTK_WIDGET (legend_element->priv->connected_element),
-          for_size, &minimum_point, &natural_point);
+                      for_size, &minimum_point, &natural_point);
       else
         gtk_widget_get_preferred_width (
           GTK_WIDGET (legend_element->priv->connected_element),
-          &minimum_point, &natural_point);
+                      &minimum_point, &natural_point);
 
       *natural =
         legend_element->priv->samplelen > natural_point ?
@@ -515,7 +534,6 @@ gdv_legend_element_get_preferred_height_for_width (GtkWidget           *widget,
                               NULL, NULL, NULL);
 }
 
-
 static void
 gdv_legend_element_get_preferred_width_for_height (GtkWidget           *widget,
     gint                 height,
@@ -527,5 +545,69 @@ gdv_legend_element_get_preferred_width_for_height (GtkWidget           *widget,
                               height,
                               minimum_width, natural_width,
                               NULL, NULL, NULL);
+}
+
+static void
+gdv_legend_element_refresh (GdvLegendElement *element,
+                            gpointer add,
+                            gpointer madd)
+{
+  GdvLegendElementPrivate *priv;
+
+  priv = gdv_legend_element_get_instance_private (element);
+
+//  g_print ("1st: %s\n", g_type_name (G_OBJECT_TYPE (add)));
+//  g_print ("2nd: %s\n", g_type_name (G_OBJECT_TYPE (madd)));
+//  g_print ("PTX: %p\n", priv->descriptor);
+
+  if (priv->descriptor == NULL)
+    return;
+
+  if (!GTK_IS_WIDGET (priv->descriptor) ||
+      !gtk_widget_is_visible(priv->descriptor))
+    return;
+
+  gtk_widget_queue_draw (GTK_WIDGET (element));
+
+//  if (priv->descriptor != NULL && GTK_IS_LABEL (priv->descriptor) &&
+//      priv->connected_element != NULL && GTK_IS_WIDGET (priv->connected_element))
+
+  if (GTK_IS_LABEL (priv->descriptor))
+  {
+//    gchar *name;
+
+//    g_object_get (priv->connected_element, "name", &name, NULL);
+    gtk_label_set_text (GTK_LABEL (priv->descriptor),
+                        gtk_widget_get_name (priv->connected_element));
+  }
+
+//  g_print("CALLED ON %p\n", element);
+}
+
+static void
+gdv_legend_element_set_conn_element (GdvLegendElement *element,
+                                     GtkWidget        *connected_element)
+{
+  GdvLegendElementPrivate *priv;
+
+  g_return_if_fail (GDV_LAYER_IS_CONTENT (connected_element) ||
+                    GDV_IS_INDICATOR (connected_element));
+
+  priv = gdv_legend_element_get_instance_private (element);
+
+  if (priv->connected_element != NULL)
+  {
+    g_object_unref (priv->connected_element);
+    g_signal_handler_disconnect (element, priv->connected_element_changed_id);
+//    priv->descriptor = NULL;
+  }
+
+  priv->connected_element = connected_element;
+  g_object_ref (priv->connected_element);
+//  gdv_legend_element_refresh (element);
+
+  /* FIXME: This will lead to a small memory-leak */
+  priv->connected_element_changed_id =
+    g_signal_connect_swapped (element, "notify", (GCallback) gdv_legend_element_refresh, element);
 }
 

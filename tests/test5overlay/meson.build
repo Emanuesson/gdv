@@ -1,8 +1,17 @@
 #if get_option('enable_tests')
 
-executable('test5', 'test5.c',
-             c_args: test_cflags,
-          link_args: test_link_args,
+executable('test5a', 'test5a.c',
+             c_args: gdv_test_cflags,
+          link_args: gdv_test_link_args,
+       dependencies: libgdv_deps + [libgdv_dep],
+          link_with: libgdv,
+       link_depends: libgdv_map,
+include_directories: [ root_inc, src_inc ],
+)
+
+executable('test5b', 'test5b.c',
+             c_args: gdv_test_cflags,
+          link_args: gdv_test_link_args,
        dependencies: libgdv_deps + [libgdv_dep],
           link_with: libgdv,
        link_depends: libgdv_map,

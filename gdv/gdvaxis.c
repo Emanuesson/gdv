@@ -26,8 +26,6 @@
 
 #include <math.h>
 
-#include <gsl/gsl_math.h>
-
 /**
  * SECTION:gdvaxis
  * @short_description: an axis widget
@@ -523,6 +521,7 @@ gdv_axis_get_property (GObject    *object,
     break;
 
   case PROP_GDV_AXIS_BEG_AT_SCREEN_X:
+    /* FIXME: This behaviour should be improved here! */
     allocation_dimension = gtk_widget_get_allocated_width (GTK_WIDGET (self));
     g_value_set_double (value,
       self->priv->axis_beg_pix_x / ((gdouble) allocation_dimension));
@@ -1218,7 +1217,7 @@ gdv_axis_class_init (GdvAxisClass *klass)
                          "end of the axis",
                          -G_MAXDOUBLE,
                          G_MAXDOUBLE,
-                         1.0,
+                         0.0,
                          G_PARAM_READWRITE);
 
   /**
@@ -1236,7 +1235,7 @@ gdv_axis_class_init (GdvAxisClass *klass)
                          "end of the axis",
                          -G_MAXDOUBLE,
                          G_MAXDOUBLE,
-                         1.0,
+                         0.0,
                          G_PARAM_READWRITE);
 
   /**
@@ -2054,11 +2053,11 @@ gdv_axis_measure (
       *natural += (gint) (fabs(cos(outside_dir)) * (gdouble) title_height_nat);
 
       *minimum =
-        (gint) GSL_MAX(
+        (gint) fmax(
           (gdouble) * minimum,
           fabs(sin(outside_dir)) * (gdouble) title_height);
       *natural =
-        (gint) GSL_MAX(
+        (gint) fmax(
           (gdouble) * natural,
           fabs(sin(outside_dir)) * (gdouble) title_height_nat);
     }
@@ -2075,11 +2074,11 @@ gdv_axis_measure (
       *natural += (gint) (fabs(sin(outside_dir)) * (gdouble) title_width_nat);
 
       *minimum =
-        (gint) GSL_MAX(
+        (gint) fmax(
           (gdouble) * minimum,
           fabs(cos(outside_dir)) * (gdouble) title_width);
       *natural =
-        (gint) GSL_MAX(
+        (gint) fmax(
           (gdouble) * natural,
           fabs(cos(outside_dir)) * (gdouble) title_width_nat);
     }

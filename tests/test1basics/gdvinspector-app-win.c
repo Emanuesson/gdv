@@ -25,13 +25,13 @@
 #endif
 
 #include <math.h>
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_rng.h>
+#include <stdlib.h>
+//#include <gsl/gsl_math.h>
+//#include <gsl/gsl_rng.h>
 
 #include <gdv/gdv.h>
 
 #include "gdvinspector-app-win.h"
-
 
 #include "tests/gemu_sub/gemu-glib-util.h"
 #include "tests/gemu_sub/gemu-gtk-util.h"
@@ -60,6 +60,8 @@ struct _GdvInspectorAppWindowPrivate
   GdvTwodLayer *twodlayer;
 
   GdvOnedLayer *consummeter;
+  guint         changed_cb;
+  guint         changed_cb_oned;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (
@@ -70,6 +72,24 @@ G_DEFINE_TYPE_WITH_PRIVATE (
 static void
 gdv_inspector_app_window_dispose (GObject *object)
 {
+  GdvInspectorAppWindow *window = GDV_INSPECTOR_APP_WINDOW (object);
+  GdvInspectorAppWindowPrivate *priv;
+	priv = gdv_inspector_app_window_get_instance_private (window);
+
+  if (priv->changed_cb != 0)
+  {
+    GSource *source = g_main_context_find_source_by_id (NULL, priv->changed_cb);
+    g_source_destroy (source);
+    priv->changed_cb = 0;
+  }
+
+  if (priv->changed_cb_oned != 0)
+  {
+    GSource *source = g_main_context_find_source_by_id (NULL, priv->changed_cb_oned);
+    g_source_destroy (source);
+    priv->changed_cb_oned = 0;
+  }
+
 	G_OBJECT_CLASS (gdv_inspector_app_window_parent_class)->dispose (object);
 }
 
@@ -109,7 +129,7 @@ static gint indicator_fc = 0;
 
 static GdvLayerContent *global_content;
 static GdvTwodLayer *global_layer;
-static gsl_rng *global_rng;
+//static gsl_rng *global_rng;
 
 
 static gboolean
@@ -176,8 +196,10 @@ timeout_cb (GdvIndicator *indicator)
       NULL);
 
     gdv_layer_content_add_data_point (global_content,
-      time_fc * gsl_rng_uniform (global_rng),
-      time_fc * gsl_rng_uniform (global_rng),
+      time_fc * (((gdouble) rand()) / ((gdouble) RAND_MAX)),
+      time_fc * (((gdouble) rand()) / ((gdouble) RAND_MAX)),
+//      time_fc * gsl_rng_uniform (global_rng),
+//      time_fc * gsl_rng_uniform (global_rng),
 //      90.0 + 0.5 * ((gdouble) time_fc),
 //      90.0 + 0.5 * ((gdouble) time_fc),
       0.0);
@@ -208,7 +230,7 @@ gdv_inspector_app_window_init (GdvInspectorAppWindow *window)
 {
   GdvAxis *new_axis;
   GdvSpecialCheckedIndicator *new_ind_ondl, *new_ind;
-  const gsl_rng_type * T;
+//  const gsl_rng_type * T;
 
   gtk_widget_init_template (GTK_WIDGET (window));
 
@@ -256,7 +278,8 @@ gdv_inspector_app_window_init (GdvInspectorAppWindow *window)
   g_object_set (new_ind, "value", 50.0, NULL);
   gtk_container_add (GTK_CONTAINER (new_axis), GTK_WIDGET (new_ind));
 
-  g_timeout_add (20, ((GSourceFunc) timeout_cb), new_ind);
+  window->priv->changed_cb =
+    g_timeout_add (20, ((GSourceFunc) timeout_cb), new_ind);
 
   /* initialize window group */
   g_object_get (window->priv->onedlayer, "axis", &new_axis, NULL);
@@ -265,8 +288,8 @@ gdv_inspector_app_window_init (GdvInspectorAppWindow *window)
   g_object_set (new_ind_ondl, "value", 50.0, NULL);
   gtk_container_add (GTK_CONTAINER (new_axis), GTK_WIDGET (new_ind_ondl));
 
-  g_timeout_add (20, ((GSourceFunc) timeout_cb_oned),
-                 window->priv->onedlayer);
+  window->priv->changed_cb_oned = g_timeout_add (20, ((GSourceFunc) timeout_cb_oned),
+                                                 window->priv->onedlayer);
 
 
 
@@ -325,9 +348,9 @@ gdv_inspector_app_window_init (GdvInspectorAppWindow *window)
 //  gtk_widget_show (window->priv->twodlayer);
 
   /* gsl rng */
-  gsl_rng_env_setup();
-  T = gsl_rng_default;
-  global_rng = gsl_rng_alloc (T);
+//  gsl_rng_env_setup();
+//  T = gsl_rng_default;
+//  global_rng = gsl_rng_alloc (T);
 
 
 /*

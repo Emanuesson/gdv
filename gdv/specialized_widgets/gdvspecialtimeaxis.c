@@ -26,8 +26,6 @@
 
 #include <math.h>
 
-#include <gsl/gsl_math.h>
-
 #include "gdvspecialtimeaxis.h"
 
 /* Define Properties */

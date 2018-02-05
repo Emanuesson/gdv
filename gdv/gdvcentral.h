@@ -26,6 +26,9 @@
 #ifndef GDV_CENTRAL_H_INCLUDE
 #define GDV_CENTRAL_H_INCLUDE
 
+#include <glib.h>
+#include <gio/gio.h>
+
 /* gettext-premade-functions */
 #define _(String) (String)
 #define N_(String) String
@@ -34,6 +37,12 @@
 #define textdomain(Domain)
 #define bindtextdomain(Package, Directory)
 /* #define GETTEXT_PACKAGE NULL */
+
+gboolean gdv_is_within_range (gdouble value, gdouble upper, gdouble lower);
+gboolean gdv_is_within_range_f (gfloat value, gfloat upper, gfloat lower);
+
+gboolean gdv_is_nearly_identical (gdouble value1, gdouble value2, gdouble difference);
+gboolean gdv_is_nearly_identical_f (gfloat value1, gfloat value2, gfloat difference);
 
 #endif  /* __GDV_CENTRAL_H_INCLUDE  */
 

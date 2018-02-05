@@ -36,7 +36,6 @@
 
 #include <math.h>
 #include <stdio.h>
-#include <gsl/gsl_math.h>
 
 #include "gdvtwodlayer.h"
 #include "gdvlinearaxis.h"
@@ -1021,14 +1020,14 @@ void gdv_twod_layer_get_xrange (GdvTwodLayer *layer, gdouble *x_beg, gdouble *x_
   {
     if (x1_beg >= x1_end)
     {
-      *x_beg = GSL_MAX(x1_beg, x2_beg);
-      *x_end = GSL_MIN(x1_end, x2_end);
+      *x_beg = fmax(x1_beg, x2_beg);
+      *x_end = fmin(x1_end, x2_end);
       return;
     }
     else
     {
-      *x_beg = GSL_MIN(x1_beg, x2_beg);
-      *x_end = GSL_MAX(x1_end, x2_end);
+      *x_beg = fmin(x1_beg, x2_beg);
+      *x_end = fmax(x1_end, x2_end);
       return;
     }
   }
@@ -1090,14 +1089,14 @@ void gdv_twod_layer_get_yrange (GdvTwodLayer *layer, gdouble *y_beg, gdouble *y_
   {
     if (y1_beg >= y1_end)
     {
-      *y_beg = GSL_MAX(y1_beg, y2_beg);
-      *y_end = GSL_MIN(y1_end, y2_end);
+      *y_beg = fmax(y1_beg, y2_beg);
+      *y_end = fmin(y1_end, y2_end);
       return;
     }
     else
     {
-      *y_beg = GSL_MIN(y1_beg, y2_beg);
-      *y_end = GSL_MAX(y1_end, y2_end);
+      *y_beg = fmin(y1_beg, y2_beg);
+      *y_end = fmax(y1_end, y2_end);
       return;
     }
   }
