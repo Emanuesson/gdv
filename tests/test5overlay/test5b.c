@@ -48,10 +48,10 @@ main (int argc, char **argv)
 
   main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
-  gtk_widget_set_size_request (main_window, 800, 800);
+  gtk_widget_set_size_request (main_window, 1800, 1800);
   g_signal_connect (main_window, "destroy",
 	      G_CALLBACK (destroy), NULL);
-  gtk_container_set_border_width (GTK_CONTAINER (main_window), 80);
+//  gtk_container_set_border_width (GTK_CONTAINER (main_window), 80);
 
 //  layer = g_object_new (gdv_twod_layer_get_type (),
   layer = g_object_new (gdv_oned_layer_get_type (),
@@ -64,6 +64,9 @@ main (int argc, char **argv)
   g_object_set (tmp,
 //                "scale-end-val", 0.250,
                 "scale-increment-base", 10.0,
+                "scale-beg-val", -10.000001,
+                "scale-end-val", -9.999990,
+//    "scale-increment-val", 1.0,
 /*                "axis-orientation", &orientation,
                 "axis-direction-outside", &direction_outside,
                 "scale-beg-val", &scale_min_val,

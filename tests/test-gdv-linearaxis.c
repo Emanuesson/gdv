@@ -230,7 +230,6 @@ test_lin_axis_horizontal (void)
   gboolean scale_auto_increment, scale_limits_auto, tics_auto, mtics_auto;
   guint no_of_mtics;
   gboolean force_beg_end;
-//  gint scale_min_diff_pix = 0, scale_max_diff_pix = 0;
 
   gtk_init (NULL, 0);
 
@@ -289,11 +288,6 @@ test_lin_axis_horizontal (void)
   g_assert_true (tic_end_val == 100.0);
   g_assert_true (mtics_beg_val == 0.0);
   g_assert_true (mtics_end_val == 100.0);
-
-  g_print ("AX BEG X %e Y %e END X %e Y %e DIFF %e\n",
-           axis_beg_screen_x, axis_beg_screen_y,
-           axis_end_screen_x, axis_end_screen_y,
-           axis_beg_screen_y - axis_end_screen_y);
   g_assert_true ((axis_beg_screen_y >= 0.1) && (axis_beg_screen_y <= 0.9));
   g_assert_true ((axis_end_screen_y >= 0.1) && (axis_end_screen_y <= 0.9));
   g_assert_true (gdv_is_nearly_identical (axis_beg_screen_y,
@@ -359,12 +353,121 @@ test_lin_axis_horizontal (void)
   g_list_free(mtics_cpy);
 }
 
+static void
+test_lin_axis_cross_settings (void)
+{
+  GtkWidget *window;
+  GdvLinearAxis *lin_axis;
+  GdvLayer *layer;
+
+  gdouble scale_min_val = 0.0, scale_max_val = 0.0, scale_incr = 0.0;
+
+  gtk_init (NULL, 0);
+
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  lin_axis = g_object_new (GDV_LINEAR_TYPE_AXIS, NULL);
+  layer = g_object_new (GDV_TYPE_LAYER, NULL);
+
+  g_object_set (lin_axis,
+    "scale-increment-val", 10.0,
+    NULL);
+
+  gtk_container_add (GTK_CONTAINER (window), GTK_WIDGET (layer));
+  gtk_container_add (GTK_CONTAINER (layer), GTK_WIDGET (lin_axis));
+  gtk_widget_set_size_request (GTK_WIDGET (window), 1800, 1800);
+  gtk_window_set_title (GTK_WINDOW (window), "c");
+
+  /* Realizing and Allocating the Layer */
+  gtk_widget_show_all (window);
+
+  /* Now testing all automatted settings for correctness */
+  g_object_get (lin_axis,
+    "scale-beg-val", &scale_min_val,
+    "scale-end-val", &scale_max_val,
+    "scale-increment-val", &scale_incr,
+    NULL);
+
+  g_assert_true (scale_min_val == 0.0);
+  g_assert_true (scale_max_val == 100.0);
+  g_assert_true (scale_incr == 2.5);
+
+  g_object_set (lin_axis,
+    "scale-increment-base", 30.0,
+    NULL);
+
+  gtk_widget_hide (window);
+  gtk_widget_show_all (window);
+
+  g_object_get (lin_axis,
+    "scale-beg-val", &scale_min_val,
+    "scale-end-val", &scale_max_val,
+    "scale-increment-val", &scale_incr,
+    NULL);
+
+  g_assert_true (scale_min_val == 0.0);
+  g_assert_true (scale_max_val == 102.0);
+  g_assert_true (scale_incr == 3.0);
+
+  g_object_set (lin_axis,
+    "scale-increment-base", 10.0,
+    "scale-beg-val", -10.0,
+    "scale-end-val", 10.0,
+    "scale-increment-val", 1.0,
+    NULL);
+
+  gtk_widget_hide (window);
+  gtk_widget_show_all (window);
+
+  g_object_get (lin_axis,
+    "scale-beg-val", &scale_min_val,
+    "scale-end-val", &scale_max_val,
+    "scale-increment-val", &scale_incr,
+    NULL);
+
+  g_assert_true (scale_min_val == -10.0);
+  g_assert_true (scale_max_val == 10.0);
+  g_assert_true (scale_incr == 0.5);
+
+  g_object_set (lin_axis,
+                "scale-increment-base", 10.0,
+                "scale-beg-val", -10.000001,
+                "scale-end-val", -9.999990,
+                "scale-increment-val", 1.0,
+                NULL);
+
+  gtk_widget_set_size_request (GTK_WIDGET (window), 1800, 1800);
+
+  gtk_widget_hide (window);
+  gtk_widget_show_all (window);
+
+  g_object_get (lin_axis,
+    "scale-beg-val", &scale_min_val,
+    "scale-end-val", &scale_max_val,
+    "scale-increment-val", &scale_incr,
+    NULL);
+
+  g_print ("SCALE MIN VAL %.8f\n", scale_min_val);
+  g_print ("SCALE DIFF VAL %.8e\n", scale_min_val + 10.00000100);
+//  if (scale_min_val == -10.00000100) printf ("!");
+  g_assert_true (gdv_is_nearly_identical (scale_min_val, -10.00000100, 1e-10));
+  g_assert_true (gdv_is_nearly_identical (scale_max_val, -9.99998950, 1e-10));
+  g_assert_true (gdv_is_nearly_identical (scale_incr, 5.000000e-07, 1e-17));
+//  g_assert_true (gdv_is_nearly_identical (scale_incr, -9.99998950, 1e-10));
+//  g_assert_true ( == -9.99998950);
+//  g_assert_true (scale_incr == 5.000000e-07);
+
+  g_print ("SCALE: BEG %.8f END %.8f SIV %e\n",
+           scale_min_val, scale_max_val, scale_incr);
+
+}
+
 
 int main(int argc, char* argv[]) {
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/Gdv/LinearAxis/correct_default", test_lin_axis_correct_default);
   g_test_add_func ("/Gdv/LinearAxis/horizontal", test_lin_axis_horizontal);
+  g_test_add_func ("/Gdv/LinearAxis/cross_settings", test_lin_axis_cross_settings);
 
   return g_test_run ();
 }

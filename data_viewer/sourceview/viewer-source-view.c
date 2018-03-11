@@ -55,7 +55,9 @@ struct _ViewerSourceViewPrivate
 
 //static GParamSpec *properties [N_PROPERTIES];
 
-G_DEFINE_TYPE_WITH_PRIVATE (ViewerSourceView, viewer_source_view, GTK_SOURCE_TYPE_VIEW);
+G_DEFINE_TYPE_WITH_PRIVATE (ViewerSourceView,
+                            viewer_source_view,
+                            GTK_SOURCE_TYPE_VIEW);
 
 static void
 on_buffer_changed (ViewerSourceView *view)

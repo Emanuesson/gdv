@@ -43,11 +43,13 @@ m4/*
 aclocal.m4
 configure
 
+# Flatpak builder
+.flatpak-builder/*
+
 # Temporary files
 *~
 
-#some additional infos:
-'add_info/possibleApplications/Network Flow Analysis.pdf'
-
-
-data/*
+# IDE-specific files - Gnome-builder
+.buildconfig
+.editorconfig
+**tags.*

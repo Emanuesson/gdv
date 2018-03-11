@@ -248,7 +248,7 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
    *        to run a newer version of splint over the code somewhere without
    *        the crashes I got from Ver3.1.2-4 from the AUR
    */
-  #ifndef S_SPLINT_S
+#ifndef S_SPLINT_S
 
   GdvLinearAxis *linear_axis = GDV_LINEAR_AXIS (widget);
   GtkAllocation axis_allocation = *allocation;
@@ -270,8 +270,10 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
   gdouble angle_to_outer_dir, angle_to_start;
 
   gdouble init_increment_val;
+//  gdouble   init_tic_beg_val, init_tic_end_val;
 
   gdouble inner_dir_x = 0.0, inner_dir_y = 0.0;
+//  gdouble   axis_dir_x = 0.0, axis_dir_y = 0.0;
 
   gboolean force_beg_end;
 
@@ -319,6 +321,8 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
 
   gboolean visible;
 
+//  gdouble last_diff_pix = 0.0;
+
   /* Some annotations:
    *   The allocation process is the point where axes determines the
    *   available space for the tics. This process can be controlled by
@@ -341,6 +345,9 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
    *      after this process, due to the newly added tics. This is made by the
    *      internal resize-during-redraw property
    */
+
+  g_log (NULL, G_LOG_LEVEL_DEBUG, "ALLOC WITH: %d, %d, %d, %d",
+           allocation->x, allocation->y, allocation->width, allocation->height);
 
   /* setting the allocation at the real beginning */
   gtk_widget_set_allocation (widget, &axis_allocation);
@@ -368,8 +375,19 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
     "visible", &visible,
     NULL);
 
+//  if (scale_end_val != 100.0)
+//  FIXME: This will be used to debug the retic-problem
+
+  g_log (NULL, G_LOG_LEVEL_DEBUG, "\n");
+  g_log (NULL, G_LOG_LEVEL_DEBUG, "BEGW SCALE: fr %e to %e TICS: fr %e to %e SCIB %e SCIV %e\n",
+         scale_beg_val, scale_end_val,
+         tics_beg_val, tics_end_val,
+         scale_increment_base, scale_increment_val);
+
   /* safing all necessary values */
   init_increment_val = scale_increment_val;
+//  init_tic_beg_val = tics_beg_val;
+//  init_tic_end_val = tics_end_val;
 
   init_scale_beg_val = scale_beg_val;
   init_scale_end_val = scale_end_val;
@@ -391,6 +409,8 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
   /* calculating basic geometric values */
   inner_dir_x = -1.0 * sin (angle_to_outer_dir);
   inner_dir_y = cos (angle_to_outer_dir);
+//  axis_dir_x = -1.0 * sin (angle_to_start);
+//  axis_dir_y = cos (angle_to_start);
 
   tic_label_halign = -0.5 * fabs (inner_dir_y);
   tic_label_valign = -0.5 * fabs (inner_dir_x);
@@ -458,12 +478,15 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
                   NULL);
   }
 
+  g_log (NULL, G_LOG_LEVEL_DEBUG, "START INCREMENT_DET-LOOP\n");
+
   /* this optimises the scale-parameters, until scale-min-diff-pix are
    * reached */
   while (set_tics)
   {
     /* negative sign -> exponent grows, positive sign vice versa */
     gdouble base_value =
+//        pow (10.0, exponent) / mantissa;
       pow (10.0, exponent) * (sign < 0.0 ? mantissa : 1.0 / mantissa);
     gdouble down_scaled_difference;
     gdouble down_scaled_beg, down_scaled_end;
@@ -472,14 +495,14 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
     gdouble scale_length;
 
     /* FIXME: catch trivial case (scale_end_val == scale_beg_val) */
-//    down_scaled_difference =
-//        base_value *
-//        pow (scale_increment_base,
-//             floor (
-//               log (fabs (scale_end_val - scale_beg_val)) /
-//               log (scale_increment_base)
-//                   ));
-
+    down_scaled_difference =
+        base_value *
+        pow (scale_increment_base,
+             floor (
+               log (fabs (scale_end_val - scale_beg_val)) /
+               log (scale_increment_base)
+                   ));
+/*
     if (sign < 0.0)
       down_scaled_difference =
         base_value *
@@ -496,6 +519,21 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
                log (fabs (scale_end_val - scale_beg_val)) /
                log (scale_increment_base)
                   ));
+*/
+    g_log (NULL, G_LOG_LEVEL_DEBUG,
+           "\n\tLOOP: DSD %e BAV %e SCALE: fr %e to %e\n",
+           down_scaled_difference, base_value, scale_beg_val, scale_end_val);
+    g_log (NULL, G_LOG_LEVEL_DEBUG,
+           "\tMORE MAGEIC: FAC %e SIB %e\n",
+             sign < 0.0 ? floor (
+               log (fabs (scale_end_val - scale_beg_val)) /
+               log (scale_increment_base)) : ceil (
+               log (fabs (scale_end_val - scale_beg_val)) /
+               log (scale_increment_base)
+                  ), scale_increment_base);
+
+    g_log (NULL, G_LOG_LEVEL_DEBUG,
+           "\tBV MAGIC: SGN %e MTSS %e EXPO %e\n", sign, mantissa, exponent);
 
     /* FIXME: This is not usefull! */
     if (isnan (down_scaled_difference))
@@ -551,6 +589,12 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
         (gdouble)floor (scale_end_val / down_scaled_difference);
     }
 
+//  FIXME: This will be used to debug the retic-problem
+    g_log (NULL, G_LOG_LEVEL_DEBUG,
+           "\tSET SCV DONWSCALED fr %e to %e ; SCALE fr %e to %e ; DSD %e SIV %e\n",
+             down_scaled_beg, down_scaled_end, scale_beg_val, scale_end_val,
+             down_scaled_difference, scale_increment_val);
+
     if (scale_automatic && scale_auto_increment)
     {
       scale_beg_val = down_scaled_beg;
@@ -559,9 +603,17 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
 
     if (tics_automatic)
     {
+//      tics_beg_val = down_scaled_beg;
+//      tics_end_val = down_scaled_end;
       tics_beg_val = scale_beg_val;
       tics_end_val = scale_end_val;
     }
+
+//  FIXME: This will be used to debug the retic-problem
+    g_log (NULL, G_LOG_LEVEL_DEBUG,
+           "\tFIN SCD %e %e TI %e %e\n",
+           scale_beg_val, scale_end_val,
+           tics_beg_val, tics_end_val);
 
     /* set the beg/end-tic to the new value */
     /* FIXME: This constrains the geometry-handling here... maybe there is a
@@ -718,17 +770,23 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
     scale_length = fabs (scale_end_val - scale_beg_val);
     current_diff_pix = line_length * scale_increment_val / scale_length;
 
+    g_log (NULL, G_LOG_LEVEL_DEBUG,
+           "\tREACHPOS W CDP %f SID %d SAD %d\n",
+           current_diff_pix, scale_min_diff_pix, scale_max_diff_pix);
+
     /* aborting criteria - optimisation successful */
     if (((current_diff_pix < (gdouble)scale_min_diff_pix &&
           sign > 0.0) ||
          (current_diff_pix > (gdouble)scale_max_diff_pix &&
           sign < 0.0)) &&
         !first_iteration)
+//      if ((!scale_automatic))
       break;
     /* autoscaling successfull; setting all parameters to the axis */
     else if ((current_diff_pix >= (gdouble)scale_min_diff_pix &&
               current_diff_pix <= (gdouble)scale_max_diff_pix))
     {
+      g_log (NULL, G_LOG_LEVEL_DEBUG,"\tSUCC SET\n");
 
       if (scale_auto_increment)
         g_object_set (G_OBJECT (linear_axis),
@@ -752,6 +810,22 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
       first_iteration = FALSE;
     }
 
+
+    g_log (NULL, G_LOG_LEVEL_DEBUG,
+           "\n\tREACH ITER COND CDP %e DSD %e DOWN_SCALE: BEG %e END %e\n",
+           current_diff_pix, down_scaled_difference,
+           down_scaled_beg, down_scaled_end);
+    g_log (NULL, G_LOG_LEVEL_DEBUG,
+           "\tSIGN %e\n", sign);
+
+//      if (first_iteration && sign > 0.0)
+  //      {
+  //        first_iteration = FALSE;
+  //    g_print ("FIRST ITER CONT\n");
+  //        continue;
+  //      }
+  //    else
+
     /* abort if the style-property cannot be reached */
     /* FIXME: the statement in the last line implies, that there will be no
      * changes to scale_increment_val under the conditions, even if necessary!
@@ -759,12 +833,19 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
      * issue.
      */
     if (((down_scaled_difference == fabs (down_scaled_end - down_scaled_beg)) &&
-         (((current_diff_pix < (gdouble)scale_min_diff_pix) ||
-          (!first_iteration && sign > 0.0))||
-          ((current_diff_pix > (gdouble)scale_max_diff_pix) ||
-          (!first_iteration && sign < 0.0)))) ||
+         ((current_diff_pix < (gdouble)scale_min_diff_pix))) ||
+          (!first_iteration && sign < 0.0) ||
+//          (!first_iteration && sign < 0.0 && (last_diff_pix == current_diff_pix)) ||
+//         ((current_diff_pix > (gdouble)scale_max_diff_pix) ||
+//          (!first_iteration && sign < 0.0)) ||
         !scale_auto_increment || force_beg_end || !scale_automatic)
+//    if (current_diff_pix < (gdouble)scale_min_diff_pix)
     {
+      g_log (NULL, G_LOG_LEVEL_DEBUG,
+             "SUCC2 SET SCALE BEG %e END %e SIV %e\n",
+             scale_beg_val, scale_end_val, scale_increment_val);
+
+//    } if (FALSE) {
       if (scale_auto_increment)
         g_object_set (G_OBJECT (linear_axis),
                       "scale-increment-val", scale_increment_val,
@@ -792,6 +873,9 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
 
       break;
     }
+//    last_diff_pix = current_diff_pix;
+
+//    g_print ("\tSET NEW mnt&exp - OLD: MNT %e EXP %e\n", mantissa, exponent);
 
     /* setting the sign-value */
     if (first_iteration &&
@@ -819,6 +903,8 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
         exponent--;
     }
 
+//    if (!first_iteration)
+//      exit(0);
     first_iteration = FALSE;
   }
 
@@ -834,6 +920,14 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
                 "tics-beg-val", &tics_beg_val,
                 "tics-end-val", &tics_end_val,
                 NULL);
+
+  g_log (NULL, G_LOG_LEVEL_DEBUG,
+         "!!!FIN WITH SC %.8e %.8e TI %e %e SIV %e\n",
+         scale_beg_val, scale_end_val,
+         tics_beg_val, tics_end_val,
+         scale_increment_val);
+
+//  exit(0);
 
   if (set_tics)
   {
@@ -851,6 +945,8 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
       gdv_tic_label_set_markup (beg_tic, new_tic_label);
       g_free (new_tic_label);
 
+      g_log (NULL, G_LOG_LEVEL_DEBUG,
+             "Set Beg VALUE2: %e\n", tics_beg_val);
       g_object_set (G_OBJECT (beg_tic),
                     "value", tics_beg_val,
                     "visible", visible,
@@ -869,6 +965,9 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
           GDV_AXIS (linear_axis), tics_end_val);
       gdv_tic_label_set_markup (end_tic, new_tic_label);
       g_free (new_tic_label);
+
+      g_log (NULL, G_LOG_LEVEL_DEBUG,
+             "Set end VALUE2: %e\n", tics_end_val);
 
       g_object_set (G_OBJECT (end_tic),
                     "value", tics_end_val,
@@ -931,9 +1030,8 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
         local_tic_value < fmin (scale_beg_val, scale_end_val) ||
         local_tic_value > fmax (tics_beg_val, tics_end_val) ||
         local_tic_value > fmax (scale_beg_val, scale_end_val) ||
-        !((local_val_resid < 1e-13 && local_val_resid > -1e-13) ||
-          ((1.0 - local_val_resid) < 1e-13 &&
-           (1.0 - local_val_resid) > -1e-13)) ||
+        !((fabs(local_val_resid) * scale_increment_val < 1e-10) ||
+          (fabs(1.0 - local_val_resid) * scale_increment_val < 1e-10)) ||
         _is_present_in_approved_list (tics_copy->data, tics_approved_list))
       /* TODO: separate the round-off problems to own function */
       gtk_container_remove (GTK_CONTAINER (linear_axis), tics_copy->data);
@@ -965,16 +1063,17 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
     local_mtic_resid =
       fmod (local_val_resid / (scale_increment_val / (mtics_number + 1)), 1.0);
 
+//    g_print ("TICREM LCL_RESID: %e\n", 1.0 - local_mtic_resid);
+
     if (local_mtic_value < fmin (mtics_beg_val, mtics_end_val) ||
         local_mtic_value < fmin (scale_beg_val, scale_end_val) ||
         local_mtic_value > fmax (mtics_beg_val, mtics_end_val) ||
         local_mtic_value > fmax (scale_beg_val, scale_end_val) ||
-        !((local_mtic_resid < 1e-13 && local_mtic_resid > -1e-13) ||
-          ((1.0 - local_mtic_resid) < 1e-13 &&
-           (1.0 - local_mtic_resid) > -1e-13)) ||
-        fabs (local_val_resid / scale_increment_val) < 1e-13 ||
+        !((fabs (local_mtic_resid * scale_increment_val) < 1e-9) ||
+          (fabs((1.0 - local_mtic_resid) * scale_increment_val) < 1e-9)) ||
+        fabs (local_val_resid / scale_increment_val) < 1e-10 ||
         fabs ((scale_increment_val - local_val_resid) /
-              scale_increment_val) < 1e-13 ||
+              scale_increment_val) < 1e-10 ||
         _is_present_in_approved_list (mtics_copy->data, tics_approved_list))
       /* round-off problems */
       gtk_container_remove (GTK_CONTAINER (linear_axis), mtics_copy->data);
@@ -1021,7 +1120,7 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
         local_val_resid =
           (local_mtic_value - local_mtic_val) / scale_increment_val;
 
-        if (local_val_resid < 1e-13 && local_val_resid > -1e-13)
+        if (fabs(local_val_resid) < 1e-10)
         {
           local_mtic = mtics_copy->data;
           break;
@@ -1039,6 +1138,7 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
       {
         if (!local_mtic)
         {
+//          g_print ("New Mtic VALUE: %e\n", local_mtic_val);
           local_mtic =
             g_object_new (gdv_mtic_get_type (),
                           "value", local_mtic_val,
@@ -1085,7 +1185,7 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
       local_val_resid =
         fabs (actual_pos_val - local_tic_value) / scale_increment_val;
 
-      if (local_val_resid < 1e-13 && local_val_resid > -1e-13)
+      if (fabs(local_val_resid) < 1e-10)
       {
         local_tic = tics_copy->data;
         break;
@@ -1099,6 +1199,9 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
     if (!local_tic)
     {
       gchar *new_tic_label;
+
+      g_log (NULL, G_LOG_LEVEL_DEBUG,
+             "New Tic VALUE: %e\n", actual_pos_val);
 
       local_tic =
         g_object_new (gdv_tic_get_type (),
@@ -1141,7 +1244,7 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
         local_val_resid =
           (local_mtic_value - local_mtic_val) / scale_increment_val;
 
-        if (local_val_resid < 1e-13 && local_val_resid > -1e-13)
+        if (fabs(local_val_resid) < 1e-10)
         {
           local_mtic = mtics_copy->data;
           break;
@@ -1159,6 +1262,9 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
       {
         if (!local_mtic)
         {
+          g_log (NULL, G_LOG_LEVEL_DEBUG,
+                 "New MTIC VALUE: %e\n", local_mtic_val);
+
           local_mtic =
             g_object_new (gdv_mtic_get_type (),
                           "value", local_mtic_val,
@@ -1346,6 +1452,11 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
                   NULL);
   }
 
+//  if (scale_end_val != 100.0)
+//    g_print ("FINW SC %e %e TI %e %e\n",
+//      scale_beg_val, scale_end_val,
+//      tics_beg_val, tics_end_val);
+
   #endif /* S_SPLINT_S */
 
   GTK_WIDGET_CLASS (
@@ -1358,12 +1469,14 @@ gdv_linear_axis_make_tic_label_markup (GdvAxis *axis, gdouble value)
   gdouble tics_beg, tics_end;
   GdvLinearAxis *linear_axis;
   gchar *return_string = NULL;
+  gdouble base_val;
 
   linear_axis = GDV_LINEAR_AXIS (axis);
 
   g_object_get (G_OBJECT (linear_axis),
                 "tics-beg-val", &tics_beg,
                 "tics-end-val", &tics_end,
+                "scale-increment-base", &base_val,
                 NULL);
 
   if (value == 0.0)
@@ -1376,11 +1489,15 @@ gdv_linear_axis_make_tic_label_markup (GdvAxis *axis, gdouble value)
   {
     gdouble exponent, mantissa;
 
-    exponent = floor (log10 (fabs (value)));
-    mantissa = value / pow (10.0, exponent);
+    exponent = floor (log (fabs (value)) / log (base_val));
+    mantissa = value / pow (base_val, exponent);
 
-    return_string =
-      g_markup_printf_escaped ("%gx10<sup>%g</sup>", mantissa, exponent);
+    if (exponent != 0.0)
+      return_string =
+        g_markup_printf_escaped ("%gx%g<sup>%g</sup>", mantissa, base_val, exponent);
+    else
+      return_string =
+        g_markup_printf_escaped ("%g", mantissa);
   }
   else
     return_string = g_strdup_printf ("%g", value);

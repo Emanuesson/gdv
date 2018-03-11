@@ -93,7 +93,8 @@ _progress_file_load_cb (goffset            current_num_bytes,
                         goffset            full_num_bytes,
                         ViewerSourceView  *view)
 {
-  g_print ("%ld/%ld\n", current_num_bytes, full_num_bytes);
+  g_log (NULL, G_LOG_LEVEL_DEBUG,
+         "%ld/%ld\n", current_num_bytes, full_num_bytes);
 }
 
 static void
@@ -156,7 +157,8 @@ on_treeview_selection_changed (GtkTreeSelection *tree_selection,
                                      priv->file_content);
 
   if (file)
-    g_print ("Here: %s\n", g_type_name (G_OBJECT_TYPE (file)));
+    g_log (NULL, G_LOG_LEVEL_DEBUG,
+           "Here: %s\n", g_type_name (G_OBJECT_TYPE (file)));
 }
 
 

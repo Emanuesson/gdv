@@ -1,6 +1,6 @@
 project('libgdv', 'c',
-          version: '3.26.0',
-          license: 'GPLv3+',
+          version: '0.1.2',
+          license: 'GPLv2+',
     meson_version: '>= 0.40.1',
   default_options: [ 'warning_level=1', 'buildtype=debugoptimized', 'c_std=gnu11' ],
 )
@@ -114,7 +114,6 @@ endif
 
 gnome = import('gnome')
 
-subdir('data')
 subdir('gdv')
 subdir('data_viewer')
 
@@ -123,5 +122,5 @@ if get_option('enable_tests')
 endif
 
 if get_option('enable_gtk_doc')
-  subdir('doc_in')
+  subdir('docs/reference/gdv')
 endif

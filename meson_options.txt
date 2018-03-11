@@ -6,7 +6,8 @@ option('enable_rdtscp', type: 'boolean', value: false,
 )
 
 option('enable_tools', type: 'boolean', value: true,
-       description: 'Whether helper tools should be installed')
+  description: 'Whether helper tools should be installed',
+)
 
 # Support for multiple languages
 option('with_introspection', type: 'boolean', value: true)
@@ -14,13 +15,17 @@ option('with_vapi', type: 'boolean', value: true)
 
 # Subproject
 option('package_subdir', type: 'string',
-  description: 'Subdirectory to append to all installed files, for use as subproject'
-)
+  description: 'Subdirectory to append to all installed files, for use as subproject',
+  )
 
+# Build Documentation
 option('enable_gtk_doc',
-       type: 'boolean', value: false,
-       description: 'Whether to generate the API reference for Dazzle')
+  type: 'boolean', value: true,
+  description: 'Whether to generate the documentation for libgdv',
+  )
 
+# Enable building tests
 option('enable_tests',
-       type: 'boolean', value: true,
-description: 'Whether to compile unit tests')
+  type: 'boolean', value: true,
+  description: 'Whether to compile unit tests',
+  )

@@ -8,4 +8,3 @@ executable('test3', 'test3.c',
        link_depends: libgdv_map,
 include_directories: [ root_inc, src_inc ],
 )
-

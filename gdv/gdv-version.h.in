@@ -26,7 +26,7 @@
 //#endif
 
 /**
- * SECTION:gdv-version
+ * SECTION:gdvversion
  * @short_description: Gdv version checking
  *
  * Gdv provides macros to check the version of the library at compile-time
@@ -96,3 +96,4 @@
           GDV_MICRO_VERSION >= (micro)))
 
 #endif /* GDV_VERSION_H */
+

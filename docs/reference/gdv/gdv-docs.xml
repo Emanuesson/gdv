@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
                "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
 <!ENTITY version SYSTEM "version.xml">
 ]>
@@ -7,21 +7,22 @@
   <bookinfo>
     <title>GDV Reference Manual</title>
     <releaseinfo>
-      Documentation for LibGdv, version &apiversion;
+      Documentation for LibGdv, version &version;
 <!--      The latest version of this documentation can be found on-line at
       <ulink role="online-location" url="http://library.gnome.org/devel/glib/unstable/">http://library.gnome.org/devel/glib/unstable/</ulink>.-->
     </releaseinfo>
   </bookinfo>
 
   <part id="gdv">
-    <title>LibGdv Overview and introduction</title>
+    <title>LibGdv overview and introduction</title>
     <para>
-      The GDV-library tries to provide a simple data-visualization-library in 
-      the gtk+-framework. It is the attempt to use the powerful programming-features 
-      of the glib- and gtk+-libraries such as object-oriented programming, 
-      theme-settings by CSS-files, referencing, introspection and widget-based geometry 
-      management in a professional data-visualization-library. It works 
-      on many UNIX-like platforms, as well as Windows and OS X. LibGDV is released 
+      Documentation for LibGdv, version &version;
+      The GDV-library tries to provide a simple data-visualization-library in
+      the gtk+-framework. It is the attempt to use the powerful programming-features
+      of the glib- and gtk+-libraries such as object-oriented programming,
+      theme-settings by CSS-files, referencing, introspection and widget-based geometry
+      management in a professional data-visualization-library. It works
+      on many UNIX-like platforms, as well as Windows and OS X. LibGDV is released
       under the terms and conditions of the GNU Lesser General Public License (GNU LGPL).
     </para>
     <xi:include href="tut_intro.xml" />

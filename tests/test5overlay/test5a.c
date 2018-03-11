@@ -48,7 +48,7 @@ main (int argc, char **argv)
 
   main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
-  gtk_widget_set_size_request (main_window, 800, 800);
+//  gtk_widget_set_size_request (main_window, 1800, 1800);
 
   g_signal_connect (main_window, "destroy",
 	      G_CALLBACK (destroy), NULL);
@@ -63,7 +63,8 @@ main (int argc, char **argv)
 
   g_object_get (layer, "axis", &tmp, NULL);
   g_object_set (tmp,
-//                "scale-end-val", 0.250,
+//                "scale-beg-val", -10.0,
+//                "scale-end-val", 10.0,
                 "scale-increment-base", 30.0,
 /*                "axis-orientation", &orientation,
                 "axis-direction-outside", &direction_outside,

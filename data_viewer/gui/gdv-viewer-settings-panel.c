@@ -254,26 +254,33 @@ static void
 on_row_settings_pan_activate (GtkEntry *entry,
                gpointer  user_data)
 {
-  g_print("REACHED ROW ACTIVATE\n");
+  g_log (NULL, G_LOG_LEVEL_DEBUG,
+         "REACHED ROW ACTIVATE\n");
 
 
 
   if (user_data)
-    g_print ("\tUser_data: %s\n", g_type_name (G_OBJECT_TYPE (user_data)));
-  g_print ("\tENTRY SET TO: %s\n", gtk_entry_get_text(entry));
+    g_log (NULL, G_LOG_LEVEL_DEBUG,
+           "\tUser_data: %s\n", g_type_name (G_OBJECT_TYPE (user_data)));
+
+  g_log (NULL, G_LOG_LEVEL_DEBUG,
+         "\tENTRY SET TO: %s\n", gtk_entry_get_text(entry));
 }
 
 static void
 on_col_settings_pan_activate (GtkEntry *entry,
                gpointer  user_data)
 {
-  g_print("REACHED COL ACTIVATE\n");
+  g_log (NULL, G_LOG_LEVEL_DEBUG, "REACHED COL ACTIVATE\n");
 
 
 
   if (user_data)
-    g_print ("\tUser_data: %s\n", g_type_name (G_OBJECT_TYPE (user_data)));
-  g_print ("\tENTRY SET TO: %s\n", gtk_entry_get_text(entry));
+    g_log (NULL, G_LOG_LEVEL_DEBUG,
+           "\tUser_data: %s\n", g_type_name (G_OBJECT_TYPE (user_data)));
+
+  g_log (NULL, G_LOG_LEVEL_DEBUG,
+         "\tENTRY SET TO: %s\n", gtk_entry_get_text(entry));
 }
 
 static gboolean
@@ -301,7 +308,8 @@ on_settings_pan_icon_press (GtkEntry *entry,
   GdvViewerSettingsPanelPrivate *priv;
   GdvViewerSettingsPanel *self = GDV_VIEWER_SETTINGS_PANEL (user_data);
 
-  g_print("REACHED ICON-PRESS\n");
+  g_log (NULL, G_LOG_LEVEL_DEBUG,
+         "REACHED ICON-PRESS\n");
 
   priv = gdv_viewer_settings_panel_get_instance_private (self);
 
@@ -309,7 +317,8 @@ on_settings_pan_icon_press (GtkEntry *entry,
     g_timeout_add (300, hold_entry_symbol_cb , self);
 
   if (user_data)
-    g_print ("\tUser_data: %s\n", g_type_name (G_OBJECT_TYPE (user_data)));
+    g_log (NULL, G_LOG_LEVEL_DEBUG,
+           "\tUser_data: %s\n", g_type_name (G_OBJECT_TYPE (user_data)));
 }
 
 
@@ -322,7 +331,7 @@ on_settings_pan_icon_release (GtkEntry *entry,
   GdvViewerSettingsPanelPrivate *priv;
   GdvViewerSettingsPanel *self = GDV_VIEWER_SETTINGS_PANEL (user_data);
 
-  g_print("REACHED ICON-RELEASE\n");
+  g_log (NULL, G_LOG_LEVEL_DEBUG, "REACHED ICON-RELEASE\n");
 
   priv = gdv_viewer_settings_panel_get_instance_private (self);
 
@@ -368,7 +377,9 @@ on_settings_pan_icon_release (GtkEntry *entry,
   }
 
   if (user_data)
-    g_print ("\tUser_data: %s\n", g_type_name (G_OBJECT_TYPE (user_data)));
+    g_log (NULL, G_LOG_LEVEL_DEBUG,
+           "\tUser_data: %s\n",
+           g_type_name (G_OBJECT_TYPE (user_data)));
 }
 
 static void

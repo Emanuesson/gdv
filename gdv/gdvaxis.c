@@ -703,6 +703,21 @@ static void gdv_axis_add (GtkContainer *container_axis,
                g_type_name (G_OBJECT_TYPE (container_axis)));
   }
 
+/*
+  if (GDV_IS_MTIC (widget))
+  {
+    gdouble value;
+    g_object_get (widget, "value", &value, NULL);
+    g_print ("ADDED MTIC WITH %e\n", value);
+  }
+  else if (GDV_IS_TIC (widget))
+  {
+    gdouble value;
+    g_object_get (widget, "value", &value, NULL);
+    g_print ("ADDED TIC WITH %e\n", value);
+  }
+*/
+
   gtk_widget_show_all (widget);
 
 //  if (gtk_widget_get_visible (GTK_WIDGET (axis)))
@@ -761,6 +776,21 @@ static void gdv_axis_remove (GtkContainer *container_axis,
 
     g_object_unref (tic);
   }
+
+/*
+  if (GDV_IS_MTIC (widget))
+  {
+    gdouble value;
+    g_object_get (widget, "value", &value, NULL);
+    g_print ("REMOVED MTIC WITH %e\n", value);
+  }
+  else if (GDV_IS_TIC (widget))
+  {
+    gdouble value;
+    g_object_get (widget, "value", &value, NULL);
+    g_print ("REMOVED TIC WITH %e\n", value);
+  }
+*/
 
 //  if (gtk_widget_get_visible (GTK_WIDGET (axis)))
   axis->priv->resize_during_redraw = TRUE;

@@ -19,6 +19,8 @@ images = [
   join_paths('images', 'realloc_prob.png'),
   ]
 
+configure_file(input: 'version.xml.in', output: 'version.xml', configuration: version_data)
+
 gnome.gtkdoc('gdv',
            main_xml: 'gdv-docs.xml',
             src_dir: [
@@ -29,7 +31,8 @@ gnome.gtkdoc('gdv',
   gobject_typesfile: 'gdv.types',
           scan_args: [
                        '--rebuild-types',
-                       '--ignore-headers=' + ' '.join(private_headers),
+                       '--ignore-headers=' + ' '.join(private_headers) +
+                       ' gdv-data-matrix.h gdv-data-vector.h',
                      ],
        fixxref_args: [
                        '--html-dir=@0@'.format(docpath),

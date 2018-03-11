@@ -1,50 +1,50 @@
 <?xml version='1.0' encoding="ISO-8859-1"?>
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" 
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
                "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
 ]>
 
 <chapter id="getting-started" xmlns:xi="http://www.w3.org/2003/XInclude">
   <title>Introduction to LibGdv</title>
 
-  <para>LibGdv is a graphical library, that adds some functionality to the 
+  <para>LibGdv is a graphical library, that adds some functionality to the
   <ulink role="online-location" url="http://developer.gnome.org/gtk3/">
-  GTK+-library</ulink> to present and visualize scientific and generally all 
-  kind of data. It is the attempt to use powerful programming-features of the 
-  glib- and GTK+-libraries such as object-oriented programming, referencing, 
-  introspection, widget-based geometry handling and theming by CSS-files in a 
+  GTK+-library</ulink> to present and visualize scientific and generally all
+  kind of data. It is the attempt to use powerful programming-features of the
+  glib- and GTK+-libraries such as object-oriented programming, referencing,
+  introspection, widget-based geometry handling and theming by CSS-files in a
   library that is able to provide professional data-plots.</para>
 
   <para>A powerful alternative is <ulink url="https://github.com/GNOME/goffice/">
-  libgoffice</ulink>, but despite it's strengths and functionality it is far 
+  libgoffice</ulink>, but despite it's strengths and functionality it is far
   more specialized onto office-applications than on the merely technical side.</para>
 
-  <para>Further alternatives, that should be considered are 
-  <ulink url="https://sourceforge.net/projects/gtkdatabox/">GtkDataBox</ulink>, 
-  <ulink url="http://gtkextra.sourceforge.net/cms/">GtkExtra</ulink>, the 
-  <ulink url="https://sourceforge.net/projects/giw/">GtkInstrumentationWidgets</ulink>, 
-  <ulink url="https://github.com/elvismt/slope/">slope</ulink> and 
-  <ulink url="https://sourceforge.net/projects/gapcmon/files/">glinegraph</ulink>. 
-  These libraries are to some part outdated and/or have a lack of functionality 
-  in terms of the current GTK+-interfaces. They are in many cases limited to 
-  GTK+2.0 only. And any further integration of these libraries into the recent 
+  <para>Further alternatives, that should be considered are
+  <ulink url="https://sourceforge.net/projects/gtkdatabox/">GtkDataBox</ulink>,
+  <ulink url="http://gtkextra.sourceforge.net/cms/">GtkExtra</ulink>, the
+  <ulink url="https://sourceforge.net/projects/giw/">GtkInstrumentationWidgets</ulink>,
+  <ulink url="https://github.com/elvismt/slope/">slope</ulink> and
+  <ulink url="https://sourceforge.net/projects/gapcmon/files/">glinegraph</ulink>.
+  These libraries are to some part outdated and/or have a lack of functionality
+  in terms of the current GTK+-interfaces. They are in many cases limited to
+  GTK+2.0 only. And any further integration of these libraries into the recent
   interface-builder such as GtkBuilder or Glade is rather difficult.</para>
 
-  <para>However strongly simplified libraries such as 
-  <ulink url="https://github.com/elvismt/slope/">slope</ulink> are by far less 
-  processing intensive than the LibGdv and for applications with limited 
-  processing resources these libraries are good and reasonable alternatives that 
+  <para>However strongly simplified libraries such as
+  <ulink url="https://github.com/elvismt/slope/">slope</ulink> are by far less
+  processing intensive than the LibGdv and for applications with limited
+  processing resources these libraries are good and reasonable alternatives that
   should be taken into consideration.</para>
 
-  <para>More indirect alternatives such as an 
+  <para>More indirect alternatives such as an
   <ulink url="https://github.com/joastbg/gtk-socket-gnuplot">
-  implementation of gnuplot in GTK+</ulink> or an implementation of a JavaScript 
-  based plotting library such as 
+  implementation of gnuplot in GTK+</ulink> or an implementation of a JavaScript
+  based plotting library such as
   <ulink url="https://github.com/Emanuesson/ExampleFlotr2GTK">
-  lotr2 via webkit2 in GTK+</ulink> is, beside its advantages, in my personal 
-  opinion no long-term solution, as an interaction between the plotting and the 
+  lotr2 via webkit2 in GTK+</ulink> is, beside its advantages, in my personal
+  opinion no long-term solution, as an interaction between the plotting and the
   user will be over complicated.</para>
 
-  <para>This general gap should be closed to make GTK+ a convenient option for 
+  <para>This general gap should be closed to make GTK+ a convenient option for
   scientific and technical applications.</para>
 
   <section>
@@ -62,10 +62,10 @@
       </informalfigure>
 
       <informalexample>
-        <para>The following examples are similar to the examples within the 
-        <ulink url="https://developer.gnome.org/gtk3/stable/gtk-getting-started.html#id-1.2.3.5">GTK+-documentation</ulink>. Create a new file with the 
+        <para>The following examples are similar to the examples within the
+        <ulink url="https://developer.gnome.org/gtk3/stable/gtk-getting-started.html#id-1.2.3.5">GTK+-documentation</ulink>. Create a new file with the
         following content named <filename>example-1.c.</filename></para>
-        <programlisting><xi:include href="../../../../examples/example1/example-main.c" parse="text"><xi:fallback>MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting>
+        <programlisting><xi:include href="../../../examples/example1/example-main.c" parse="text"><xi:fallback>MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting>
       </informalexample>
 
       <para>

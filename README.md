@@ -94,25 +94,25 @@ Once you have all the necessary dependencies, you can build gdv by using
 Meson:
 
 ```sh
-$ meson _build .
-$ cd _build
+$ meson build
+$ cd build
 $ ninja
 ```
 
 If you need to build the documentation enter the following commands:
 
 ```sh
-meson . build
-cd build
-meson configure -Denable_gtk_doc=true
-ninja
-ninja gdv-doc
+$ meson build
+$ cd build
+$ meson configure -Denable_gtk_doc=true
+$ ninja
+$ ninja gdv-doc
 ```
 
 You can run the test suite using:
 
 ```sh
-$ meson test
+$ ninja test
 ```
 
 And, finally, you can install gdv using:
