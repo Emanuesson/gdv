@@ -34,6 +34,12 @@
 G_BEGIN_DECLS
 
 /* structs */
+/**
+ * GdvDataPoint:
+ * @x: A single value in the 1st cartesion coordinate
+ * @y: A single value in the 2nd cartesion coordinate
+ * @z: A single value in the 3rd cartesion coordinate
+ */
 struct _GdvDataPoint
 {
   gdouble x;
@@ -43,6 +49,12 @@ struct _GdvDataPoint
 
 typedef struct _GdvDataPoint GdvDataPoint;
 
+/**
+ * GdvDataPointSingleExtended:
+ * @point: A single cartesion coordinate
+ * @neg_range_1: The lower range
+ * @pos_range_1: The upper range
+ */
 struct _GdvDataPointSingleExtended
 {
   GdvDataPoint *point;
@@ -52,6 +64,13 @@ struct _GdvDataPointSingleExtended
 
 typedef struct _GdvDataPointSingleExtended GdvDataPointSingleExtended;
 
+/* FIXME: I have acttually no glue anymore, what the intention of this struct was */
+/**
+ * GdvDataPointDoubleExtended:
+ * @point: A single cartesion coordinate
+ * @neg_range_2: The lower range
+ * @pos_range_2: The upper range
+ */
 struct _GdvDataPointDoubleExtended
 {
   GdvDataPointSingleExtended *point;

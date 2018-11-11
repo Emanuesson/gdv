@@ -65,6 +65,7 @@ struct _GdvMticClass
 {
   GdvTicClass parent_class;
 
+  /*< private >*/
   /* Padding to allow adding up to 12 new virtual functions without
    * breaking ABI. */
   gpointer _gdv_reserve[12];

@@ -633,7 +633,7 @@ gdv_layer_eval_inner_point_unimplemented (GdvLayer      *layer,
  *
  * Lists #GdvLayerContent instances that are used by the @layer.
  *
- * Returns: (transfer container) (element-type GdvLayerContent):
+ * Returns: (element-type Gdv.LayerContent) (transfer container):
  *     a newly allocated #GList of contents
  */
 GList *gdv_layer_get_content_list (GdvLayer *layer)

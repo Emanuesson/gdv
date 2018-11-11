@@ -2,8 +2,17 @@ project('libgdv', 'c',
           version: '0.1.2',
           license: 'GPLv2+',
     meson_version: '>= 0.40.1',
-  default_options: [ 'warning_level=1', 'buildtype=debugoptimized', 'c_std=gnu11' ],
+  default_options: [ 'warning_level=1',
+                     'buildtype=debugoptimized',
+                     'c_std=gnu11' ],
 )
+
+add_global_arguments(['-Wall',
+                      '-Wno-unused',
+                      '-D_Float128=double',
+                      '-Og',
+                      ],
+                     language: 'c')
 
 version_arr = meson.project_version().split('.')
 gdv_version_major = version_arr[0].to_int()

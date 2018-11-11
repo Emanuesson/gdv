@@ -188,5 +188,3 @@ gdv_special_content_axis_init (GdvSpecialContentAxis *display)
 */
 }
 
-
-

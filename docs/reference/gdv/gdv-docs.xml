@@ -13,7 +13,7 @@
     </releaseinfo>
   </bookinfo>
 
-  <part id="gdv">
+  <part id="gdvdesc">
     <title>LibGdv overview and introduction</title>
     <para>
       Documentation for LibGdv, version &version;
