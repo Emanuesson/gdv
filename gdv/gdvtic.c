@@ -368,7 +368,7 @@ gdv_tic_get_label (GdvTic *tic)
 /**
  * gdv_tic_set_label_widget:
  * @tic: a #GdvTic
- * @label_widget: (nullable): the #GtkWidget that is used as new label widget
+ * @label_widget: the #GtkWidget that is used as new label widget or %NULL
  *
  * Sets the label widget for the tic. This is the widget that
  * will appear next to the tic as additional information.
@@ -413,8 +413,8 @@ gdv_tic_set_label_widget (GdvTic  *tic,
 /**
  * gdv_tic_set_tic_postition:
  * @tic: a #GdvTic
- * @x: (nullable): the new x position
- * @y: (nullable): the new y position
+ * @x: the new x position
+ * @y: the new y position
  *
  * Sets the position for the tic. This is the position within the assigned
  * allocation of the tic, where the corresponding value should be displayed.
@@ -762,7 +762,7 @@ gdv_tic_class_init (GdvTicClass *klass)
  * @for_size: a specific size-value that can be used as a base-value for measurement
  * @minimum: the place to store the minimum-space
  * @natural: the place to store the natural-space
- * @data: (nullable): any additional data for the measurement
+ * @data: any additional data for the measurement or simply %NULL
  *
  * This function is used to measure the necessary space for a tic-instance.
  *

@@ -1,0 +1,3 @@
+[submodule "subprojects/libdazzle"]
+	path = subprojects/libdazzle
+	url = https://github.com/GNOME/libdazzle.git

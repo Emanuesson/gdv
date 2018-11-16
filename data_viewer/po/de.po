@@ -1,0 +1,23 @@
+	# German translation for GDV dataviewer.
+# Copyright (C) 2018 gdv's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gdv package.
+# Emanuel Schmidt <eschmidt216@gmail.com>, 2018.
+#
+
+#: data_viewer/data/org.gnome.dataviewer.desktop.in.in:3
+msgid "DataViewer"
+msgstr "DataViewer"
+
+#: data_viewer/data/org.gnome.dataviewer.desktop.in.in:4
+msgid "Display and analyse data"
+msgstr "Daten darstellen und analysieren"
+
+#. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
+#: data_viewer/data/org.gnome.dataviewer.desktop.in.in:7
+msgid "org.gnome.dataviewer"
+msgstr "org.gnome.dataviewer"
+
+#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data_viewer/data/org.gnome.dataviewer.desktop.in.in:14
+msgid "Data;Analysis;Develop;Gdv;Scientific;"
+msgstr "Daten;Analyse;Entwickeln;Gdv;Wissenschaft;"

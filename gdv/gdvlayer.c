@@ -33,7 +33,6 @@
 #include <cairo-gobject.h>
 
 #include "gdvlayer.h"
-#include "gdvlayercontent.h"
 #include "gdvaxis.h"
 
 /**
@@ -555,7 +554,7 @@ gdv_layer_real_has_layer_content (GdvLayer *layer,
  * @layer: a #GdvLayer
  * @layer_content: a #GdvLayerContent
  *
- * This is a convenient function to determine if a #GdvLayerContent-instance
+ * This is a convenient function to determine if a #GdvLayerContent instance
  * is affiliated to a layer.
  **/
 gboolean
@@ -578,7 +577,7 @@ gdv_layer_has_layer_content (GdvLayer *layer, GdvLayerContent *layer_content)
  *
  * This function calculates the position of a data-point within the allocated
  * space of a layer-instance in pixel units. It simply applies the
- * #GdvLayer::evaluate_point method.
+ * #gdv_layer_evaluate_data_point method.
  *
  * Returns: %TRUE if the point is within the range of the layer-axes and %FALSE
  *      otherwise
@@ -633,8 +632,8 @@ gdv_layer_eval_inner_point_unimplemented (GdvLayer      *layer,
  *
  * Lists #GdvLayerContent instances that are used by the @layer.
  *
- * Returns: (element-type Gdv.LayerContent) (transfer container):
- *     a newly allocated #GList of contents
+ * Returns: (element-type GdvLayerContent) (transfer container): a newly
+ *    allocated #GList of contents.
  */
 GList *gdv_layer_get_content_list (GdvLayer *layer)
 {

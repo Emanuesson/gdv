@@ -1777,7 +1777,7 @@ const gchar *gdv_axis_get_title (GdvAxis *axis)
 /**
  * gdv_axis_set_title_widget:
  * @axis: a #GdvAxis
- * @title_widget: (nullable): the #GtkWidget that should be used as new title
+ * @title_widget: the #GtkWidget that should be used as new title or %NULL.
  *
  * Sets the title widget for the axis. This is the widget that
  * will appear next to the axis as additional information.

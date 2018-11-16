@@ -1,0 +1,8 @@
+*.gmo
+*.po~
+Makefile.in.in
+Makevars.template
+POTFILES
+dataviewer.pot
+stamp-it
+stamp-po

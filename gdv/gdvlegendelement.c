@@ -32,7 +32,7 @@
  * @title: GdvLegendElement
  *
  * #GdvLegendElement Defines the small examples for #GdvLayerContent- or
- *    #GdvIndicators, used in a Layer to the GdvLegend. It is just an helper to
+ *    #GdvIndicator, used in a Layer to the GdvLegend. It is just an helper to
  *    provide descriptive legends.
  *
  * # CSS nodes

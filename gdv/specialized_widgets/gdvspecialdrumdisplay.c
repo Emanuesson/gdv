@@ -119,7 +119,7 @@ gdv_special_drum_display_class_init (GdvSpecialDrumDisplayClass *klass)
    *
    * Sets the center value that the axis will display.
    *
-   * Since: 0.7.3
+   * Since: 0.1.0
    */
   drum_display_properties[PROP_GDV_DRUMD_CENTER_VAL] =
     g_param_spec_double ("center-value",
@@ -135,7 +135,7 @@ gdv_special_drum_display_class_init (GdvSpecialDrumDisplayClass *klass)
    *
    * Range of values to display on left and right of the center.
    *
-   * Since: 0.7.3
+   * Since: 0.1.0
    */
   drum_display_properties[PROP_GDV_DRUMD_LR_RANGE] =
     g_param_spec_double ("left-right-range",
