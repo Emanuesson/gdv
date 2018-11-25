@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   width="16"
+   version="1.1"
+   id="svg7384"
+   height="16">
+  <metadata
+     id="metadata90">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Gnome Symbolic Icon Theme</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <title
+     id="title9167">Gnome Symbolic Icon Theme</title>
+  <defs
+     id="defs7386" />
+  <g
+     transform="translate(-40,-60)"
+     id="layer1" />
+  <g
+     transform="translate(-40,-60)"
+     id="layer2">
+    <path
+       d="m 46.4688,60 c -0.25969,0 -0.46875,0.20906 -0.46875,0.46875 v 1.875 C 44.96151,62.83379 44.20316,63.82576 44.0313,65 h 6.9375 c -0.17186,-1.17424 -0.93021,-2.16621 -1.96875,-2.65625 v -1.875 C 49.00005,60.20906 48.79099,60 48.5313,60 Z M 46.5,61 C 46.77614,61 47,61.22386 47,61.5 47,61.77614 46.77614,62 46.5,62 46.22386,62 46,61.77614 46,61.5 46,61.22386 46.22386,61 46.5,61 Z M 44,66 v 1 h 4.5 c 0.26179,3e-5 0.49997,0.23821 0.5,0.5 v 6 c -3e-5,0.26179 -0.23821,0.49997 -0.5,0.5 H 44 v 0.96875 C 44,75.54277 44.45723,76 45.03125,76 h 4.9375 C 50.54277,76 51,75.54277 51,74.96875 V 66 Z m 0,2 v 5 h 4 v -5 z"
+       id="rect7914"
+       style="display:inline;fill:#2e3436;fill-opacity:1;stroke:none" />
+  </g>
+  <g
+     transform="translate(-40,-60)"
+     id="layer3" />
+</svg>

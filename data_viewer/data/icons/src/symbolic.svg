@@ -41,13 +41,13 @@
      inkscape:window-height="1016"
      id="namedview88"
      showgrid="false"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="-63.794447"
-     inkscape:cy="-375.40393"
+     inkscape:zoom="8.0000002"
+     inkscape:cx="-14.94926"
+     inkscape:cy="-475.5021"
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer3"
      showborder="false"
      inkscape:snap-nodes="true"
      inkscape:snap-bbox="true"
@@ -2928,13 +2928,6 @@
          id="tspan1313"
          x="0.82319641"
          y="549.94501">actions</tspan></text>
-    <rect
-       style="fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:1;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect1407"
-       width="16"
-       height="15.999998"
-       x="-4.9999999e-05"
-       y="560.0108" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -2979,30 +2972,6 @@
          id="tspan1471"
          x="0.82319641"
          y="-10.054993">apps</tspan></text>
-    <g
-       transform="translate(0,620)"
-       inkscape:label="org.gnome.Builder"
-       id="g1326">
-      <rect
-         style="fill:none"
-         id="rect1317"
-         width="16"
-         height="16"
-         x="-6.7773435e-06"
-         y="-119.99683" />
-      <path
-         style="fill:none;stroke:#2e3436;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         d="M 14.75347,-105.5 H 1.43579 l 0,-13.43861"
-         id="path1372"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="ccc" />
-      <path
-         style="fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         d="m 1.43579,-110.01962 1.6578022,1.74567 2.3643883,-2.14342 3.6902135,0.68501 2.077126,-4.06586 2.320194,4.97184 1.207956,3.32638 v 0 H 1.43579 v -4.34284"
-         id="path1384"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="cccccccccc" />
-    </g>
     <text
        id="text1330"
        y="489.94501"
@@ -3013,41 +2982,69 @@
          x="0.82319641"
          id="tspan1328"
          sodipodi:role="line">apps</tspan></text>
-    <path
-       style="fill:none;stroke:#2e3436;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 3.3366601,501.06139 v 2.11309"
-       id="path1390"
-       inkscape:connector-curvature="0" />
-    <path
-       inkscape:connector-curvature="0"
-       id="path1392"
-       d="m 3.3366601,501.06139 v 2.11309"
-       style="fill:none;stroke:#2e3436;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    <path
-       style="fill:none;stroke:#2e3436;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 5.3366601,501.06139 v 2.11309"
-       id="path1396"
-       inkscape:connector-curvature="0" />
-    <path
-       inkscape:connector-curvature="0"
-       id="path1399"
-       d="m 7.3366601,501.06139 v 2.11309"
-       style="fill:none;stroke:#2e3436;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    <path
-       style="fill:none;stroke:#2e3436;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 9.3366601,501.06139 v 2.11309"
-       id="path1401"
-       inkscape:connector-curvature="0" />
-    <path
-       inkscape:connector-curvature="0"
-       id="path1403"
-       d="m 11.33666,501.06139 v 2.11309"
-       style="fill:none;stroke:#2e3436;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    <path
-       style="fill:none;stroke:#2e3436;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 13.33666,501.06139 v 2.11309"
-       id="path1405"
-       inkscape:connector-curvature="0" />
+    <g
+       id="g481"
+       inkscape:label="org.gnome.DataViewer">
+      <g
+         id="g1326"
+         inkscape:label="org.gnome.DataViewer"
+         transform="translate(0,620)">
+        <rect
+           y="-119.99683"
+           x="-6.7773435e-06"
+           height="16"
+           width="16"
+           id="rect1317"
+           style="fill:none" />
+        <path
+           sodipodi:nodetypes="ccc"
+           inkscape:connector-curvature="0"
+           id="path1372"
+           d="M 14.75347,-105.5 H 1.43579 l 0,-13.43861"
+           style="fill:none;stroke:#2e3436;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           sodipodi:nodetypes="cccccccccc"
+           inkscape:connector-curvature="0"
+           id="path1384"
+           d="m 1.43579,-110.01962 1.6578022,1.74567 2.3643883,-2.14342 3.6902135,0.68501 2.077126,-4.06586 2.320194,4.97184 1.207956,3.32638 v 0 H 1.43579 v -4.34284"
+           style="fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      </g>
+      <path
+         inkscape:connector-curvature="0"
+         id="path1390"
+         d="m 3.3366601,501.06139 v 2.11309"
+         style="fill:none;stroke:#2e3436;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         style="fill:none;stroke:#2e3436;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 3.3366601,501.06139 v 2.11309"
+         id="path1392"
+         inkscape:connector-curvature="0" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path1396"
+         d="m 5.3366601,501.06139 v 2.11309"
+         style="fill:none;stroke:#2e3436;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         style="fill:none;stroke:#2e3436;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 7.3366601,501.06139 v 2.11309"
+         id="path1399"
+         inkscape:connector-curvature="0" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path1401"
+         d="m 9.3366601,501.06139 v 2.11309"
+         style="fill:none;stroke:#2e3436;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         style="fill:none;stroke:#2e3436;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 11.33666,501.06139 v 2.11309"
+         id="path1403"
+         inkscape:connector-curvature="0" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path1405"
+         d="m 13.33666,501.06139 v 2.11309"
+         style="fill:none;stroke:#2e3436;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
   </g>
   <text
      xml:space="preserve"

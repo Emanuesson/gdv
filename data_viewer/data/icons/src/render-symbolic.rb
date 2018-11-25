@@ -6,7 +6,7 @@ include REXML
 
 
 INKSCAPE = 'flatpak run org.inkscape.Inkscape'
-# INKSCAPE = '/usr/bin/inkscape'
+#INKSCAPE = '/usr/bin/inkscape'
 SRC = "symbolic.svg"
 PREFIX = "../hicolor/scalable"
 
@@ -23,7 +23,7 @@ def chopSVG(icon)
 		cmd = "#{INKSCAPE} -f #{icon[:file]} "
 		cmd += "--select #{icon[:id]} --verb=FitCanvasToSelection --verb=EditInvertInAllLayers --verb=EditDelete " # delete everything but the icon
 		cmd += "--verb=FileVacuum --verb=FileSave --verb=FileQuit > /dev/null 2>&1"
-		system(cmd)
+		system(cmd) # FIXME: check result
 		# remove bounding rectangle
 		svgcrop = Document.new(File.new(icon[:file], 'r'))
 		svgcrop.root.each_element("//rect") do |rect|

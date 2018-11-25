@@ -24,6 +24,13 @@ if not libdazzle_dep.found()
   libdazzle_dep = libdazzle_proj.get_variable('libdazzle_dep')
 endif
 
+#libide_dep = dependency('libide', required : false)
+
+#if not libide_dep.found()
+#  libide_proj = subproject('gnome-builder')
+#  libide_dep = libide_proj.get_variable('libide_dep')
+#endif
+
 subdir('application')
 subdir('data')
 subdir('file')
