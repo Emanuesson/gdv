@@ -158,7 +158,7 @@ if get_option('with_introspection')
                 install: true,
         install_dir_gir: girdir,
     install_dir_typelib: typelibdir,
-             extra_args: [ '--c-include=gdv.h', '--quiet' ],
+             extra_args: [ '--c-include=gdv.h', '--pkg-export=libgdv-1.0' ],
   )
 
   if get_option('with_vapi')
