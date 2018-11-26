@@ -17,12 +17,12 @@ viewer_resources = gnome.compile_resources(
 )
 
 # External dependencies
-libdazzle_dep = dependency('libdazzle', required : false)
+#libdazzle_dep = dependency('libdazzle', required : false)
 
-if not libdazzle_dep.found()
-  libdazzle_proj = subproject('libdazzle')
-  libdazzle_dep = libdazzle_proj.get_variable('libdazzle_dep')
-endif
+#if not libdazzle_dep.found()
+#  libdazzle_proj = subproject('libdazzle')
+#  libdazzle_dep = libdazzle_proj.get_variable('libdazzle_dep')
+#endif
 
 #libide_dep = dependency('libide', required : false)
 
@@ -43,13 +43,12 @@ data_viewer_bin_sources = [
 ]
 
 libgtksource_dep = [
-  dependency('gtksourceview-3.0'),
+  dependency('gtksourceview-4'),
 ]
 
 executable('dataviewer', data_viewer_bin_sources,
        dependencies: [ libgtksource_dep,
-                       libgdv_dep,
-                       libdazzle_dep ],
+                       libgdv_dep ],
          link_with: libgdv,
        link_depends: libgdv_map,
 include_directories: [ root_inc, src_inc ],
