@@ -24,6 +24,7 @@
 
 #include "sourceview/viewer-source-view.h"
 #include "file/viewer-file.h"
+#include "ide.h"
 
 //struct _ViewerSourceView
 //{
@@ -78,12 +79,14 @@ static void
 viewer_source_view_init (ViewerSourceView *view)
 {
   ViewerSourceViewPrivate *priv;
+  IdeObject *a_single_object = g_object_new(IDE_TYPE_OBJECT, NULL);
 
   priv = viewer_source_view_get_instance_private (view);
 
   priv->file = NULL;
   g_signal_connect(view, "notify::buffer", (GCallback) on_buffer_changed, NULL);
 
+  g_object_unref (a_single_object);
 /*
 //  gtk_widget_init_template (GTK_WIDGET (view));
 //  GtkTextBuffer *new_buffer = gtk_text_buffer_new (NULL);

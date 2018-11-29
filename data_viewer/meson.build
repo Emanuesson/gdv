@@ -46,8 +46,13 @@ libgtksource_dep = [
   dependency('gtksourceview-4'),
 ]
 
+libide_dep = [
+  dependency('libide-1.0'),
+]
+
 executable('dataviewer', data_viewer_bin_sources,
        dependencies: [ libgtksource_dep,
+                       libide_dep,
                        libgdv_dep ],
          link_with: libgdv,
        link_depends: libgdv_map,

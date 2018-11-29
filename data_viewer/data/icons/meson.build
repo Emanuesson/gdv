@@ -15,7 +15,7 @@ install_subdir('hicolor/512x512', install_dir: pkgicondir)
 #install_subdir('hicolor/symbolic', install_dir: pkgicondir)
 
 install_data(['hicolor/48x48/apps/org.gnome.dataviewer.png',
-              'hicolor/48x48/apps/org.gnome.DataViewer-symbolic.symbolic.png',],
+              'hicolor/48x48/apps/org.gnome.dataviewer-symbolic.symbolic.png',],
   install_dir: join_paths(icondir, '48x48/apps'))
 
 #install_data(['hicolor/48x48/org.gnome.dataviewer.png'],)
