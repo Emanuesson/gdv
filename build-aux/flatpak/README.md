@@ -13,3 +13,9 @@ To run the app, use the following command:
 ```
 flatpak-builder --run app ../build-aux/flatpak/org.gnome.Dataviewer.json app/files/bin/dataviewer
 ```
+
+To run a shell in the flatp-builder environment, run:
+```
+flatpak-builder --run ../build-aux/flatpak/org.gnome.Dataviewer.json sh
+```
+

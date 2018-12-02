@@ -7,7 +7,7 @@
 
   <name>libgdv</name>
   <shortname>gdv</shortname>
-  <shortdesc>a library used to present and visualize scientific and generally all kind of data</shortdesc>
+  <shortdesc>A library to present and visualize numeric data</shortdesc>
   <description>Gdv tries to provide the functionality of data visualisation to observe and control technical environments or experimental setups within the Gtk+-framework.</description>
   <homepage rdf:resource="https://emanuesson.github.io/#gdv" />
   <download-page rdf:resource="https://github.com/Emanuesson/gdv" />
