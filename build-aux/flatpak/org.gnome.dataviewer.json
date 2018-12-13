@@ -3,7 +3,7 @@
     "runtime" : "org.gnome.Sdk",
     "runtime-version" : "master",
     "sdk" : "org.gnome.Sdk",
-    "command" : "gnome-builder",
+    "command" : "dataviewer",
     "tags" : [
         "nightly"
     ],
@@ -38,14 +38,13 @@
         "--env=G_SLICE=always-malloc"
     ],
     "x-run-args" : [
-        "--standalone",
-        "-vvvv"
     ],
     "build-options" : {
         "env" : {
+            "V" : "1",
             "BASH_COMPLETIONSDIR" : "/app/share/bash-completion/completions",
             "MOUNT_FUSE_PATH" : "../tmp/",
-            "V" : "1"
+            "PKG_CONFIG_PATH" : "/app/lib/pkgconfig:/app/share/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/app/lib/gnome-builder/pkgconfig/"
         }
     },
     "cleanup" : [
@@ -69,7 +68,8 @@
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "https://gitlab.gnome.org/GNOME/gtksourceview.git"
+                    "url"
+                    : "https://gitlab.gnome.org/GNOME/gtksourceview.git"
                 }
             ]
         },
@@ -185,32 +185,22 @@
         {
             "name" : "libide",
             "config-opts" : [
-                "--libdir=/app/lib",
-                "--buildtype=debugoptimized"
+                "-Dwith_sysprof=false",
+                "-Dwith_glade=false",
+                "-Dwith_git=false",
+                "-Dwith_sysroot=false",
+                "-Dwith_clang=false",
+                "-Dwith_devhelp=false",
+                "-Dwith_flatpak=false",
+                "-Dwith_spellcheck=false"
             ],
             "buildsystem" : "meson",
             "builddir" : true,
-            "config-opts" : [
-              "-Dwith_sysprof=false",
-              "-Dwith_glade=false",
-              "-Dwith_git=false",
-              "-Dwith_sysroot=false",
-              "-Dwith_clang=false",
-              "-Dwith_devhelp=false",
-              "-Dwith_flatpak=false",
-              "-Dwith_spellcheck=false"
-            ],
             "sources" : [
                 {
                     "type" : "git",
                     "url" : "https://gitlab.gnome.org/GNOME/gnome-builder"
                 }
-            ],
-            "make-args" : [
-                "src/libide/libide-1.0.so"
-            ],
-            "make-install-args" : [
-                "src/libide/libide-1.0.so"
             ]
         },
         {
@@ -218,7 +208,7 @@
             "buildsystem" : "meson",
             "builddir" : true,
             "config-opts" : [
-                "--libdir=lib",
+                "--libdir=/app/lib",
                 "--buildtype=debugoptimized",
                 "-Dctags_path=/app/bin/ctags"
             ],
@@ -226,7 +216,7 @@
                 {
                     "disable-shallow-clone" : true,
                     "type" : "git",
-                    "url" : "https://github.com/Emanuesson/gdv.git"
+                    "path" : "/home/emanuel_schmidt/Documents/Sourcecode/gdv"
                 }
             ]
         }

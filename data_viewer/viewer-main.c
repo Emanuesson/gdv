@@ -29,14 +29,34 @@
 
 #include "data_viewer/application/viewer-app.h"
 
-
+void
+do_nothing_print (const gchar *log_domain,
+             GLogLevelFlags log_level,
+             const gchar *message,
+             gpointer user_data)
+{
+}
 
 int
 main (int argc, char **argv)
 {
+  g_log_set_handler(NULL, G_LOG_LEVEL_MASK, do_nothing_print, NULL);
+//  g_log_set_handler("dconf", G_LOG_LEVEL_MASK, do_nothing_print, NULL);
+//  g_log_set_handler("dbind", G_LOG_LEVEL_MASK, do_nothing_print, NULL);
+//  g_log_set_handler("Gdk", G_LOG_LEVEL_MASK, do_nothing_print, NULL);
 
   GdvViewerApp *app;
   int status;
+
+//  GtkIconTheme * theme = gtk_icon_theme_get_default();
+
+//  if (theme != NULL && GTK_IS_ICON_THEME (theme)) {
+//    gtk_icon_theme_append_search_path (theme,
+//                                       "/app/share/icons");
+//  }
+//  gtk_icon_theme_append_search_path (gtk_icon_theme_get_default (),
+//                                     "/app/share/gnome-builder/icons");
+//                                     PKG_DATA_DIR "/icons");
 
   app = gdv_viewer_app_new ();
 

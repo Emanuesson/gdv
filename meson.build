@@ -134,3 +134,5 @@ endif
 if get_option('enable_gtk_doc')
   subdir('docs/reference/gdv')
 endif
+
+meson.add_install_script('build-aux/meson/post_install.py')

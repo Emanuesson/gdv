@@ -50,12 +50,15 @@ libide_dep = [
   dependency('libide-1.0'),
 ]
 
+builderlibdir_abs = join_paths(get_option('prefix'), get_option('libdir'), 'gnome-builder')
+
 executable('dataviewer', data_viewer_bin_sources,
        dependencies: [ libgtksource_dep,
                        libide_dep,
                        libgdv_dep ],
-         link_with: libgdv,
+          link_with: libgdv,
        link_depends: libgdv_map,
+      install_rpath: builderlibdir_abs,
 include_directories: [ root_inc, src_inc ],
             install: true,
 )

@@ -20,12 +20,12 @@ option('package_subdir', type: 'string',
 
 # Build Documentation
 option('enable_gtk_doc',
-  type: 'boolean', value: true,
+  type: 'boolean', value: false,
   description: 'Whether to generate the documentation for libgdv',
   )
 
 # Enable building tests
 option('enable_tests',
-  type: 'boolean', value: true,
+  type: 'boolean', value: false,
   description: 'Whether to compile unit tests',
   )
