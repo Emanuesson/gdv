@@ -1,6 +1,8 @@
 libgdv_api_version = '1.0'
 
-viewer_public_headers = []
+viewer_private_sources = [
+  'gdve-central.h',
+]
 
 viewer_public_sources = [
   'viewer-main.c',
@@ -37,8 +39,12 @@ subdir('file')
 subdir('gui')
 subdir('sourceview')
 
+viewer_sources = []
+viewer_sources += viewer_private_sources
+viewer_sources += viewer_public_sources
+
 data_viewer_bin_sources = [
-  viewer_public_sources,
+  viewer_sources,
   viewer_resources,
 ]
 
@@ -47,7 +53,8 @@ libgtksource_dep = [
 ]
 
 libide_dep = [
-  dependency('libide-1.0'),
+#  dependency('libdazzle-1.0'),
+#  dependency('libide-1.0'),
 ]
 
 builderlibdir_abs = join_paths(get_option('prefix'), get_option('libdir'), 'gnome-builder')

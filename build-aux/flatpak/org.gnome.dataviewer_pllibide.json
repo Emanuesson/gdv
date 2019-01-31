@@ -1,0 +1,225 @@
+{
+    "app-id" : "org.gnome.dataviewer",
+    "runtime" : "org.gnome.Sdk",
+    "runtime-version" : "master",
+    "sdk" : "org.gnome.Sdk",
+    "command" : "dataviewer",
+    "tags" : [
+        "nightly"
+    ],
+    "desktop-file-name-prefix" : "(Nightly) ",
+    "finish-args" : [
+        "--require-version=0.10.0",
+        "--allow=devel",
+        "--talk-name=org.freedesktop.Flatpak",
+        "--share=ipc",
+        "--socket=x11",
+        "--socket=wayland",
+        "--filesystem=home",
+        "--filesystem=host",
+        "--share=network",
+        "--talk-name=org.gtk.vfs.*",
+        "--system-talk-name=org.freedesktop.PolicyKit1",
+        "--system-talk-name=org.gnome.Sysprof2",
+        "--talk-name=org.gnome.CodeAssist.v1.*",
+        "--filesystem=xdg-run/dconf",
+        "--filesystem=~/.config/dconf:ro",
+        "--talk-name=ca.desrt.dconf",
+        "--env=DCONF_USER_CONFIG_DIR=.config/dconf",
+        "--system-talk-name=org.freedesktop.Avahi",
+        "--talk-name=org.freedesktop.FileManager1",
+        "--talk-name=org.gnome.SettingsDaemon.Color",
+        "--talk-name=org.freedesktop.PackageKit",
+        "--talk-name=org.freedesktop.secrets",
+        "--filesystem=xdg-run/keyring",
+        "--filesystem=~/.local/share/flatpak",
+        "--filesystem=xdg-data/meson",
+        "--filesystem=/var/lib/flatpak",
+        "--env=G_SLICE=always-malloc"
+    ],
+    "x-run-args" : [
+    ],
+    "build-options" : {
+        "env" : {
+            "V" : "1",
+            "NO_AT_BRIDGE" : "1",
+            "BASH_COMPLETIONSDIR" : "/app/share/bash-completion/completions",
+            "MOUNT_FUSE_PATH" : "../tmp/",
+            "PKG_CONFIG_PATH" : "/app/lib/pkgconfig:/app/share/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/app/lib/gnome-builder/pkgconfig/"
+        }
+    },
+    "cleanup" : [
+        "/include",
+        "/lib/pkgconfig",
+        "/lib/cmake",
+        "/share/pkgconfig",
+        "/share/aclocal",
+        "/man",
+        "/share/man",
+        "/share/gtk-doc",
+        "/share/vala",
+        "/share/bash-completions",
+        "*.la",
+        "*.a"
+    ],
+    "modules" : [
+        "python-deps.json",
+        {
+            "name" : "gtksourceview",
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url"
+                    : "https://gitlab.gnome.org/GNOME/gtksourceview.git"
+                }
+            ]
+        },
+        {
+            "name" : "libssh2",
+            "buildsystem" : "cmake-ninja",
+            "config-opts" : [
+                "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
+                "-DCMAKE_INSTALL_LIBDIR:PATH=/app/lib",
+                "-DBUILD_SHARED_LIBS:BOOL=ON"
+            ],
+            "cleanup" : [
+                "/share/doc"
+            ],
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://github.com/libssh2/libssh2.git",
+                    "branch" : "libssh2-1.8.0"
+                }
+            ]
+        },
+        {
+            "name" : "libgit2",
+            "buildsystem" : "cmake-ninja",
+            "config-opts" : [
+                "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
+                "-DBUILD_SHARED_LIBS:BOOL=ON",
+                "-DTHREADSAFE=ON"
+            ],
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://github.com/libgit2/libgit2.git",
+                    "branch" : "maint/v0.26"
+                }
+            ]
+        },
+        {
+            "name" : "libgit2-glib",
+            "config-opts" : [
+                "--libdir=/app/lib",
+                "--buildtype=debugoptimized"
+            ],
+            "buildsystem" : "meson",
+            "builddir" : true,
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://gitlab.gnome.org/GNOME/libgit2-glib.git"
+                }
+            ]
+        },
+        {
+            "name" : "libpeas",
+            "cleanup" : [
+                "/bin/*",
+                "/lib/peas-demo",
+                "/lib/libpeas-gtk*"
+            ],
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://gitlab.gnome.org/GNOME/libpeas.git"
+                }
+            ]
+        },
+        {
+            "name" : "jsonrpc-glib",
+            "config-opts" : [
+                "--libdir=/app/lib",
+                "--buildtype=debugoptimized"
+            ],
+            "buildsystem" : "meson",
+            "builddir" : true,
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://gitlab.gnome.org/GNOME/jsonrpc-glib.git"
+                }
+            ]
+        },
+        {
+            "name" : "template-glib",
+            "config-opts" : [
+                "--libdir=/app/lib",
+                "--buildtype=debugoptimized"
+            ],
+            "buildsystem" : "meson",
+            "builddir" : true,
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://gitlab.gnome.org/GNOME/template-glib.git"
+                }
+            ]
+        },
+        {
+            "name" : "libdazzle",
+            "config-opts" : [
+                "--libdir=/app/lib",
+                "--buildtype=debugoptimized"
+            ],
+            "buildsystem" : "meson",
+            "builddir" : true,
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://gitlab.gnome.org/GNOME/libdazzle.git"
+                }
+            ]
+        },
+        {
+            "name" : "libide",
+            "config-opts" : [
+                "-Dwith_sysprof=false",
+                "-Dwith_glade=false",
+                "-Dwith_git=false",
+                "-Dwith_sysroot=false",
+                "-Dwith_clang=false",
+                "-Dwith_devhelp=false",
+                "-Dwith_flatpak=false",
+                "-Dwith_spellcheck=false"
+            ],
+            "buildsystem" : "meson",
+            "builddir" : true,
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://gitlab.gnome.org/GNOME/gnome-builder"
+                }
+            ]
+        },
+        {
+            "name" : "DataViewer",
+            "buildsystem" : "meson",
+            "builddir" : true,
+            "config-opts" : [
+                "--libdir=/app/lib",
+                "--buildtype=debugoptimized",
+                "-Dctags_path=/app/bin/ctags"
+            ],
+            "sources" : [
+                {
+                    "disable-shallow-clone" : true,
+                    "type" : "git",
+                    "path" : "/home/emanuel_schmidt/Dokumente/Sourcecode/gdv"
+                }
+            ]
+        }
+    ]
+}

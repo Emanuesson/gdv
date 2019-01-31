@@ -1,5 +1,5 @@
 /*
- * viewer-source-view.h
+ * gdve-source-view.h
  * This file is part of gdv
  *
  * Copyright (C) 2013 - Emanuel Schmidt
@@ -25,6 +25,7 @@
 
 #include <glib-object.h>
 #include <gtksourceview/gtksource.h>
+//#include <ide.h>
 
 G_BEGIN_DECLS
 
@@ -33,13 +34,14 @@ G_BEGIN_DECLS
 /*
  * Type declaration.
  */
-#define VIEWER_TYPE_SOURCE_VIEW viewer_source_view_get_type ()
-G_DECLARE_DERIVABLE_TYPE (ViewerSourceView, viewer_source_view, VIEWER, SOURCE_VIEW, GtkSourceView)
+#define GDVE_TYPE_SOURCE_VIEW gdve_source_view_get_type ()
+//G_DECLARE_DERIVABLE_TYPE (GdveSourceView, gdve_source_view, GDVE, SOURCE_VIEW, IdeSourceView)
+G_DECLARE_DERIVABLE_TYPE (GdveSourceView, gdve_source_view, GDVE, SOURCE_VIEW, GtkSourceView)
 
 /*
  * Method definitions.
  */
-ViewerSourceView *viewer_source_view_new (void);
+GdveSourceView *gdve_source_view_new (void);
 
 G_END_DECLS
 

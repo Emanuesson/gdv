@@ -54,6 +54,19 @@
             <property name="visible">True</property>
           </object>
         </child>
+
+        <child>
+          <object class="GdvOnedLayer" id="polarlayer">
+            <property name="visible">True</property>
+          </object>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel" id="polaraxis">
+            <property name="label">Polar Axis</property>
+            <property name="visible">True</property>
+          </object>
+        </child>
+
 <!--
         <child>
           <object class="GdvSpecialDrumDisplay" id="drumlayer">
@@ -73,3 +86,4 @@
 
   </template>
 </interface>
+

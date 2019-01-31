@@ -2,6 +2,7 @@ specialized_headers = [
   'gdvspecialcheckedindicator.h',
   'gdvspecialdrumdisplay.h',
   'gdvspecialtimeaxis.h',
+  'gdvspecialpolaraxis.h',
   'gdvspecialcontentaxis.h',
 ]
 
@@ -9,6 +10,7 @@ specialized_sources = [
   'gdvspecialcheckedindicator.c',
   'gdvspecialdrumdisplay.c',
   'gdvspecialtimeaxis.c',
+  'gdvspecialpolaraxis.c',
   'gdvspecialcontentaxis.c',
 ]
 

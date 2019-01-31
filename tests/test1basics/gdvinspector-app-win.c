@@ -58,6 +58,7 @@ struct _GdvInspectorAppWindowPrivate
   GdvOnedLayer *onedlayer;
   GdvOnedLayer *loglayer;
   GdvTwodLayer *twodlayer;
+  GdvOnedLayer *polarlayer;
 
   GdvOnedLayer *consummeter;
   guint         changed_cb;
@@ -122,6 +123,8 @@ gdv_inspector_app_window_class_init (GdvInspectorAppWindowClass *klass)
     GdvInspectorAppWindow, twodlayer);
   gtk_widget_class_bind_template_child_private (GTK_WIDGET_CLASS (klass),
     GdvInspectorAppWindow, onedlayer);
+  gtk_widget_class_bind_template_child_private (GTK_WIDGET_CLASS (klass),
+    GdvInspectorAppWindow, polarlayer);
 }
 
 static gint time_fc = 0;
@@ -244,6 +247,7 @@ gdv_inspector_app_window_init (GdvInspectorAppWindow *window)
 
 // FIXME: These are essential!
   gtk_widget_show_all (GTK_WIDGET (window->priv->onedlayer));
+  gtk_widget_show_all (GTK_WIDGET (window->priv->polarlayer));
 
   //  g_object_get (window->priv->onedlayer, "axis", &new_axis, NULL);
 //  g_object_set (new_axis,

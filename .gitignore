@@ -43,6 +43,10 @@ m4/*
 aclocal.m4
 configure
 
+# General relicts of the development process
+*.gob
+
+
 # Flatpak builder
 .flatpak-builder/*
 

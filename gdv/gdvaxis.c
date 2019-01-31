@@ -174,8 +174,7 @@ gdv_axis_on_evaluate_inndir_unimplemented (GdvAxis *axis,
     gdouble *pos_x,
     gdouble *pos_y);
 
-static gboolean
-gdv_axis_title_widget_is_visible (GdvAxis *axis);
+static gboolean gdv_axis_title_widget_is_visible (GdvAxis *axis);
 
 static gchar *
 gdv_axis_make_tic_label_markup_unimplemented (
@@ -2115,8 +2114,7 @@ gdv_axis_measure (
   }
 }
 
-static gboolean
-gdv_axis_title_widget_is_visible (GdvAxis *axis)
+static gboolean gdv_axis_title_widget_is_visible (GdvAxis *axis)
 {
   gboolean style_show;
 

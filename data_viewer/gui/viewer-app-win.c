@@ -31,8 +31,7 @@
 #include "gui/viewer-app-win.h"
 #include "gui/gdv-viewer-settings-panel.h"
 #include "file/viewer-file.h"
-#include "sourceview/viewer-source-view.h"
-
+#include "sourceview/gdve-source-view.h"
 
 enum
 {
@@ -63,7 +62,7 @@ struct _GdvViewerAppWindowPrivate
   GdvTwodLayer    *main_layer;
   GtkTreeView     *file_view;
   GtkScrolledWindow *file_view_window;
-  ViewerSourceView *file_content;
+  GdveSourceView *file_content;
   GtkScrolledWindow *file_content_window;
 
   GdvViewerSettingsPanel *setting_panel;
@@ -91,7 +90,7 @@ gdv_viewer_app_window_finalize (GObject *object)
 static void
 _progress_file_load_cb (goffset            current_num_bytes,
                         goffset            full_num_bytes,
-                        ViewerSourceView  *view)
+                        GdveSourceView  *view)
 {
   g_log (NULL, G_LOG_LEVEL_DEBUG,
          "%ld/%ld\n", current_num_bytes, full_num_bytes);
@@ -100,7 +99,7 @@ _progress_file_load_cb (goffset            current_num_bytes,
 static void
 _async_file_loaded (GtkSourceFileLoader *source_loader,
                     GAsyncResult        *res,
-                    ViewerSourceView    *view)
+                    GdveSourceView    *view)
 {
   GtkSourceBuffer *buffer;
 
@@ -218,7 +217,7 @@ gdv_viewer_app_window_class_init (GdvViewerAppWindowClass *klass)
   object_class->dispose = gdv_viewer_app_window_dispose;
   object_class->finalize = gdv_viewer_app_window_finalize;
 
-  g_type_ensure (VIEWER_TYPE_SOURCE_VIEW);
+  g_type_ensure (GDVE_TYPE_SOURCE_VIEW);
 
   gtk_widget_class_set_template_from_resource (
     GTK_WIDGET_CLASS (object_class),

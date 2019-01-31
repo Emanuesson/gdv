@@ -152,7 +152,8 @@ gdv_linear_axis_class_init (GdvLinearAxisClass *klass)
    * GdvLinearAxis:scale-increment-base:
    *
    * Sets the base value that should be used to determine the
-   * scale-increment-value during automatic setting. Usually this is 10.0.
+   * scale-increment-value during automatic setting. Usually when
+   * working with decimal values this is 10.0.
    * However, in some cases it is usefull to change this value, e.g. when
    * you want to implement a time-scale with the base of 60sec or an
    * angle-distribution with axis-tics on multiples of Pi.

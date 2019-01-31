@@ -42,6 +42,7 @@
     "build-options" : {
         "env" : {
             "V" : "1",
+            "NO_AT_BRIDGE" : "1",
             "BASH_COMPLETIONSDIR" : "/app/share/bash-completion/completions",
             "MOUNT_FUSE_PATH" : "../tmp/",
             "PKG_CONFIG_PATH" : "/app/lib/pkgconfig:/app/share/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/app/lib/gnome-builder/pkgconfig/"
@@ -62,7 +63,6 @@
         "*.a"
     ],
     "modules" : [
-        "python-deps.json",
         {
             "name" : "gtksourceview",
             "sources" : [
@@ -70,136 +70,6 @@
                     "type" : "git",
                     "url"
                     : "https://gitlab.gnome.org/GNOME/gtksourceview.git"
-                }
-            ]
-        },
-        {
-            "name" : "libssh2",
-            "buildsystem" : "cmake-ninja",
-            "config-opts" : [
-                "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
-                "-DCMAKE_INSTALL_LIBDIR:PATH=/app/lib",
-                "-DBUILD_SHARED_LIBS:BOOL=ON"
-            ],
-            "cleanup" : [
-                "/share/doc"
-            ],
-            "sources" : [
-                {
-                    "type" : "git",
-                    "url" : "https://github.com/libssh2/libssh2.git",
-                    "branch" : "libssh2-1.8.0"
-                }
-            ]
-        },
-        {
-            "name" : "libgit2",
-            "buildsystem" : "cmake-ninja",
-            "config-opts" : [
-                "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
-                "-DBUILD_SHARED_LIBS:BOOL=ON",
-                "-DTHREADSAFE=ON"
-            ],
-            "sources" : [
-                {
-                    "type" : "git",
-                    "url" : "https://github.com/libgit2/libgit2.git",
-                    "branch" : "maint/v0.26"
-                }
-            ]
-        },
-        {
-            "name" : "libgit2-glib",
-            "config-opts" : [
-                "--libdir=/app/lib",
-                "--buildtype=debugoptimized"
-            ],
-            "buildsystem" : "meson",
-            "builddir" : true,
-            "sources" : [
-                {
-                    "type" : "git",
-                    "url" : "https://gitlab.gnome.org/GNOME/libgit2-glib.git"
-                }
-            ]
-        },
-        {
-            "name" : "libpeas",
-            "cleanup" : [
-                "/bin/*",
-                "/lib/peas-demo",
-                "/lib/libpeas-gtk*"
-            ],
-            "sources" : [
-                {
-                    "type" : "git",
-                    "url" : "https://gitlab.gnome.org/GNOME/libpeas.git"
-                }
-            ]
-        },
-        {
-            "name" : "jsonrpc-glib",
-            "config-opts" : [
-                "--libdir=/app/lib",
-                "--buildtype=debugoptimized"
-            ],
-            "buildsystem" : "meson",
-            "builddir" : true,
-            "sources" : [
-                {
-                    "type" : "git",
-                    "url" : "https://gitlab.gnome.org/GNOME/jsonrpc-glib.git"
-                }
-            ]
-        },
-        {
-            "name" : "template-glib",
-            "config-opts" : [
-                "--libdir=/app/lib",
-                "--buildtype=debugoptimized"
-            ],
-            "buildsystem" : "meson",
-            "builddir" : true,
-            "sources" : [
-                {
-                    "type" : "git",
-                    "url" : "https://gitlab.gnome.org/GNOME/template-glib.git"
-                }
-            ]
-        },
-        {
-            "name" : "libdazzle",
-            "config-opts" : [
-                "--libdir=/app/lib",
-                "--buildtype=debugoptimized"
-            ],
-            "buildsystem" : "meson",
-            "builddir" : true,
-            "sources" : [
-                {
-                    "type" : "git",
-                    "url" : "https://gitlab.gnome.org/GNOME/libdazzle.git"
-                }
-            ]
-        },
-        {
-            "name" : "libide",
-            "config-opts" : [
-                "-Dwith_sysprof=false",
-                "-Dwith_glade=false",
-                "-Dwith_git=false",
-                "-Dwith_sysroot=false",
-                "-Dwith_clang=false",
-                "-Dwith_devhelp=false",
-                "-Dwith_flatpak=false",
-                "-Dwith_spellcheck=false"
-            ],
-            "buildsystem" : "meson",
-            "builddir" : true,
-            "sources" : [
-                {
-                    "type" : "git",
-                    "url" : "https://gitlab.gnome.org/GNOME/gnome-builder"
                 }
             ]
         },
@@ -216,7 +86,7 @@
                 {
                     "disable-shallow-clone" : true,
                     "type" : "git",
-                    "path" : "/home/emanuel_schmidt/Documents/Sourcecode/gdv"
+                    "path" : "/home/emanuel_schmidt/Dokumente/Sourcecode/gdv"
                 }
             ]
         }

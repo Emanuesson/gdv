@@ -27,7 +27,7 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
 
-#include "data_viewer/application/viewer-app.h"
+#include "application/viewer-app.h"
 
 void
 do_nothing_print (const gchar *log_domain,
@@ -40,13 +40,14 @@ do_nothing_print (const gchar *log_domain,
 int
 main (int argc, char **argv)
 {
-  g_log_set_handler(NULL, G_LOG_LEVEL_MASK, do_nothing_print, NULL);
 //  g_log_set_handler("dconf", G_LOG_LEVEL_MASK, do_nothing_print, NULL);
 //  g_log_set_handler("dbind", G_LOG_LEVEL_MASK, do_nothing_print, NULL);
 //  g_log_set_handler("Gdk", G_LOG_LEVEL_MASK, do_nothing_print, NULL);
 
   GdvViewerApp *app;
   int status;
+
+  g_log_set_handler(NULL, G_LOG_LEVEL_MASK, do_nothing_print, NULL);
 
 //  GtkIconTheme * theme = gtk_icon_theme_get_default();
 
