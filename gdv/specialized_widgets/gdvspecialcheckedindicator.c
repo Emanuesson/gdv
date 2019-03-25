@@ -26,9 +26,9 @@
 
 #include <math.h>
 
-#include "gdv/gdvaxis.h"
-#include "gdv/gdvrender.h"
-#include "gdv/gdv-enums.h"
+#include "gdvaxis.h"
+#include "gdvrender.h"
+#include "gdv-enums.h"
 
 #include "gdvspecialcheckedindicator.h"
 

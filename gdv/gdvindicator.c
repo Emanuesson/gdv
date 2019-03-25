@@ -28,7 +28,7 @@
 #include <cairo-gobject.h>
 
 #include "gdvindicator.h"
-#include "gdv/gdv-data-boxed.h"
+#include "gdv-data-boxed.h"
 #include "gdvaxis.h"
 #include "gdvrender.h"
 

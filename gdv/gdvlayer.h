@@ -26,10 +26,7 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
 
-#include <gdv/gdvcentral.h>
-#include <gdv/gdvlayercontent.h>
-#include <gdv/gdvaxis.h>
-#include <gdv/gdvtic.h>
+#include "gdvlayercontent.h"
 
 G_BEGIN_DECLS
 

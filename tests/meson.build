@@ -13,7 +13,7 @@ gdv_test_env = [
 ]
 
 gdv_test_cflags = [
-  '-fPIE',
+  #'-fPIE',
   '-DTEST_DATA_DIR="@0@/data"'.format(meson.current_source_dir()),
 ]
 
@@ -32,6 +32,7 @@ subdir('test6gengui')
 subdir('test7retic')
 subdir('test8timeaxis')
 subdir('test9timebar')
+subdir('test10polaraxis')
 
 
 gdv_test_deps = [

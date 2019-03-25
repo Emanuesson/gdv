@@ -296,6 +296,11 @@ gdv_inspector_app_window_init (GdvInspectorAppWindow *window)
                                                  window->priv->onedlayer);
 
 
+  new_axis = (GdvAxis *) gdv_special_polar_axis_new ();
+  gtk_widget_show_all (GTK_WIDGET (new_axis));
+  gdv_oned_layer_replace_axis(window->priv->polarlayer, new_axis);
+
+
 
 
 

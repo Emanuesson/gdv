@@ -27,7 +27,7 @@
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_vector.h>
 
-#include "gdv/gdv-data-vector.h"
+#include "gdv-data-vector.h"
 
 #define GDV_DATA_VECTOR_GET_PRIVATE(obj)\
  (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\

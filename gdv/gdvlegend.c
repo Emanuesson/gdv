@@ -39,6 +39,7 @@
  */
 
 #include "gdvlegend.h"
+#include "gdvaxis.h"
 #include "gdvlayer.h"
 #include "gdvlegendelement.h"
 

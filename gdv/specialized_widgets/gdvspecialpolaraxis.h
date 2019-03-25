@@ -26,7 +26,7 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
 
-#include <gdv/gdv.h>
+#include "gdvlinearaxis.h"
 //#include <gtk/gtksocket.h>
 
 G_BEGIN_DECLS
@@ -69,3 +69,4 @@ GdvSpecialPolarAxis *gdv_special_polar_axis_new (void);
 G_END_DECLS
 
 #endif /* GDV_SPECIAL_POLAR_AXIS_H_INCLUDED */
+

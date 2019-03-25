@@ -27,7 +27,7 @@
 #include <math.h>
 #include <stdio.h>
 
-#include "gdv/gdv-data-boxed.h"
+#include "gdv-data-boxed.h"
 
 #define SQUARE(x) ((x)*(x))
 

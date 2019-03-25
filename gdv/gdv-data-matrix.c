@@ -33,7 +33,7 @@
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_matrix.h>
 
-#include "gdv/gdv-data-matrix.h"
+#include "gdv-data-matrix.h"
 
 #define GDV_DATA_MATRIX_GET_PRIVATE(obj)\
  (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\

@@ -24,6 +24,8 @@
   #include <config.h>
 #endif
 
+#include <math.h>
+
 #include "gdvrender.h"
 
 static void
@@ -88,9 +90,9 @@ gtk_do_render_straight_axis (GtkStyleContext *context,
   cairo_save (cr);
 
   gtk_style_context_get_style_property (context,
-                                        "axis-line-width", &value_lw);
+                                        "line-width", &value_lw);
   gtk_style_context_get_style_property (context,
-                                        "axis-color", &value_lc);
+                                        "color", &value_lc);
 
   axis_line_width = g_value_get_double (&value_lw);
   color = g_value_get_boxed (&value_lc);
@@ -108,6 +110,55 @@ gtk_do_render_straight_axis (GtkStyleContext *context,
 
   g_value_unset (&value_lw);
   g_value_unset (&value_lc);
+}
+
+void        gdv_render_arc         (GtkStyleContext     *context,
+                                    cairo_t             *cr,
+                                    gdouble              xc,
+                                    gdouble              yc,
+                                    gdouble              radius,
+                                    gdouble              angle1,
+                                    gdouble              angle2)
+{
+  GdkRGBA *color;
+  gdouble axis_line_width;
+  GValue value_lw = G_VALUE_INIT;
+  GValue value_lc = G_VALUE_INIT;
+
+  g_value_init (&value_lw, G_TYPE_DOUBLE);
+  g_value_init (&value_lc, GDK_TYPE_RGBA);
+
+  gtk_style_context_get_style_property (context,
+                                        "line-width", &value_lw);
+  gtk_style_context_get_style_property (context,
+                                        "color", &value_lc);
+
+  cairo_save (cr);
+
+  gtk_style_context_get_style_property (context,
+                                        "line-width", &value_lw);
+  gtk_style_context_get_style_property (context,
+                                        "color", &value_lc);
+
+  axis_line_width = g_value_get_double (&value_lw);
+  color = g_value_get_boxed (&value_lc);
+
+  cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
+  cairo_set_line_width (cr, axis_line_width);
+
+  cairo_move_to (cr, xc + radius, yc);
+  cairo_arc (cr, xc, yc, radius, angle1, angle2);
+
+  gdk_cairo_set_source_rgba(cr, color);
+
+  cairo_stroke (cr);
+
+  cairo_restore (cr);
+
+
+  g_value_unset (&value_lw);
+  g_value_unset (&value_lc);
+
 }
 
 static void

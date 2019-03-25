@@ -26,9 +26,7 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
 
-#include <gdv/gdvcentral.h>
-#include <gdv/gdvtic.h>
-#include <gdv/gdvindicator.h>
+#include "gdvtic.h"
 
 G_BEGIN_DECLS
 

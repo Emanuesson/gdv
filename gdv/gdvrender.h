@@ -26,8 +26,7 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
 
-#include <gdv/gdvcentral.h>
-#include <gdv/gdvaxis.h>
+#include "gdvcentral.h"
 #include <cairo/cairo.h>
 
 G_BEGIN_DECLS
@@ -44,6 +43,14 @@ void        gdv_render_line        (GtkStyleContext     *context,
                                     gdouble              x1,
                                     gdouble              y1);
 
+void        gdv_render_arc         (GtkStyleContext     *context,
+                                    cairo_t             *cr,
+                                    gdouble              xc,
+                                    gdouble              yc,
+                                    gdouble              radius,
+                                    gdouble              angle1,
+                                    gdouble              angle2);
+
 void        gdv_render_data_line            (GtkStyleContext     *context,
     cairo_t             *cr,
     gdouble              x0,
@@ -55,8 +62,6 @@ void        gdv_render_data_point           (GtkStyleContext     *context,
     cairo_t             *cr,
     gdouble              x,
     gdouble              y);
-
-
 
 G_END_DECLS
 

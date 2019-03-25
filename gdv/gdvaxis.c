@@ -47,7 +47,7 @@
 #include "gdvaxis.h"
 #include "gdvtic.h"
 #include "gdvmtic.h"
-#include "gdv/gdvindicator.h"
+#include "gdvindicator.h"
 #include "gdv-data-boxed.h"
 #include "gdvrender.h"
 

@@ -44,7 +44,6 @@
 #include "gdvtic.h"
 #include "gdvmtic.h"
 #include "gdvlogaxis.h"
-#include "gdvlayer.h"
 
 struct _GdvLogAxisPrivate
 {
@@ -928,7 +927,7 @@ gdv_log_axis_size_allocate (GtkWidget           *widget,
       space_without_border.y +=
         (gint) (+1.0 * cos(angle_to_outer_dir) * (gdouble) title_height);
 
-    /* FIXME: This is not the function I intented */
+    /* FIXME: This is not the function I intended */
     title_allocation.x =
       allocation->x +
       space_without_border.x - max_left_border - title_width +
@@ -962,6 +961,7 @@ gdv_log_axis_size_allocate (GtkWidget           *widget,
               0.5 * space_without_border.width),
             (gdouble) (space_without_border.x + space_without_border.width)),
           (gdouble) space_without_border.x);
+
   scale_end_x =
     fmax (fmin (
             (-1.0 * sin(angle_to_start) / fabs(cos(angle_to_start))) *

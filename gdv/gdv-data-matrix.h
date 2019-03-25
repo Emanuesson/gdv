@@ -30,7 +30,7 @@
 #include <unistd.h>
 #include <locale.h>
 
-#include <gdv/gdv-data-vector.h>
+#include "gdv-data-vector.h"
 
 G_BEGIN_DECLS
 

@@ -26,9 +26,6 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
 
-#include <gdv/gdvcentral.h>
-#include <gdv/gdvindicator.h>
-
 G_BEGIN_DECLS
 
 #define GDV_TYPE_TIC\
@@ -80,6 +77,7 @@ void gdv_tic_set_label_widget (GdvTic  *tic, GtkWidget *label_widget);
 void gdv_tic_set_tic_position (GdvTic  *tic, gfloat x, gfloat y);
 
 gboolean gdv_tic_get_show_label (GdvTic *tic);
+
 void
 gdv_tic_get_space_to_tic_position (
   GdvTic              *tic,
@@ -88,6 +86,12 @@ gdv_tic_get_space_to_tic_position (
   int                 *minimum,
   int                 *natural,
   gpointer             data);
+
+gboolean
+gdv_tic_in_range (
+  GdvTic *tic,
+  gdouble value,
+  gdouble residuum);
 
 G_END_DECLS
 

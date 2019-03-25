@@ -26,8 +26,7 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
 
-#include <gdv/gdvcentral.h>
-#include <gdv/gdvonedlayer.h>
+#include "gdvonedlayer.h"
 
 G_BEGIN_DECLS
 

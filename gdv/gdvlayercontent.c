@@ -26,10 +26,10 @@
 
 #include <math.h>
 
-#include "gdv/gdvlayercontent.h"
-#include "gdv/gdvlayer.h"
-#include "gdv/gdvrender.h"
-#include "gdv/gdv-data-boxed.h"
+#include "gdvlayercontent.h"
+#include "gdvlayer.h"
+#include "gdvrender.h"
+#include "gdv-data-boxed.h"
 
 /**
  * SECTION:gdvlayercontent

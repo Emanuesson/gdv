@@ -61,7 +61,7 @@ builderlibdir_abs = join_paths(get_option('prefix'), get_option('libdir'), 'gnom
 
 executable('dataviewer', data_viewer_bin_sources,
        dependencies: [ libgtksource_dep,
-                       libide_dep,
+                       #libide_dep,
                        libgdv_dep ],
           link_with: libgdv,
        link_depends: libgdv_map,

@@ -23,7 +23,7 @@
 #ifndef GDV_SPECIAL_CHECKED_INDICATOR_H_INCLUDED
 #define GDV_SPECIAL_CHECKED_INDICATOR_H_INCLUDED
 
-#include <gdv/gdvindicator.h>
+#include "gdvindicator.h"
 
 G_BEGIN_DECLS
 

@@ -26,7 +26,7 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
 
-#include <gdv/gdv.h>
+#include "gdvlinearaxis.h"
 //#include <gtk/gtksocket.h>
 
 G_BEGIN_DECLS

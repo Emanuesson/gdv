@@ -29,7 +29,7 @@
 #include <glib.h>
 #include <gio/gio.h>
 
-#include "gdv/gdvcentral.h"
+#include "gdvcentral.h"
 
 gboolean gdv_is_within_range (gdouble value, gdouble upper, gdouble lower)
 {

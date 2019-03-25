@@ -27,6 +27,7 @@
 #include <math.h>
 
 #include "gdvspecialpolaraxis.h"
+#include "gdvrender.h"
 
 /* Define Properties */
 enum
@@ -46,6 +47,16 @@ struct _GdvSpecialPolarAxisPrivate
 {
   gdouble draw_from_angle;
   gdouble draw_to_angle;
+
+  gdouble cent_pix_x;
+  gdouble cent_pix_y;
+  gdouble radius;
+
+//  gdouble axis_beg_pix_x;
+//  gdouble axis_beg_pix_y;
+//  gdouble axis_end_pix_x;
+//  gdouble axis_end_pix_y;
+  gboolean resize_during_redraw;
 };
 
 static gboolean
@@ -102,6 +113,18 @@ static void gdv_special_polar_axis_get_property (GObject    *object,
                                                 GValue     *value,
                                                 GParamSpec *pspec);
 
+static gboolean gdv_special_polar_axis_get_point (
+  GdvAxis            *axis,
+  gdouble             value,
+  gdouble            *pos_x,
+  gdouble            *pos_y);
+
+static gboolean gdv_special_polar_axis_get_inner_dir(
+  GdvAxis            *axis,
+  gdouble             value,
+  gdouble            *pos_x,
+  gdouble            *pos_y);
+
 G_DEFINE_TYPE_WITH_PRIVATE (GdvSpecialPolarAxis, gdv_special_polar_axis,
   gdv_linear_axis_get_type());
 
@@ -133,17 +156,17 @@ gdv_special_polar_axis_class_init (GdvSpecialPolarAxisClass *klass)
     gdv_polar_axis_draw;
   widget_class->get_preferred_width =
     gdv_polar_axis_get_preferred_width;
-  widget_class->get_preferred_height =
-    gdv_polar_axis_get_preferred_height;
-  widget_class->get_preferred_height_for_width =
-    gdv_polar_axis_get_preferred_height_for_width;
-  widget_class->get_preferred_width_for_height =
-    gdv_polar_axis_get_preferred_width_for_height;
+//  widget_class->get_preferred_height =
+//    gdv_polar_axis_get_preferred_height;
+//  widget_class->get_preferred_height_for_width =
+//    gdv_polar_axis_get_preferred_height_for_width;
+//  widget_class->get_preferred_width_for_height =
+//    gdv_polar_axis_get_preferred_width_for_height;
 
   axis_class->get_point =
-    gdv_polar_axis_on_evaluate;
+    gdv_special_polar_axis_get_point;
   axis_class->get_inner_dir =
-    gdv_polar_axis_on_evaluate_inndir;
+    gdv_special_polar_axis_get_inner_dir;
 
   /* Properties */
   special_polar_axis_properties[PROP_DRAW_FROM_ANGLE] =
@@ -240,17 +263,142 @@ static void
 gdv_polar_axis_size_allocate (GtkWidget     *widget,
                               GtkAllocation *allocation)
 {
+  GdvSpecialPolarAxis *polar_axis = GDV_SPECIAL_POLAR_AXIS (widget);
+  GdvSpecialPolarAxisPrivate *priv = gdv_special_polar_axis_get_instance_private(polar_axis);
+
+  GdvLinearAxis *linear_axis = GDV_LINEAR_AXIS (widget);
+  GtkAllocation axis_allocation = *allocation;
+
+  gboolean scale_automatic;
+
+  gboolean scale_auto_increment;
+  gdouble scale_beg_val,
+          scale_end_val;
+  gdouble scale_increment_val;
+  gdouble signed_scale_increment_val;
+  gdouble scale_increment_base;
+  gdouble init_scale_beg_val, init_scale_end_val;
+
+  gint scale_min_diff_pix;
+  gint scale_max_diff_pix;
+  gboolean first_iteration = TRUE;
+
+  gdouble angle_to_outer_dir, angle_to_start;
+
+  gdouble init_increment_val;
+//  gdouble   init_tic_beg_val, init_tic_end_val;
+
+  gdouble inner_dir_x = 0.0, inner_dir_y = 0.0;
+//  gdouble   axis_dir_x = 0.0, axis_dir_y = 0.0;
+
+  gboolean force_beg_end;
+
+  gboolean tics_automatic;
+  gdouble tmp_tics_val_beg, tmp_tics_val_end;
+  gdouble tics_beg_val,
+          tics_end_val;
+  gboolean beg_is_new = FALSE, end_is_new = FALSE;
+
+  gdouble tic_label_halign, tic_label_valign;
+
+  gboolean mtics_automatic;
+  gdouble mtics_beg_val,
+          mtics_end_val;
+  guint mtics_number;
+  gdouble current_diff_pix = G_MAXDOUBLE;
+  gint max_top_border, max_bot_border, max_left_border, max_right_border;
+
+  gboolean set_tics = TRUE;
+
+  GList *tics_copy, *previouse_tics;
+  GList *tics_approved_list = NULL;
+  GList *mtics_copy, *previouse_mtics;
+  gdouble actual_pos_val;
+
+  gdouble line_height, line_width, line_length;
+  GtkWidget *title_widget;
+
+  /* needed for the autoadjustment of scale- and tic-values */
+  GList *tic_list, *tic_list_start;
+  GtkAllocation space_without_border;
+
+  gboolean visible;
+
+  g_object_get (
+    G_OBJECT (polar_axis),
+    "scale-beg-val", &scale_beg_val,
+    "scale-end-val", &scale_end_val,
+    "scale-auto-increment", &scale_auto_increment,
+    "scale-limits-automatic", &scale_automatic,
+    "scale-increment-val", &scale_increment_val,
+    "axis-direction-outside", &angle_to_outer_dir,
+    "axis-orientation", &angle_to_start,
+    "tics-beg-val", &tics_beg_val,
+    "tics-end-val", &tics_end_val,
+    "tics-automatic", &tics_automatic,
+    "mtics-beg-val", &mtics_beg_val,
+    "mtics-end-val", &mtics_end_val,
+    "mtics-automatic", &mtics_automatic,
+    "mtics", &mtics_number,
+    "title-widget", &title_widget,
+    "scale-increment-base", &scale_increment_base,
+    "force-beg-end", &force_beg_end,
+    "visible", &visible,
+    NULL);
+
+  priv->cent_pix_x = allocation->x + 0.5 * allocation->width;
+  priv->cent_pix_y = allocation->y + 0.5 * allocation->height;
+  priv->radius = allocation->width < allocation->height ?
+                   allocation->width * 0.5 :
+                   allocation->height * 0.5;
+
+  previouse_tics = gdv_axis_get_tic_list (GDV_AXIS (linear_axis));
+
+  for (tics_copy = previouse_tics;
+       tics_copy != NULL;
+       tics_copy = tics_copy->next)
+  {
+  }
+
+  GTK_WIDGET_CLASS (
+    gdv_special_polar_axis_parent_class)->size_allocate (widget, allocation);
 }
 
 static gboolean
 gdv_polar_axis_draw (GtkWidget    *widget,
                      cairo_t      *cr)
 {
-  g_print("REACHED!\n");
-  exit(0);
-  return TRUE;
-}
+//  gdouble   scale_beg_val, scale_end_val;
+  gdouble axis_line_width = 0.0;
+  GtkStyleContext *context;
+  GdvSpecialPolarAxis *polar_axis = GDV_SPECIAL_POLAR_AXIS (widget);
+  GdvSpecialPolarAxisPrivate *priv = gdv_special_polar_axis_get_instance_private(polar_axis);
 
+  context = gtk_widget_get_style_context (widget);
+
+  gtk_widget_style_get (widget,
+                        "line-width", &axis_line_width,
+                        NULL);
+
+//  if (axis_line_width && cr != NULL &&
+//      (!axis->priv->resize_during_redraw || axis->priv->force_beg_end))
+  if (axis_line_width && cr != NULL)
+  {
+    /* plotting axis-line */
+    gdv_render_arc (
+      context, cr, priv->cent_pix_x,
+                   priv->cent_pix_y,
+                   priv->radius, 0.0, 2.0 * M_PI);
+
+//  if (axis->priv->resize_during_redraw && !axis->priv->force_beg_end)
+//  {
+//    gtk_widget_queue_resize (GTK_WIDGET (widget));
+//    axis->priv->resize_during_redraw = FALSE;
+//    return TRUE;
+  }
+
+  return FALSE;
+}
 
 static void
 gdv_polar_axis_measure (
@@ -283,203 +431,16 @@ gdv_polar_axis_measure (
 
   g_object_get (G_OBJECT(axis), "title-widget", &title_widget, NULL);
 
-  *minimum = 0;
-  *natural = 0;
+  *minimum = 100;
+  *natural = 100;
+  return;
+
 
   gtk_widget_style_get (GTK_WIDGET (axis),
                         "scale-min-diff-pix", &scale_min_diff,
                         "line-width", &axis_line_width,
                         NULL);
 
-/*
-  if (orientation == GTK_ORIENTATION_HORIZONTAL)
-    projected_min_diff =
-      (gint) (fabs(sin (axis_direction)) * ((gdouble) scale_min_diff + 0.5) +
-              fabs(cos (axis_direction)) * axis_line_width);
-  else
-    projected_min_diff =
-      (gint) ((fabs(cos (axis_direction)) * ((gdouble) scale_min_diff + 0.5))
-              + fabs(sin (axis_direction)) * axis_line_width);
-*/
-
-    projected_min_diff =
-      (gint) ((gdouble) scale_min_diff + axis_line_width);
-
-  /* FIXME: this is not really not an elegant solution here */
-  for (
-    tics_list = gdv_axis_get_tic_list (axis);
-    tics_list;
-    tics_list = tics_list->next)
-  {
-    GdvTic *local_tic = tics_list->data;
-    gint loc_tic_min_start, loc_tic_nat_start,
-         loc_tic_min_stop, loc_tic_nat_stop;
-    gint loc_tic_min_size = 0, loc_tic_nat_size = 0;
-
-    if (orientation == GTK_ORIENTATION_HORIZONTAL)
-    {
-      gdv_tic_get_space_to_tic_position (
-        local_tic, GTK_POS_LEFT, for_size,
-        &loc_tic_min_start, &loc_tic_nat_start, data);
-      gdv_tic_get_space_to_tic_position (
-        local_tic, GTK_POS_RIGHT, for_size,
-        &loc_tic_min_stop, &loc_tic_nat_stop, data);
-
-      /* this is more for the record and not obligatoric */
-      if (for_size > 0)
-        gtk_widget_get_preferred_width_for_height (
-          GTK_WIDGET (local_tic), for_size, &loc_tic_min_size, &loc_tic_nat_size);
-      else
-        gtk_widget_get_preferred_width (
-          GTK_WIDGET (local_tic), &loc_tic_min_size, &loc_tic_nat_size);
-    }
-    else
-    {
-      gdv_tic_get_space_to_tic_position (
-        local_tic, GTK_POS_TOP, for_size,
-        &loc_tic_min_start, &loc_tic_nat_start, data);
-      gdv_tic_get_space_to_tic_position (
-        local_tic, GTK_POS_BOTTOM, for_size,
-        &loc_tic_min_stop, &loc_tic_nat_stop, data);
-
-      /* this is more fore the record and not obligatoric */
-      if (for_size > 0)
-        gtk_widget_get_preferred_height_for_width (
-          GTK_WIDGET (local_tic), for_size, &loc_tic_min_size, &loc_tic_nat_size);
-      else
-        gtk_widget_get_preferred_height (
-          GTK_WIDGET (local_tic), &loc_tic_min_size, &loc_tic_nat_size);
-    }
-
-    glob_tic_min_start =
-      (glob_tic_min_start < loc_tic_min_start ?
-       loc_tic_min_start : glob_tic_min_start);
-    glob_tic_min_stop =
-      glob_tic_min_stop < loc_tic_min_stop ?
-      loc_tic_min_stop : glob_tic_min_stop;
-    glob_tic_nat_start =
-      glob_tic_nat_start < loc_tic_nat_start ?
-      loc_tic_nat_start : glob_tic_nat_start;
-    glob_tic_nat_stop =
-      glob_tic_nat_stop < loc_tic_nat_stop ?
-      loc_tic_nat_stop : glob_tic_nat_stop;
-  }
-
-  /* Getting the size of the minor tics */
-  /*  for (
-      tics_list = axis->priv->mtics;
-      tics_list;
-      tics_list = tics_list->next)
-    {
-      GdvTic *local_tic = tics_list->data;
-      gint loc_tic_min_start, loc_tic_nat_start,
-           loc_tic_min_stop, loc_tic_nat_stop;
-      gint loc_tic_min_size = 0, loc_tic_nat_size = 0;
-
-      if (orientation == GTK_ORIENTATION_HORIZONTAL)
-      {
-        gdv_tic_get_space_to_tic_position (
-          local_tic, GTK_POS_LEFT, for_size,
-          &loc_tic_min_start, &loc_tic_nat_start, data);
-        gdv_tic_get_space_to_tic_position (
-          local_tic, GTK_POS_RIGHT, for_size,
-          &loc_tic_nat_start, &loc_tic_nat_stop, data);
-  */
-  /* this is more fore the record and not obligatoric */
-  /*      if (for_size > 0)
-          gtk_widget_get_preferred_width_for_height (
-            GTK_WIDGET (local_tic), for_size, &loc_tic_min_size, &loc_tic_nat_size);
-        else
-          gtk_widget_get_preferred_width (
-            GTK_WIDGET (local_tic), &loc_tic_min_size, &loc_tic_nat_size);
-      }
-      else
-      {
-        gdv_tic_get_space_to_tic_position (
-          local_tic, GTK_POS_TOP, for_size,
-          &loc_tic_min_start, &loc_tic_nat_start, data);
-        gdv_tic_get_space_to_tic_position (
-          local_tic, GTK_POS_BOTTOM, for_size,
-          &loc_tic_nat_start, &loc_tic_nat_stop, data);
-  */
-  /* this is more fore the record and not obligatoric */
-  /*      if (for_size > 0)
-          gtk_widget_get_preferred_height_for_width (
-            GTK_WIDGET (local_tic), for_size, &loc_tic_min_size, &loc_tic_nat_size);
-        else
-          gtk_widget_get_preferred_height (
-            GTK_WIDGET (local_tic), &loc_tic_min_size, &loc_tic_nat_size);
-      }
-
-      glob_tic_min_start =
-        glob_tic_min_start < loc_tic_min_start ?
-          loc_tic_min_start : glob_tic_min_start;
-      glob_tic_min_stop =
-        glob_tic_min_stop < loc_tic_min_stop ?
-          loc_tic_min_stop : glob_tic_min_stop;
-      glob_tic_nat_start =
-        glob_tic_nat_start < loc_tic_nat_start ?
-          loc_tic_nat_start : glob_tic_nat_start;
-      glob_tic_nat_stop =
-        glob_tic_nat_stop < loc_tic_nat_stop ?
-          loc_tic_nat_stop : glob_tic_nat_stop;
-    }
-  */
-  *minimum =
-    glob_tic_min_start + glob_tic_min_stop + projected_min_diff;
-  *natural =
-    glob_tic_nat_start + glob_tic_nat_stop + projected_min_diff;
-
-  /* Measuring the title */
-  g_object_get (axis, "axis-direction-outside", &outside_dir, NULL);
-
-  axis_title_on = gdv_axis_get_show_title (axis);
-
-  if (axis_title_on)
-  {
-    if (orientation == GTK_ORIENTATION_VERTICAL)
-    {
-      if (for_size > 0)
-        gtk_widget_get_preferred_height_for_width (
-          title_widget, for_size, &title_height, &title_height_nat);
-      else
-        gtk_widget_get_preferred_height (
-          title_widget, &title_height, &title_height_nat);
-
-      *minimum += (gint) (fabs(cos(outside_dir)) * (gdouble) title_height);
-      *natural += (gint) (fabs(cos(outside_dir)) * (gdouble) title_height_nat);
-
-      *minimum =
-        (gint) fmax(
-          (gdouble) * minimum,
-          fabs(sin(outside_dir)) * (gdouble) title_height);
-      *natural =
-        (gint) fmax(
-          (gdouble) * natural,
-          fabs(sin(outside_dir)) * (gdouble) title_height_nat);
-    }
-    else
-    {
-      if (for_size > 0)
-        gtk_widget_get_preferred_width_for_height (
-          title_widget, for_size, &title_width, &title_width_nat);
-      else
-        gtk_widget_get_preferred_width (
-          title_widget, &title_width, &title_width_nat);
-
-      *minimum += (gint) (fabs(sin(outside_dir)) * (gdouble) title_width);
-      *natural += (gint) (fabs(sin(outside_dir)) * (gdouble) title_width_nat);
-
-      *minimum =
-        (gint) fmax(
-          (gdouble) * minimum,
-          fabs(cos(outside_dir)) * (gdouble) title_width);
-      *natural =
-        (gint) fmax(
-          (gdouble) * natural,
-          fabs(cos(outside_dir)) * (gdouble) title_width_nat);
-    }
-  }
 }
 
 
@@ -581,6 +542,96 @@ static void gdv_special_polar_axis_get_property (GObject    *object,
       break;
 
     }
+}
+
+static gboolean gdv_special_polar_axis_get_point (
+  GdvAxis            *axis,
+  gdouble             value,
+  gdouble            *pos_x,
+  gdouble            *pos_y)
+{
+  GdvSpecialPolarAxis *self = GDV_SPECIAL_POLAR_AXIS (axis);
+  GdvSpecialPolarAxisPrivate * priv = gdv_special_polar_axis_get_instance_private (self);
+  gdouble beg_val, end_val,
+          //begin_x, end_x, begin_y, end_y,
+          orientation;
+  gdouble tmp_slope_angle;
+  gdouble pos_angle;
+
+  g_object_get(G_OBJECT(axis),
+               "scale-beg-val", &beg_val,
+               "scale-end-val", &end_val,
+//               "axis-beg-pix-x", &begin_x,
+//               "axis-end-pix-x", &end_x,
+//               "axis-beg-pix-y", &begin_y,
+//               "axis-end-pix-y", &end_y,
+               "axis-orientation", &orientation,
+               NULL);
+
+  /* The following part assumes that the allocation process fixed the values for the
+   * angle boundaries of the axis already correctly (draw_from_angle and draw_to_angle members).
+   * The same applies for the (radial symmetric) center of this axis
+   */
+
+  if (priv->draw_from_angle != priv->draw_to_angle)
+  {
+    tmp_slope_angle = (beg_val - end_val) / (priv->draw_from_angle - priv->draw_to_angle);
+    pos_angle = priv->draw_from_angle + (value - beg_val) / tmp_slope_angle;
+  }
+  else
+  {
+    pos_angle = priv->draw_from_angle;
+  }
+
+  *pos_x = priv->cent_pix_x + priv->radius * sin(pos_angle);
+  *pos_y = priv->cent_pix_x + priv->radius * cos(pos_angle);
+
+  return (
+    (value <= (beg_val >= end_val ? beg_val : end_val)) &&
+    (value >= (beg_val <= end_val ? beg_val : end_val)));
+}
+
+static gboolean gdv_special_polar_axis_get_inner_dir(
+  GdvAxis            *axis,
+  gdouble             value,
+  gdouble            *pos_x,
+  gdouble            *pos_y)
+{
+  GdvSpecialPolarAxis *self = GDV_SPECIAL_POLAR_AXIS (axis);
+  GdvSpecialPolarAxisPrivate * priv = gdv_special_polar_axis_get_instance_private (self);
+  gdouble beg_val, end_val,
+          //begin_x, end_x, begin_y, end_y,
+          orientation;
+  gdouble tmp_slope_angle;
+  gdouble pos_angle;
+
+  g_object_get(G_OBJECT(axis),
+               "scale-beg-val", &beg_val,
+               "scale-end-val", &end_val,
+//               "axis-beg-pix-x", &begin_x,
+//               "axis-end-pix-x", &end_x,
+//               "axis-beg-pix-y", &begin_y,
+//               "axis-end-pix-y", &end_y,
+               "axis-orientation", &orientation,
+               NULL);
+
+  if (priv->draw_from_angle != priv->draw_to_angle)
+  {
+    tmp_slope_angle = (beg_val - end_val) / (priv->draw_from_angle - priv->draw_to_angle);
+    pos_angle = priv->draw_from_angle + (value - beg_val) / tmp_slope_angle;
+  }
+  else
+  {
+    pos_angle = priv->draw_from_angle;
+  }
+
+  *pos_x = -1.0 * sin(pos_angle);
+  *pos_y = -1.0 * cos(pos_angle);
+
+  return (
+    (value <= (beg_val >= end_val ? beg_val : end_val)) &&
+    (value >= (beg_val <= end_val ? beg_val : end_val)));
+
 }
 
 

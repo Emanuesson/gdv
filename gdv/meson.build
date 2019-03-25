@@ -153,7 +153,7 @@ if get_option('with_introspection')
               namespace: 'Gdv',
           symbol_prefix: 'gdv',
       identifier_prefix: 'Gdv',
-              link_with: libgdv,
+#              link_with: libgdv,
                includes: ['Gio-2.0', 'Gtk-3.0'],
                 install: true,
         install_dir_gir: girdir,
@@ -163,11 +163,11 @@ if get_option('with_introspection')
 
   if get_option('with_vapi')
 
-    libgdv_vapi = gnome.generate_vapi('libgdv-' + apiversion,
-            sources: libgdv_gir[0],
-           packages: [ 'gio-2.0', 'gtk+-3.0' ],
-            install: true,
-        install_dir: vapidir,
+    libgdv_vapi = gnome.generate_vapi('gdv-' + apiversion,
+      sources: libgdv_gir[0],
+      packages: [ 'gio-2.0', 'gtk+-3.0' ],
+      install: true,
+      install_dir: vapidir,
       metadata_dirs: [ meson.current_source_dir() ],
     )
 
@@ -183,6 +183,6 @@ pkgg.generate(
          name: 'Gdv',
      filebase: 'gdv-@0@'.format(apiversion),
   description: 'Gdv for Gtk+ applications',
-     requires: 'gtk+-3.0',
+     requires: 'gtk+-3.0',                      #TODO: add all dependencies correctly
   install_dir: join_paths(libdir, 'pkgconfig'),
 )

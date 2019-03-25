@@ -43,6 +43,7 @@
 #include "gdvtic.h"
 #include "gdv-data-boxed.h"
 #include "gdvrender.h"
+//#include <gdv/gdvcentral.h>
 
 /* Define Properties */
 enum
@@ -913,6 +914,37 @@ gdv_tic_get_space_to_tic_position (
 
   *minimum = (gint) returned_space;
   *natural = (gint) returned_space;
+}
+
+/**
+ * gdv_tic_in_range:
+ * @tic: a #GdvTic
+ * @value:
+ * @residuum:
+ *
+ * This function evaluates if the value this tic represents is located within the range,
+ * defined by the value and .
+ *
+ **/
+gboolean
+gdv_tic_in_range (
+  GdvTic *tic,
+  gdouble value,
+  gdouble residuum)
+{
+  GdvTicPrivate *priv;
+
+  g_return_val_if_fail (GDV_IS_TIC (tic), FALSE);
+
+  priv = gdv_tic_get_instance_private (tic);
+
+  if (value - residuum <= priv->tic_val &&
+      value + residuum >= priv->tic_val)
+  {
+    return TRUE;
+  }
+
+  return FALSE;
 }
 
 static gboolean

@@ -10,12 +10,13 @@
     <property name="default_width">500</property>
     <property name="default_height">300</property>
     <child>
+
       <object class="GtkNotebook" id="notebook">
         <property name="visible">True</property>
         <property name="tab-pos">GTK_POS_LEFT</property>
 
+
         <child>
-<!--          <object class="GdvOnedLayer" id="onedlayer">-->
           <object class="GdvSpecialDrumDisplay" id="onedlayer">
             <property name="visible">True</property>
             <property name="margin">10</property>
@@ -42,10 +43,7 @@
 
         <child>
           <object class="GdvTwodLayer" id="twodlayer">
-<!--          <object class="GtkLabel" id="test-label">
-            <property name="label">Hello World</property>-->
             <property name="visible">True</property>
-<!--            <property name="no-show-all">True</property>-->
           </object>
         </child>
         <child type="tab">

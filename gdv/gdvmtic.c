@@ -41,7 +41,6 @@
 
 #include "gdvmtic.h"
 #include "gdv-data-boxed.h"
-#include "gdvrender.h"
 
 /* --- variables --- */
 

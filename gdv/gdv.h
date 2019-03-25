@@ -27,28 +27,26 @@
 
 #include <gtk/gtk.h>
 
-#include <gdv/gdvcentral.h>
-#include <gdv/gdvrender.h>
-#include <gdv/gdvonedlayer.h>
-#include <gdv/gdvtwodlayer.h>
-#include <gdv/gdvlayercontent.h>
-#include <gdv/gdvlinearaxis.h>
-#include <gdv/gdvlogaxis.h>
-#include <gdv/gdvaxis.h>
-#include <gdv/gdvtic.h>
-#include <gdv/gdvmtic.h>
-#include <gdv/gdvlegend.h>
-#include <gdv/gdvlegendelement.h>
-#include <gdv/gdvindicator.h>
+#include "gdvrender.h"
+#include "gdvonedlayer.h"
+#include "gdvtwodlayer.h"
+#include "gdvlayercontent.h"
+#include "gdvlinearaxis.h"
+#include "gdvlogaxis.h"
+#include "gdvaxis.h"
+#include "gdvtic.h"
+#include "gdvmtic.h"
+#include "gdvlegend.h"
+#include "gdvlegendelement.h"
+#include "gdvindicator.h"
 
-#include <gdv/gdv-enums.h>
-#include <gdv/gdv-data-boxed.h>
-#include <gdv/gdv-data-vector.h>
-#include <gdv/gdv-data-matrix.h>
+#include "gdv-enums.h"
+#include "gdv-data-boxed.h"
 
-#include <gdv/specialized_widgets/gdvspecialdrumdisplay.h>
-#include <gdv/specialized_widgets/gdvspecialcheckedindicator.h>
-#include <gdv/specialized_widgets/gdvspecialtimeaxis.h>
+#include "specialized_widgets/gdvspecialdrumdisplay.h"
+#include "specialized_widgets/gdvspecialcheckedindicator.h"
+#include "specialized_widgets/gdvspecialtimeaxis.h"
+#include "specialized_widgets/gdvspecialpolaraxis.h"
 
 #ifndef GDV_DISABLE_DEPRECATED
 #endif /* GDV_DISABLE_DEPRECATED */

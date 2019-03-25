@@ -22,7 +22,7 @@
 
 #include <gtk/gtk.h>
 
-#include "gdv/specialized_widgets/gdvspecialcontentaxis.h"
+#include "gdvspecialcontentaxis.h"
 
 /* Define Properties */
 /*enum

@@ -43,11 +43,10 @@
  */
 
 #include "gdvonedlayer.h"
+#include "gdvindicator.h"
+#include "gdv-data-boxed.h"
+#include "gdv-enums.h"
 #include "gdvlinearaxis.h"
-#include "gdv/gdvlayercontent.h"
-#include "gdv/gdvindicator.h"
-#include "gdv/gdv-data-boxed.h"
-#include "gdv/gdv-enums.h"
 
 /* Define Properties */
 enum

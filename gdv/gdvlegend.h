@@ -26,8 +26,6 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
 
-#include <gdv/gdvcentral.h>
-
 G_BEGIN_DECLS
 
 #define GDV_LEGEND_TYPE                 (gdv_legend_get_type ())

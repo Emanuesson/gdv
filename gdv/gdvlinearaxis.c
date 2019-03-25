@@ -27,7 +27,6 @@
 #include <math.h>
 
 #include "gdvaxis.h"
-#include "gdvlayer.h"
 #include "gdvlinearaxis.h"
 #include "gdvtic.h"
 #include "gdvmtic.h"
@@ -241,6 +240,96 @@ _is_present_in_approved_list (GdvTic *tic, GList *list)
   return FALSE;
 }
 
+/*
+ * Simply provides the tic for a given Axis, according to the provided value. This scales
+ * quadratic, which is not suited for invoking this function multiple times.
+ */
+static void
+_determine_tic_by_val(GdvLinearAxis *linear_axis,
+                      gdouble tics_val,
+                      GdvTic **tic)
+{
+  GList *tic_list, *tic_list_start;
+
+  /* looking for the beg- and end-tic */
+  tic_list = gdv_axis_get_tic_list (GDV_AXIS (linear_axis));
+  tic_list_start = tic_list;
+
+  while (tic_list)
+  {
+    gdouble current_value;
+    g_object_get (G_OBJECT (tic_list->data), "value", &current_value, NULL);
+
+    /* FIXME: this might not be correctly reached due to round-off errors */
+    if (current_value == tics_val)
+      *tic = tic_list->data;
+
+    tic_list = tic_list->next;
+  }
+
+  g_list_free (tic_list_start);
+}
+
+struct _linear_axis_scale_definition {
+  gdouble beg_val;
+  gdouble end_val;
+  gdouble increment;
+};
+
+gboolean comp_equal_values (gdouble value_to_compare,
+                            gdouble tic_value,
+                            struct _linear_axis_scale_definition *scale)
+{
+  gdouble local_val_resid =
+    fmod ((tic_value - scale->beg_val) / scale->increment, 1.0);
+
+  if (tic_value < fmin (scale->beg_val, scale->end_val) ||
+      tic_value > fmax (scale->beg_val, scale->end_val) ||
+      !((fabs(local_val_resid) * fabs(scale->increment) < 1e-10) ||
+        (fabs(1.0 - local_val_resid) * fabs(scale->increment) < 1e-10)))
+      //_is_present_in_approved_list (tics_copy->data, tics_approved_list))
+    /* TODO: separate the round-off problems to own function */
+    return FALSE;
+  else
+    return TRUE;
+
+}
+
+/*
+ * Simply provides the tic for a given Axis, according to the provided value. This scales
+ * quadratic, which is not suited for invoking this function multiple times.
+ */
+//static GdvTic **
+static void
+_determine_tics_by_values(GList *tics_list,
+                          gsize no_of_vals,
+                          gdouble tics_val[],
+                          GdvTic *tics[],
+                          struct _linear_axis_scale_definition *scale)
+{
+//  GdvTic *returned_array[] = (GdvTic *) g_new0(gpointer, no_of_vals);
+  GList * copy_list;
+
+  for (copy_list = tics_list;
+       copy_list != NULL;
+       copy_list = copy_list->next)
+  {
+    GdvTic *local_tic = GDV_TIC(copy_list->data);
+    gdouble local_tic_value;
+    gsize i;
+
+    g_object_get (local_tic, "value", &local_tic_value, NULL);
+
+    for (i = 0; i < no_of_vals; i++)
+    {
+      if (comp_equal_values(local_tic_value, tics_val[i],
+                            scale) == TRUE)
+        tics[i] = local_tic;
+    }
+
+  }
+}
+
 static void
 gdv_linear_axis_size_allocate (GtkWidget     *widget,
                                GtkAllocation *allocation)
@@ -325,28 +414,29 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
 //  gdouble last_diff_pix = 0.0;
 
   /* Some annotations:
-   *   The allocation process is the point where axes determines the
+   *   The allocation process is the point where axes determine their
    *   available space for the tics. This process can be controlled by
    *   the user/developer with the public widget properties. The process of
    *   automatic tic-setting is rather complex. Therefore a short sketch will
    *   illustrate the several steps:
-   *    - receive the properties and starting values
-   *    - determine the begin and end of the scale and produce first
-   *      temporary tics for just these two values
-   *    - measure the temporary begin- and end-tics and determine the
-   *      available space for the other tics assuming the current scale
-   *      settings (beg-, end- and increment-values)
-   *    - if the remaining space is large enough, add more tics and make the
-   *      scale more detailed and repeat the measurement process
-   *    - if the remaining space is to small, make the scale less detailed by
-   *      using larger increment values and repeat the measurement process
-   *    - if the abortion criteria is met, the other tics wwill be added/removed
-   *      from the axis and their position will be calculated and allocated
-   *    - it is definitely necessary to redetermine the space needed by the axis
-   *      after this process, due to the newly added tics. This is made by the
-   *      internal resize-during-redraw property
+   *  I.    Receive the properties and starting values
+   *  II.   Determine the begin and end of the scale and produce first
+   *        temporary tics for just these two values
+   *  III.  Iterating a loop and measure the available tics. Start with the
+   *        temporary begin- and end-tics
+   *  IV.   If the remaining space is large enough, add more tics and make the
+   *        scale more detailed and repeat the measurement process
+   *  V.    If the remaining space is too small, make the scale less detailed by
+   *        using larger increment values and repeat the measurement process
+   *        if the abortion criteria is met, the other tics wwill be added/removed
+   *        from the axis and their position will be calculated and allocated
+   *  VI.   It is definitely necessary to redetermine the space needed by the axis
+   *        after this process, due to the newly added tics. This is made by the
+   *        internal resize-during-redraw property
+   *  VII.  We assume that the process converges after the first iteration
    */
 
+  /*  I.    Receive the properties and starting values */
   g_log (NULL, G_LOG_LEVEL_DEBUG, "ALLOC WITH: %d, %d, %d, %d",
            allocation->x, allocation->y, allocation->width, allocation->height);
 
@@ -376,20 +466,14 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
     "visible", &visible,
     NULL);
 
-//  if (scale_end_val != 100.0)
-//  FIXME: This will be used to debug the retic-problem
-
-  g_log (NULL, G_LOG_LEVEL_DEBUG, "\n");
-  g_log (NULL, G_LOG_LEVEL_DEBUG, "BEGW SCALE: fr %e to %e TICS: fr %e to %e SCIB %e SCIV %e\n",
+  /* Inspecting the starting values */
+  g_log (NULL, G_LOG_LEVEL_DEBUG, "BEGW SCALE: fr %e to %e TICS: fr %e to %e SCIB %e SCIV %e",
          scale_beg_val, scale_end_val,
          tics_beg_val, tics_end_val,
          scale_increment_base, scale_increment_val);
 
   /* safing all necessary values */
   init_increment_val = scale_increment_val;
-//  init_tic_beg_val = tics_beg_val;
-//  init_tic_end_val = tics_end_val;
-
   init_scale_beg_val = scale_beg_val;
   init_scale_end_val = scale_end_val;
 
@@ -410,15 +494,14 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
   /* calculating basic geometric values */
   inner_dir_x = -1.0 * sin (angle_to_outer_dir);
   inner_dir_y = cos (angle_to_outer_dir);
-//  axis_dir_x = -1.0 * sin (angle_to_start);
-//  axis_dir_y = cos (angle_to_start);
 
   tic_label_halign = -0.5 * fabs (inner_dir_y);
   tic_label_valign = -0.5 * fabs (inner_dir_x);
 
   /* Check the initial boundaries and set flag for skipping a lot
-   *   of functions */
-  /* FIXME: it might be a faster algorithm to implement the inverse case */
+   *   of functions
+   * FIXME: it might be a faster algorithm to implement the inverse case or even use a
+   *        bisect-search */
   set_tics =
     (tics_automatic || /* FIXME: potentially wrong! */
      !((tics_beg_val <= fmin (scale_beg_val, scale_end_val) &&
@@ -426,28 +509,13 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
        (tics_beg_val >= fmax (scale_beg_val, scale_end_val) &&
         tics_end_val >= fmax (scale_beg_val, scale_end_val))));
 
+  /*  II.   Determine the begin and end of the scale and produce first
+   *        temporary tics for just these two values */
   if (set_tics)
   {
     /* looking for the beg- and end-tic */
-    tic_list = gdv_axis_get_tic_list (GDV_AXIS (linear_axis));
-    tic_list_start = tic_list;
-
-    while (tic_list)
-    {
-      gdouble current_value;
-      g_object_get (G_OBJECT (tic_list->data), "value", &current_value, NULL);
-
-      /* FIXME: this might not be correctly reached due to round-off errors */
-      if (current_value == tics_beg_val)
-        beg_tic = tic_list->data;
-
-      if (current_value == tics_end_val)
-        end_tic = tic_list->data;
-
-      tic_list = tic_list->next;
-    }
-
-    g_list_free (tic_list_start);
+    _determine_tic_by_val(linear_axis, tics_beg_val, &beg_tic);
+    _determine_tic_by_val(linear_axis, tics_end_val, &end_tic);
 
     /* if not present, make new beg- and end-tics */
     if (!beg_tic)
@@ -479,15 +547,16 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
                   NULL);
   }
 
-  g_log (NULL, G_LOG_LEVEL_DEBUG, "START INCREMENT_DET-LOOP\n");
+  g_log (NULL, G_LOG_LEVEL_DEBUG, "START INCREMENT_DET-LOOP");
 
-  /* this optimises the scale-parameters, until scale-min-diff-pix are
+  /*  III.  Iterating a loop and measure the available tics. Start with the
+   *        temporary begin- and end-tics
+   * This will optimise the scale-parameters, until scale-min-diff-pix are
    * reached */
   while (set_tics)
   {
     /* negative sign -> exponent grows, positive sign vice versa */
     gdouble base_value =
-//        pow (10.0, exponent) / mantissa;
       pow (10.0, exponent) * (sign < 0.0 ? mantissa : 1.0 / mantissa);
     gdouble down_scaled_difference;
     gdouble down_scaled_beg, down_scaled_end;
@@ -495,51 +564,39 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
     gint tmp_min, tmp_nat;
     gdouble scale_length;
 
-    /* FIXME: catch trivial case (scale_end_val == scale_beg_val) */
-    down_scaled_difference =
-        base_value *
-        pow (scale_increment_base,
-             floor (
-               log (fabs (scale_end_val - scale_beg_val)) /
-               log (scale_increment_base)
-                   ));
-/*
-    if (sign < 0.0)
+    /* catch the trivial case (scale_end_val == scale_beg_val) */
+    scale_length = scale_end_val - scale_beg_val;
+    if (scale_length == 0) {
+      down_scaled_difference = 0;
+    } else {
       down_scaled_difference =
-        base_value *
-        pow (scale_increment_base,
-             floor (
-               log (fabs (scale_end_val - scale_beg_val)) /
-               log (scale_increment_base)
-                   ));
-    else
-      down_scaled_difference =
-        base_value *
-        pow (scale_increment_base,
-             ceil (
-               log (fabs (scale_end_val - scale_beg_val)) /
-               log (scale_increment_base)
-                  ));
-*/
+          base_value *
+          pow (scale_increment_base,
+               floor (
+                 log (fabs (scale_length)) /
+                 log (scale_increment_base)
+                     ));
+    }
+
     g_log (NULL, G_LOG_LEVEL_DEBUG,
-           "\n\tLOOP: DSD %e BAV %e SCALE: fr %e to %e\n",
+           "\tLOOP: DSD %e BAV %e SCALE: fr %e to %e",
            down_scaled_difference, base_value, scale_beg_val, scale_end_val);
     g_log (NULL, G_LOG_LEVEL_DEBUG,
-           "\tMORE MAGEIC: FAC %e SIB %e\n",
+           "\tMORE MAGEIC: FAC %e SIB %e",
              sign < 0.0 ? floor (
-               log (fabs (scale_end_val - scale_beg_val)) /
+               log (fabs (scale_length)) /
                log (scale_increment_base)) : ceil (
-               log (fabs (scale_end_val - scale_beg_val)) /
+               log (fabs (scale_length)) /
                log (scale_increment_base)
                   ), scale_increment_base);
 
     g_log (NULL, G_LOG_LEVEL_DEBUG,
-           "\tBV MAGIC: SGN %e MTSS %e EXPO %e\n", sign, mantissa, exponent);
+           "\tBV MAGIC: SGN %e MTSS %e EXPO %e", sign, mantissa, exponent);
 
     /* FIXME: This is not usefull! */
     if (isnan (down_scaled_difference))
     {
-      g_warning ("Unhandled problem with the linear-axis, this should be reworked internally\n");
+      g_warning ("Unhandled problem with the linear-axis, this should be reworked internally");
       return;
     }
 
@@ -592,7 +649,7 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
 
 //  FIXME: This will be used to debug the retic-problem
     g_log (NULL, G_LOG_LEVEL_DEBUG,
-           "\tSET SCV DONWSCALED fr %e to %e ; SCALE fr %e to %e ; DSD %e SIV %e\n",
+           "\tSET SCV DONWSCALED fr %e to %e ; SCALE fr %e to %e ; DSD %e SIV %e",
              down_scaled_beg, down_scaled_end, scale_beg_val, scale_end_val,
              down_scaled_difference, scale_increment_val);
 
@@ -612,7 +669,7 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
 
 //  FIXME: This will be used to debug the retic-problem
     g_log (NULL, G_LOG_LEVEL_DEBUG,
-           "\tFIN SCD %e %e TI %e %e\n",
+           "\tFIN SCD %e %e TI %e %e",
            scale_beg_val, scale_end_val,
            tics_beg_val, tics_end_val);
 
@@ -654,7 +711,9 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
       g_free (new_tic_label);
     }
 
-    /* lookup the space that the beg- and end-tic need
+    /*  IV.   If the remaining space is large enough, add more tics and make the
+     *        scale more detailed and repeat the measurement process
+     * lookup the space that the beg- and end-tic need
      * Please remind: this is not looking for the very narrowest solution.
      *                It's just a good way to organise the tics at minimum
      *                cost's
@@ -772,22 +831,25 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
     current_diff_pix = line_length * scale_increment_val / scale_length;
 
     g_log (NULL, G_LOG_LEVEL_DEBUG,
-           "\tREACHPOS W CDP %f SID %d SAD %d\n",
+           "\tREACHPOS W CDP %f SID %d SAD %d",
            current_diff_pix, scale_min_diff_pix, scale_max_diff_pix);
 
-    /* aborting criteria - optimisation successful */
+   /*  V.    If the remaining space is too small, make the scale less detailed by
+    *        using larger increment values and repeat the measurement process
+    *        if the abortion criteria is met, the other tics wwill be added/removed
+    *        from the axis and their position will be calculated and allocated
+    * aborting criteria - optimisation successful */
     if (((current_diff_pix < (gdouble)scale_min_diff_pix &&
           sign > 0.0) ||
          (current_diff_pix > (gdouble)scale_max_diff_pix &&
           sign < 0.0)) &&
         !first_iteration)
-//      if ((!scale_automatic))
       break;
     /* autoscaling successfull; setting all parameters to the axis */
     else if ((current_diff_pix >= (gdouble)scale_min_diff_pix &&
               current_diff_pix <= (gdouble)scale_max_diff_pix))
     {
-      g_log (NULL, G_LOG_LEVEL_DEBUG,"\tSUCC SET\n");
+      g_log (NULL, G_LOG_LEVEL_DEBUG,"\tSUCC SET");
 
       if (scale_auto_increment)
         g_object_set (G_OBJECT (linear_axis),
@@ -813,11 +875,11 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
 
 
     g_log (NULL, G_LOG_LEVEL_DEBUG,
-           "\n\tREACH ITER COND CDP %e DSD %e DOWN_SCALE: BEG %e END %e\n",
+           "\tREACH ITER COND CDP %e DSD %e DOWN_SCALE: BEG %e END %e",
            current_diff_pix, down_scaled_difference,
            down_scaled_beg, down_scaled_end);
     g_log (NULL, G_LOG_LEVEL_DEBUG,
-           "\tSIGN %e\n", sign);
+           "\tSIGN %e", sign);
 
 //      if (first_iteration && sign > 0.0)
   //      {
@@ -843,7 +905,7 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
 //    if (current_diff_pix < (gdouble)scale_min_diff_pix)
     {
       g_log (NULL, G_LOG_LEVEL_DEBUG,
-             "SUCC2 SET SCALE BEG %e END %e SIV %e\n",
+             "SUCC2 SET SCALE BEG %e END %e SIV %e",
              scale_beg_val, scale_end_val, scale_increment_val);
 
 //    } if (FALSE) {
@@ -923,7 +985,7 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
                 NULL);
 
   g_log (NULL, G_LOG_LEVEL_DEBUG,
-         "!!!FIN WITH SC %.8e %.8e TI %e %e SIV %e\n",
+         "!!!FIN WITH SC %.8e %.8e TI %e %e SIV %e",
          scale_beg_val, scale_end_val,
          tics_beg_val, tics_end_val,
          scale_increment_val);
@@ -947,7 +1009,7 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
       g_free (new_tic_label);
 
       g_log (NULL, G_LOG_LEVEL_DEBUG,
-             "Set Beg VALUE2: %e\n", tics_beg_val);
+               "Set Beg VALUE2: %e", tics_beg_val);
       g_object_set (G_OBJECT (beg_tic),
                     "value", tics_beg_val,
                     "visible", visible,
@@ -968,7 +1030,7 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
       g_free (new_tic_label);
 
       g_log (NULL, G_LOG_LEVEL_DEBUG,
-             "Set end VALUE2: %e\n", tics_end_val);
+             "Set end VALUE2: %e", tics_end_val);
 
       g_object_set (G_OBJECT (end_tic),
                     "value", tics_end_val,
@@ -1202,7 +1264,7 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
       gchar *new_tic_label;
 
       g_log (NULL, G_LOG_LEVEL_DEBUG,
-             "New Tic VALUE: %e\n", actual_pos_val);
+             "New Tic VALUE: %e", actual_pos_val);
 
       local_tic =
         g_object_new (gdv_tic_get_type (),
@@ -1264,7 +1326,7 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
         if (!local_mtic)
         {
           g_log (NULL, G_LOG_LEVEL_DEBUG,
-                 "New MTIC VALUE: %e\n", local_mtic_val);
+                 "New MTIC VALUE: %e", local_mtic_val);
 
           local_mtic =
             g_object_new (gdv_mtic_get_type (),
@@ -1286,7 +1348,7 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
     actual_pos_val += signed_scale_increment_val;
   }
 
-  /* make the final measurement of all tics! */
+  /*  VI.   Make the final measurement of all tics for approval. */
   max_top_border = 0;
   max_bot_border = 0;
   max_left_border = 0;
@@ -1404,6 +1466,8 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
       GTK_WIDGET (title_widget), &title_allocation);
   }
 
+  /*  VII.  We assume that the process converges after the first iteration and store the
+   *        new values */
   if (!force_beg_end)
   {
     /* FIXME: this should be guarded, to ensure correct setting by layer */
@@ -1460,8 +1524,7 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
 
   #endif /* S_SPLINT_S */
 
-  GTK_WIDGET_CLASS (
-    gdv_linear_axis_parent_class)->size_allocate (widget, allocation);
+  GTK_WIDGET_CLASS (gdv_linear_axis_parent_class)->size_allocate (widget, allocation);
 }
 
 static gchar *
