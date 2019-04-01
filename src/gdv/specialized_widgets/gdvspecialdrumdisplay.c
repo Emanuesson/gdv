@@ -22,7 +22,7 @@
 
 #include <gtk/gtk.h>
 
-#include "gdv/specialized_widgets/gdvspecialdrumdisplay.h"
+#include "specialized_widgets/gdvspecialdrumdisplay.h"
 
 /* Define Properties */
 enum

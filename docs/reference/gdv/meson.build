@@ -24,8 +24,8 @@ configure_file(input: 'version.xml.in', output: 'version.xml', configuration: ve
 gnome.gtkdoc('gdv',
            main_xml: 'gdv-docs.xml',
             src_dir: [
-                       join_paths(meson.source_root(), 'gdv'),
-                       join_paths(meson.build_root(), 'gdv'),
+                       join_paths(meson.source_root(), 'src/gdv'),
+                       join_paths(meson.build_root(), 'src/gdv'),
                      ],
        dependencies: libgdv_dep,
   gobject_typesfile: 'gdv.types',

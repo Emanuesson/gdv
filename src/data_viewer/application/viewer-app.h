@@ -26,7 +26,7 @@
 #include <gtk/gtkx.h>
 #include <gdk/gdkx.h>
 
-#include <gdv/gdv.h>
+#include <gdv.h>
 
 
 #include <cairo-gobject.h>

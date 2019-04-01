@@ -60,9 +60,6 @@ add_project_arguments([
   '-I' + meson.build_root(),
 ], language: 'c')
 
-root_inc = include_directories('.')
-src_inc = include_directories('gdv')
-
 cc = meson.get_compiler('c')
 
 global_c_args = []
@@ -124,12 +121,7 @@ endif
 gnome = import('gnome')
 i18n = import('i18n')
 
-subdir('gdv')
-subdir('data_viewer')
-
-if get_option('enable_tests')
-  subdir('tests')
-endif
+subdir('src')
 
 if get_option('enable_gtk_doc')
   subdir('docs/reference/gdv')

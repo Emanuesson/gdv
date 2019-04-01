@@ -25,7 +25,7 @@
 #include "gemu-gtk-util.h"
 #include "gemu-glib-util.h"
 
-#include <gdv/gdvaxis.h>
+#include <gdv/gdv.h>
 
 /*
  *

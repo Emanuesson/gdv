@@ -92,6 +92,8 @@ libgdv_public_sources += files(gdvcore_sources)
 libgdv_private_sources += files(gdvcore_private)
 
 install_headers(gdvcore_headers, subdir: libgdv_header_subdir)
+message('OBSERVE:')
+message(libgdv_header_subdir)
 
 subdir('specialized_widgets')
 
