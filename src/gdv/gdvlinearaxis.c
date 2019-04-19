@@ -25,6 +25,7 @@
 #endif
 
 #include <math.h>
+#include <stdarg.h>
 
 #include "gdvaxis.h"
 #include "gdvlinearaxis.h"
@@ -295,6 +296,49 @@ gboolean comp_equal_values (gdouble value_to_compare,
 
 }
 
+static gint _determine_max_border_on_list (GtkPositionType pos, GList *tics_list)
+{
+  gint max_border = 0;
+
+  for (GList *list_copy = tics_list;
+       list_copy != NULL;
+       list_copy = list_copy->next)
+    {
+      GdvTic * tic = list_copy->data;
+      gint tmp_min, tmp_nat;
+
+      gdv_tic_get_space_to_tic_position (
+        GDV_TIC (tic), pos, -1, &tmp_min, &tmp_nat, NULL);
+      max_border = (max_border > tmp_nat ? max_border : tmp_nat);
+      max_border = (tmp_min > max_border ? tmp_min : max_border);
+    }
+
+  return max_border;
+}
+
+static gint _determine_max_border (GtkPositionType pos, ...)
+{
+  va_list valist;
+
+  gint max_border = 0;
+
+  va_start(valist, pos);
+
+  for (GdvTic * tic = va_arg(valist, GdvTic *);
+       tic != NULL;
+       tic = va_arg(valist, GdvTic *))
+    {
+      gint tmp_min, tmp_nat;
+
+      gdv_tic_get_space_to_tic_position (
+        GDV_TIC (tic), pos, -1, &tmp_min, &tmp_nat, NULL);
+      max_border = (max_border > tmp_nat ? max_border : tmp_nat);
+      max_border = (tmp_min > max_border ? tmp_min : max_border);
+    }
+
+  return max_border;
+}
+
 /*
  * Simply provides the tic for a given Axis, according to the provided value. This scales
  * quadratic, which is not suited for invoking this function multiple times.
@@ -411,8 +455,6 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
 
   gboolean visible;
 
-//  gdouble last_diff_pix = 0.0;
-
   /* Some annotations:
    *   The allocation process is the point where axes determine their
    *   available space for the tics. This process can be controlled by
@@ -428,7 +470,7 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
    *        scale more detailed and repeat the measurement process
    *  V.    If the remaining space is too small, make the scale less detailed by
    *        using larger increment values and repeat the measurement process
-   *        if the abortion criteria is met, the other tics wwill be added/removed
+   *        if the abortion criteria is met, the other tics will be added/removed
    *        from the axis and their position will be calculated and allocated
    *  VI.   It is definitely necessary to redetermine the space needed by the axis
    *        after this process, due to the newly added tics. This is made by the
@@ -647,11 +689,10 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
         (gdouble)floor (scale_end_val / down_scaled_difference);
     }
 
-//  FIXME: This will be used to debug the retic-problem
-    g_log (NULL, G_LOG_LEVEL_DEBUG,
-           "\tSET SCV DONWSCALED fr %e to %e ; SCALE fr %e to %e ; DSD %e SIV %e",
-             down_scaled_beg, down_scaled_end, scale_beg_val, scale_end_val,
-             down_scaled_difference, scale_increment_val);
+    /* This Output could be used to debug the retic-problem */
+    g_debug("\tSET SCV DONWSCALED fr %e to %e ; SCALE fr %e to %e ; DSD %e SIV %e",
+            down_scaled_beg, down_scaled_end, scale_beg_val, scale_end_val,
+            down_scaled_difference, scale_increment_val);
 
     if (scale_automatic && scale_auto_increment)
     {
@@ -740,49 +781,17 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
     }
     else
     {
-      gdv_tic_get_space_to_tic_position (
-        GDV_TIC (beg_tic), GTK_POS_TOP, -1, &tmp_min, &tmp_nat, NULL);
-      max_top_border = (tmp_min > tmp_nat ? tmp_min : tmp_nat);
-      gdv_tic_get_space_to_tic_position (
-        GDV_TIC (end_tic), GTK_POS_TOP, -1, &tmp_min, &tmp_nat, NULL);
-      max_top_border = (max_top_border > tmp_nat ? max_top_border : tmp_nat);
-      max_top_border = (tmp_min > max_top_border ? tmp_min : max_top_border);
+      /* calculating the borders */
+      max_top_border = _determine_max_border(GTK_POS_TOP, beg_tic, end_tic, NULL);
+      max_bot_border = _determine_max_border(GTK_POS_BOTTOM, beg_tic, end_tic, NULL);
+      max_left_border = _determine_max_border(GTK_POS_LEFT, beg_tic, end_tic, NULL);
+      max_right_border = _determine_max_border(GTK_POS_RIGHT, beg_tic, end_tic, NULL);
 
-      gdv_tic_get_space_to_tic_position (
-        GDV_TIC (beg_tic), GTK_POS_BOTTOM, -1, &tmp_min, &tmp_nat, NULL);
-      max_bot_border = (tmp_min > tmp_nat ? tmp_min : tmp_nat);
-      gdv_tic_get_space_to_tic_position (
-        GDV_TIC (end_tic), GTK_POS_BOTTOM, -1, &tmp_min, &tmp_nat, NULL);
-      max_bot_border = (max_bot_border > tmp_nat ? max_bot_border : tmp_nat);
-      max_bot_border = (tmp_min > max_bot_border ? tmp_min : max_bot_border);
-
-      gdv_tic_get_space_to_tic_position (
-        GDV_TIC (beg_tic), GTK_POS_LEFT, -1, &tmp_min, &tmp_nat, NULL);
-      max_left_border = (tmp_min > tmp_nat ? tmp_min : tmp_nat);
-      gdv_tic_get_space_to_tic_position (
-        GDV_TIC (end_tic), GTK_POS_LEFT, -1, &tmp_min, &tmp_nat, NULL);
-      max_left_border =
-        (max_left_border > tmp_nat ? max_left_border : tmp_nat);
-      max_left_border =
-        (tmp_min > max_left_border ? tmp_min : max_left_border);
-
-      gdv_tic_get_space_to_tic_position (
-        GDV_TIC (beg_tic), GTK_POS_RIGHT, -1, &tmp_min, &tmp_nat, NULL);
-      max_right_border = (tmp_min > tmp_nat ? tmp_min : tmp_nat);
-      gdv_tic_get_space_to_tic_position (
-        GDV_TIC (end_tic), GTK_POS_RIGHT, -1, &tmp_min, &tmp_nat, NULL);
-      max_right_border =
-        (max_right_border > tmp_nat ? max_right_border : tmp_nat);
-      max_right_border =
-        (tmp_min > max_right_border ? tmp_min : max_right_border);
-
-      /* calculating the free space */
+      /* setting the free space */
       space_without_border.x = max_left_border;
       space_without_border.y = max_top_border;
-      space_without_border.width =
-        allocation->width - max_left_border - max_right_border;
-      space_without_border.height =
-        allocation->height - max_top_border - max_bot_border;
+      space_without_border.width = allocation->width - max_left_border - max_right_border;
+      space_without_border.height = allocation->height - max_top_border - max_bot_border;
 
       /* measuring title */
       if (axis_title_on)
@@ -1359,43 +1368,15 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
   {
     previouse_tics = gdv_axis_get_tic_list (GDV_AXIS (linear_axis));
 
-    for (tics_copy = previouse_tics; tics_copy; tics_copy = tics_copy->next)
-    {
-      gint tmp_min, tmp_nat;
-
-      /* lookup the space that the beg- and end-tic need
-       * Please remind: this is not about looking for the very narrowest
-       *                solution. It's just a good way to organise the tics
-       *                at minimum cost's
-       */
-
-      /* Top space */
-      gdv_tic_get_space_to_tic_position (
-        GDV_TIC (tics_copy->data), GTK_POS_TOP, -1, &tmp_min, &tmp_nat, NULL);
-      max_top_border = (max_top_border > tmp_nat ? max_top_border : tmp_nat);
-      max_top_border = (tmp_min > max_top_border ? tmp_min : max_top_border);
-
-      /* Bottom space */
-      gdv_tic_get_space_to_tic_position (
-        GDV_TIC (tics_copy->data), GTK_POS_BOTTOM, -1, &tmp_min, &tmp_nat,
-        NULL);
-      max_bot_border = (max_bot_border > tmp_nat ? max_bot_border : tmp_nat);
-      max_bot_border = (tmp_min > max_bot_border ? tmp_min : max_bot_border);
-
-      /* Left space */
-      gdv_tic_get_space_to_tic_position (
-        GDV_TIC (tics_copy->data), GTK_POS_LEFT, -1, &tmp_min, &tmp_nat, NULL);
-      max_left_border = (max_left_border > tmp_nat ? max_left_border : tmp_nat);
-      max_left_border = (tmp_min > max_left_border ? tmp_min : max_left_border);
-
-      /* Right space */
-      gdv_tic_get_space_to_tic_position (
-        GDV_TIC (tics_copy->data), GTK_POS_RIGHT, -1, &tmp_min, &tmp_nat, NULL);
-      max_right_border =
-        (max_right_border > tmp_nat ? max_right_border : tmp_nat);
-      max_right_border =
-        (tmp_min > max_right_border ? tmp_min : max_right_border);
-    }
+    /* lookup the space that the beg- and end-tic need
+     * Please remind: this is not about looking for the very narrowest
+     *                solution. It's just a good way to organise the tics
+     *                at minimum cost's
+     */
+    max_top_border = _determine_max_border_on_list(GTK_POS_TOP, previouse_tics);
+    max_bot_border = _determine_max_border_on_list(GTK_POS_BOTTOM, previouse_tics);
+    max_left_border = _determine_max_border_on_list(GTK_POS_LEFT, previouse_tics);
+    max_right_border = _determine_max_border_on_list(GTK_POS_RIGHT, previouse_tics);
 
     g_list_free (previouse_tics);
   }

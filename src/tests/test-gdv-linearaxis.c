@@ -448,13 +448,9 @@ test_lin_axis_cross_settings (void)
 
   g_print ("SCALE MIN VAL %.8f\n", scale_min_val);
   g_print ("SCALE DIFF VAL %.8e\n", scale_min_val + 10.00000100);
-//  if (scale_min_val == -10.00000100) printf ("!");
   g_assert_true (gdv_is_nearly_identical (scale_min_val, -10.00000100, 1e-10));
   g_assert_true (gdv_is_nearly_identical (scale_max_val, -9.99998950, 1e-10));
   g_assert_true (gdv_is_nearly_identical (scale_incr, 5.000000e-07, 1e-17));
-//  g_assert_true (gdv_is_nearly_identical (scale_incr, -9.99998950, 1e-10));
-//  g_assert_true ( == -9.99998950);
-//  g_assert_true (scale_incr == 5.000000e-07);
 
   g_print ("SCALE: BEG %.8f END %.8f SIV %e\n",
            scale_min_val, scale_max_val, scale_incr);
@@ -471,3 +467,4 @@ int main(int argc, char* argv[]) {
 
   return g_test_run ();
 }
+

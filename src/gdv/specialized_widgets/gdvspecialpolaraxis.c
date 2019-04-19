@@ -360,8 +360,7 @@ gdv_polar_axis_size_allocate (GtkWidget     *widget,
   {
   }
 
-  GTK_WIDGET_CLASS (
-    gdv_special_polar_axis_parent_class)->size_allocate (widget, allocation);
+  GTK_WIDGET_CLASS (gdv_special_polar_axis_parent_class)->size_allocate (widget, allocation);
 }
 
 static gboolean
