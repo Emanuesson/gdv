@@ -7,8 +7,8 @@
     <property name="title" translatable="yes">Gdv Inspector</property>
     <property name="window_position">center</property>
     <property name="hide-titlebar-when-maximized">FALSE</property>
-    <property name="default_width">500</property>
-    <property name="default_height">300</property>
+    <property name="default_width">800</property>
+    <property name="default_height">500</property>
     <child>
 
       <object class="GtkNotebook" id="notebook">
@@ -21,96 +21,99 @@
             <property name="visible">True</property>
             <property name="margin">10</property>
           </object>
-        </child>
-        <child type="tab">
-          <object class="GtkLabel" id="1dLayer-tab">
-            <property name="label">1D-Layer</property>
-            <property name="visible">True</property>
-          </object>
+          <packing>
+            <property name="tab-label">1D-Layer</property>
+          </packing>
         </child>
 
         <child>
           <object class="GdvOnedLayer" id="loglayer">
             <property name="visible">True</property>
           </object>
-        </child>
-        <child type="tab">
-          <object class="GtkLabel" id="1dLayer-log-tab">
-            <property name="label">1D-Layer (log)</property>
-            <property name="visible">True</property>
-          </object>
+          <packing>
+            <property name="tab-label">1D-Layer (log)</property>
+          </packing>
         </child>
 
         <child>
           <object class="GdvTwodLayer" id="twodlayer">
             <property name="visible">True</property>
           </object>
-        </child>
-        <child type="tab">
-          <object class="GtkLabel" id="2dLayer-tab">
-            <property name="label">2D-Layer</property>
-            <property name="visible">True</property>
-          </object>
+          <packing>
+            <property name="tab-label">2D-Layer</property>
+          </packing>
         </child>
 
         <child>
           <object class="GdvOnedLayer" id="polarlayer">
             <property name="visible">True</property>
           </object>
-        </child>
-        <child type="tab">
-          <object class="GtkLabel" id="polaraxis">
-            <property name="label">Polar Axis</property>
-            <property name="visible">True</property>
-          </object>
+          <packing>
+            <property name="tab-label">Polar Axis</property>
+          </packing>
         </child>
 
         <child>
           <object class="GdvInspectorTest3" id="test3">
             <property name="visible">True</property>
           </object>
-        </child>
-        <child type="tab">
-          <object class="GtkLabel" id="test3label">
-            <property name="label">Test3</property>
-            <property name="visible">True</property>
-          </object>
+          <packing>
+            <property name="tab-label">Test3</property>
+          </packing>
         </child>
 
         <child>
           <object class="GdvInspectorTest4" id="test4">
             <property name="visible">True</property>
           </object>
-        </child>
-        <child type="tab">
-          <object class="GtkLabel" id="test4label">
-            <property name="label">Test4</property>
-            <property name="visible">True</property>
-          </object>
+          <packing>
+            <property name="tab-label">Test4</property>
+          </packing>
         </child>
 
         <child>
           <object class="GdvInspectorTest5a" id="test5a">
             <property name="visible">True</property>
           </object>
-        </child>
-        <child type="tab">
-          <object class="GtkLabel" id="test5alabel">
-            <property name="label">Test5a</property>
-            <property name="visible">True</property>
-          </object>
+          <packing>
+            <property name="tab-label">Test5a</property>
+          </packing>
         </child>
 
         <child>
           <object class="GdvInspectorTest6" id="test6">
             <property name="visible">True</property>
           </object>
+          <packing>
+            <property name="tab-label">Test6</property>
+          </packing>
         </child>
-        <child type="tab">
-          <object class="GtkLabel" id="test6label">
-            <property name="label">Test6</property>
+
+        <child>
+          <object class="GdvInspectorTest7" id="test7">
             <property name="visible">True</property>
           </object>
+          <packing>
+            <property name="tab-label">Test7</property>
+          </packing>
+        </child>
+
+        <child>
+          <object class="GdvInspectorTest8" id="test8">
+            <property name="visible">True</property>
+          </object>
+          <packing>
+            <property name="tab-label">Test8</property>
+          </packing>
+        </child>
+
+        <child>
+          <object class="GdvInspectorTest9" id="test9">
+            <property name="visible">True</property>
+          </object>
+          <packing>
+            <property name="tab-label">Test9</property>
+          </packing>
         </child>
 
 <!--

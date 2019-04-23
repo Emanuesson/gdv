@@ -1,5 +1,5 @@
 /*
- * example-main.c
+ * gdvinspector-test8.c
  * This file is part of gdv
  *
  * Copyright (C) 2013 - Emanuel Schmidt
@@ -24,49 +24,50 @@
 #include <config.h>
 #endif
 
-#include <stdlib.h>
-#include <math.h>
+#include <gio/gio.h>
 #include <gtk/gtk.h>
 
 #include <gdv/gdv.h>
 
-//#include "tests/gemu_sub/gemu-glib-util.h"
-//#include "tests/gemu_sub/gemu-gtk-util.h"
+#include "gdvinspector-test8.h"
+#include "math.h"
 
-static void destroy( GtkWidget *widget,
-                     gpointer   data )
+struct _GdvInspectorTest8Private
 {
-  gtk_main_quit ();
+  gint placeholder;
+};
+
+G_DEFINE_TYPE_WITH_PRIVATE (
+  GdvInspectorTest8,
+  gdv_inspector_test8,
+  GTK_TYPE_FRAME);
+
+static void
+gdv_inspector_test8_class_init (GdvInspectorTest8Class *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 }
 
-int
-main (int argc, char **argv)
+void
+gdv_inspector_test8_init (GdvInspectorTest8 *frame)
 {
-  GtkWidget *main_window;
+  GdvInspectorTest8Private *priv;
   GdvAxis *test_axis = NULL;
   GdvLayer *layer;
 
-  gtk_init (&argc, &argv);
-
-  main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (main_window), "gdv test-app 7");
+  priv = gdv_inspector_test8_get_instance_private (frame);
 
   layer = g_object_new (gdv_oned_layer_get_type(), NULL);
-  gtk_container_add (GTK_CONTAINER (main_window), GTK_WIDGET (layer));
+  gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (layer));
 
   test_axis = g_object_new (GDV_SPECIAL_TIME_AXIS_TYPE, NULL);
   gdv_oned_layer_replace_axis (GDV_ONED_LAYER (layer), test_axis);
 
-  g_signal_connect (main_window, "destroy",
-	      G_CALLBACK (destroy), NULL);
+}
 
-  gtk_widget_set_size_request (GTK_WIDGET (main_window),
-    200, 200);
-
-  gtk_widget_show_all (GTK_WIDGET (main_window));
-
-  gtk_main ();
-
-  return 0;
+GdvInspectorTest8 *
+gdv_inspector_test8_new (void)
+{
+  return g_object_new (GDV_INSPECTOR_TYPE_TEST8, NULL);
 }
 

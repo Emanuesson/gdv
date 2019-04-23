@@ -1,5 +1,7 @@
 #if get_option('enable_tests')
 
+subdir('gemu_sub')
+
 test1_resources = gnome.compile_resources(
   'gdvinspec-resources',
   'gdvinspec.gresources.xml',
@@ -8,7 +10,12 @@ test1_resources = gnome.compile_resources(
   c_name: 'gdv',
 )
 
+all_sub_test_sources = []
+
 subdir('test6')
+subdir('test7')
+subdir('test8')
+subdir('test9')
 
 test1_sources = [
   'gdvinspector.c',
@@ -23,7 +30,7 @@ test1_sources = [
   'gdvinspector-test5a.c',
   'gdvinspector-test5a.h',
   test1_resources,
-  test6_sources,
+  all_sub_test_sources,
 ]
 
 test1 = executable('test1', test1_sources,

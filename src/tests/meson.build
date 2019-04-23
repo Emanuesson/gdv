@@ -23,14 +23,6 @@ gdv_test_link_args = [
 
 #subdir('unittest_axis_test')
 
-subdir('gemu_sub')
-subdir('test1basics')
-subdir('test7retic')
-subdir('test8timeaxis')
-subdir('test9timebar')
-subdir('test10polaraxis')
-
-
 gdv_test_deps = [
   libgdv_dep,
 ]

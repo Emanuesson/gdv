@@ -277,9 +277,9 @@ struct _linear_axis_scale_definition {
   gdouble increment;
 };
 
-gboolean comp_equal_values (gdouble value_to_compare,
-                            gdouble tic_value,
-                            struct _linear_axis_scale_definition *scale)
+static gboolean comp_equal_values (gdouble value_to_compare,
+                                   gdouble tic_value,
+                                   struct _linear_axis_scale_definition *scale)
 {
   gdouble local_val_resid =
     fmod ((tic_value - scale->beg_val) / scale->increment, 1.0);
@@ -331,7 +331,9 @@ _determine_tics_by_values(GList *tics_list,
   }
 }
 
-static gint _determine_max_border_on_list (GtkPositionType pos, GList *tics_list)
+/* Function that is getting the maximum necessay space for any of the given Tics in the
+ * list of GdvTics in the given direcation. */
+static gint _determine_max_border_on_list (GtkPositionType dir, GList *tics_list)
 {
   gint max_border = 0;
 
@@ -343,7 +345,7 @@ static gint _determine_max_border_on_list (GtkPositionType pos, GList *tics_list
       gint tmp_min, tmp_nat;
 
       gdv_tic_get_space_to_tic_position (
-        GDV_TIC (tic), pos, -1, &tmp_min, &tmp_nat, NULL);
+        GDV_TIC (tic), dir, -1, &tmp_min, &tmp_nat, NULL);
       max_border = (max_border > tmp_nat ? max_border : tmp_nat);
       max_border = (tmp_min > max_border ? tmp_min : max_border);
     }
@@ -351,6 +353,8 @@ static gint _determine_max_border_on_list (GtkPositionType pos, GList *tics_list
   return max_border;
 }
 
+/* Function that simplyfies the setting of a new value to a newly created GdvTic. This involves
+ * the according properties as well as the markup. */
 static void
 _set_value_on_pristine_tic (GdvLinearAxis *linear_axis, GdvTic *tic,
                             gdouble tic_val, gboolean visible)
@@ -368,6 +372,7 @@ _set_value_on_pristine_tic (GdvLinearAxis *linear_axis, GdvTic *tic,
   g_free (new_tic_label);
 }
 
+/* Function that overwrites the size_allocate-method of the GtkWidget parent class */
 static void
 gdv_linear_axis_size_allocate (GtkWidget     *widget,
                                GtkAllocation *allocation)
@@ -1406,6 +1411,7 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
   GTK_WIDGET_CLASS (gdv_linear_axis_parent_class)->size_allocate (widget, allocation);
 }
 
+/* Function that overwrites the make_tic_label_markup-method of the GdvAxis parent class */
 static gchar *
 gdv_linear_axis_make_tic_label_markup (GdvAxis *axis, gdouble value)
 {
@@ -1448,6 +1454,7 @@ gdv_linear_axis_make_tic_label_markup (GdvAxis *axis, gdouble value)
   return return_string;
 }
 
+/* Function that overwrites the get_point-method of the GdvAxis parent class */
 static gboolean
 gdv_linear_axis_on_get_point (GdvAxis *axis,
                               gdouble  value,
@@ -1492,6 +1499,7 @@ gdv_linear_axis_on_get_point (GdvAxis *axis,
     (value >= (begin_val <= end_val ? begin_val : end_val)));
 }
 
+/* Function that overwrites the get_inner_dir-method of the GdvAxis parent class */
 static gboolean
 gdv_linear_axis_on_get_inner_dir (GdvAxis *axis,
                                   gdouble  value,
@@ -1523,6 +1531,7 @@ gdv_linear_axis_on_get_inner_dir (GdvAxis *axis,
  * FIXME: This is just a working solution and nothing solid!
  * TODO: Assign this to the linear-axis-class!
  */
+/* Function that overwrites the get_space_to_beg-method of the GdvAxis parent class */
 static void
 gdv_linear_axis_get_space_to_beg_position (GdvAxis        *axis,
                                            GtkPositionType direction,
@@ -1653,6 +1662,7 @@ gdv_linear_axis_get_space_to_beg_position (GdvAxis        *axis,
 }
 
 /* FIXME: This is just a working solution and nothing solid! */
+/* Function that overwrites the get_space_to_end-method of the GdvAxis parent class */
 static void
 gdv_linear_axis_get_space_to_end_position (GdvAxis        *axis,
                                            GtkPositionType direction,

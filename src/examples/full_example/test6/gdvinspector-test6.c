@@ -29,8 +29,8 @@
 #include "gdvinspector-test6.h"
 #include "math.h"
 
-#include "tests/gemu_sub/gemu-glib-util.h"
-#include "tests/gemu_sub/gemu-gtk-util.h"
+#include "gemu_sub/gemu-glib-util.h"
+#include "gemu_sub/gemu-gtk-util.h"
 
 
 struct _GdvInspectorTest6Private

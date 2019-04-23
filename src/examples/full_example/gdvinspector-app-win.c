@@ -34,9 +34,12 @@
 #include "gdvinspector-test4.h"
 #include "gdvinspector-test5a.h"
 #include "test6/gdvinspector-test6.h"
+#include "test7/gdvinspector-test7.h"
+#include "test8/gdvinspector-test8.h"
+#include "test9/gdvinspector-test9.h"
 
-#include "tests/gemu_sub/gemu-glib-util.h"
-#include "tests/gemu_sub/gemu-gtk-util.h"
+#include "gemu_sub/gemu-glib-util.h"
+#include "gemu_sub/gemu-gtk-util.h"
 
 /* Define Properties */
 enum
@@ -116,6 +119,9 @@ gdv_inspector_app_window_class_init (GdvInspectorAppWindowClass *klass)
   g_type_ensure (GDV_INSPECTOR_TYPE_TEST4);
   g_type_ensure (GDV_INSPECTOR_TYPE_TEST5A);
   g_type_ensure (GDV_INSPECTOR_TYPE_TEST6);
+  g_type_ensure (GDV_INSPECTOR_TYPE_TEST7);
+  g_type_ensure (GDV_INSPECTOR_TYPE_TEST8);
+  g_type_ensure (GDV_INSPECTOR_TYPE_TEST9);
 
   g_type_ensure (GDV_TYPE_SPECIAL_DRUM_DISPLAY);
 

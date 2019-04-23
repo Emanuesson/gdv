@@ -293,7 +293,7 @@ gdv_inspector_test3_init (GdvInspectorTest3 *frame)
 
   gdv_twod_layer_unset_axis (GDV_TWOD_LAYER (layer), GDV_Y1_AXIS);
 
-  g_print ("ADDING\n");
+  g_debug ("ADDING\n");
   gdv_twod_layer_set_axis (GDV_TWOD_LAYER (layer),
     GDV_AXIS (tmp_axis),
     GDV_Y1_AXIS);
@@ -325,7 +325,7 @@ gdv_inspector_test3_init (GdvInspectorTest3 *frame)
 
   gdv_twod_layer_unset_axis (GDV_TWOD_LAYER (layer), GDV_X2_AXIS);
 
-  g_print ("ADDING\n");
+  g_debug ("ADDING\n");
   gdv_twod_layer_set_axis (GDV_TWOD_LAYER (layer),
     GDV_AXIS (tmp_axis),
     GDV_X2_AXIS);
@@ -355,7 +355,7 @@ gdv_inspector_test3_init (GdvInspectorTest3 *frame)
 
   gdv_twod_layer_unset_axis (GDV_TWOD_LAYER (layer), GDV_X1_AXIS);
 
-  g_print ("ADDING\n");
+  g_debug ("ADDING\n");
   gdv_twod_layer_set_axis (GDV_TWOD_LAYER (layer),
     GDV_AXIS (tmp_axis),
     GDV_X1_AXIS);

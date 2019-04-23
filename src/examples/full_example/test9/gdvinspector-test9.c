@@ -1,5 +1,5 @@
 /*
- * example-main.c
+ * gdvinspector-test9.c
  * This file is part of gdv
  *
  * Copyright (C) 2013 - Emanuel Schmidt
@@ -24,45 +24,41 @@
 #include <config.h>
 #endif
 
-#include <stdlib.h>
-#include <math.h>
-#include <gtk/gtk.h>
-
 #include <gdv/gdv.h>
 
-//#include "tests/gemu_sub/gemu-glib-util.h"
-//#include "tests/gemu_sub/gemu-gtk-util.h"
+#include "gdvinspector-test9.h"
+#include "math.h"
 
-static void destroy( GtkWidget *widget,
-                     gpointer   data )
+struct _GdvInspectorTest9Private
 {
-  gtk_main_quit ();
+  gint placeholder;
+};
+
+G_DEFINE_TYPE_WITH_PRIVATE (
+  GdvInspectorTest9,
+  gdv_inspector_test9,
+  GTK_TYPE_FRAME);
+
+static void
+gdv_inspector_test9_class_init (GdvInspectorTest9Class *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 }
 
-int
-main (int argc, char **argv)
+void
+gdv_inspector_test9_init (GdvInspectorTest9 *frame)
 {
-  GtkWidget *main_window;
+  GdvInspectorTest9Private *priv;
   GdvAxis *test_axis = NULL;
   GdvLayer *layer;
 
-  gtk_init (&argc, &argv);
-
-  main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (main_window), "gdv test-app 7");
+  priv = gdv_inspector_test9_get_instance_private (frame);
 
   layer = g_object_new (gdv_oned_layer_get_type(), NULL);
-  gtk_container_add (GTK_CONTAINER (main_window), GTK_WIDGET (layer));
+  gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (layer));
 
   test_axis = g_object_new (GDV_SPECIAL_TIME_AXIS_TYPE, NULL);
   gdv_oned_layer_replace_axis (GDV_ONED_LAYER (layer), test_axis);
-
-  g_signal_connect (main_window, "destroy",
-	      G_CALLBACK (destroy), NULL);
-
-  gtk_widget_set_size_request (GTK_WIDGET (main_window),
-    200, 200);
-
 
   g_object_set (G_OBJECT(test_axis),
                 "axis-beg-at-screen-y", 0.5,
@@ -77,11 +73,11 @@ main (int argc, char **argv)
 //                  "scale-end-val",
 //                    (display->priv->center_value + display->priv->symm_lr_range),
                 NULL);
+}
 
-  gtk_widget_show_all (GTK_WIDGET (main_window));
-
-  gtk_main ();
-
-  return 0;
+GdvInspectorTest9 *
+gdv_inspector_test9_new (void)
+{
+  return g_object_new (GDV_INSPECTOR_TYPE_TEST9, NULL);
 }
 
