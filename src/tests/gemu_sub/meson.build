@@ -8,6 +8,7 @@ libtestgemu_sources = [
 ]
 
 libtestgemu_deps = [
+#  cc.find_library('asan', required: true),
   dependency('gio-2.0'),
   dependency('gmodule-2.0'),
   dependency('gtk+-3.0'),

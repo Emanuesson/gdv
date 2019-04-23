@@ -14,7 +14,7 @@
       <object class="GtkNotebook" id="notebook">
         <property name="visible">True</property>
         <property name="tab-pos">GTK_POS_LEFT</property>
-
+        <property name="scrollable">True</property>
 
         <child>
           <object class="GdvSpecialDrumDisplay" id="onedlayer">
@@ -61,6 +61,54 @@
         <child type="tab">
           <object class="GtkLabel" id="polaraxis">
             <property name="label">Polar Axis</property>
+            <property name="visible">True</property>
+          </object>
+        </child>
+
+        <child>
+          <object class="GdvInspectorTest3" id="test3">
+            <property name="visible">True</property>
+          </object>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel" id="test3label">
+            <property name="label">Test3</property>
+            <property name="visible">True</property>
+          </object>
+        </child>
+
+        <child>
+          <object class="GdvInspectorTest4" id="test4">
+            <property name="visible">True</property>
+          </object>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel" id="test4label">
+            <property name="label">Test4</property>
+            <property name="visible">True</property>
+          </object>
+        </child>
+
+        <child>
+          <object class="GdvInspectorTest5a" id="test5a">
+            <property name="visible">True</property>
+          </object>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel" id="test5alabel">
+            <property name="label">Test5a</property>
+            <property name="visible">True</property>
+          </object>
+        </child>
+
+        <child>
+          <object class="GdvInspectorTest6" id="test6">
+            <property name="visible">True</property>
+          </object>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel" id="test6label">
+            <property name="label">Test6</property>
             <property name="visible">True</property>
           </object>
         </child>

@@ -99,6 +99,11 @@ $ cd build
 $ ninja
 ```
 
+Building with asan can be achieved by simply using the configuration:
+```
+$ meson configure -Db_sanitize=address
+```
+
 If you need to build the documentation enter the following commands:
 
 ```sh

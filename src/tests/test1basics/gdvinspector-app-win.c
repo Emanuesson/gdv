@@ -26,12 +26,14 @@
 
 #include <math.h>
 #include <stdlib.h>
-//#include <gsl/gsl_math.h>
-//#include <gsl/gsl_rng.h>
 
 #include <gdv/gdv.h>
 
 #include "gdvinspector-app-win.h"
+#include "gdvinspector-test3.h"
+#include "gdvinspector-test4.h"
+#include "gdvinspector-test5a.h"
+#include "test6/gdvinspector-test6.h"
 
 #include "tests/gemu_sub/gemu-glib-util.h"
 #include "tests/gemu_sub/gemu-gtk-util.h"
@@ -110,6 +112,10 @@ gdv_inspector_app_window_class_init (GdvInspectorAppWindowClass *klass)
 
   g_type_ensure (GDV_ONED_LAYER_TYPE);
   g_type_ensure (GDV_TWOD_LAYER_TYPE);
+  g_type_ensure (GDV_INSPECTOR_TYPE_TEST3);
+  g_type_ensure (GDV_INSPECTOR_TYPE_TEST4);
+  g_type_ensure (GDV_INSPECTOR_TYPE_TEST5A);
+  g_type_ensure (GDV_INSPECTOR_TYPE_TEST6);
 
   g_type_ensure (GDV_TYPE_SPECIAL_DRUM_DISPLAY);
 
@@ -132,8 +138,6 @@ static gint indicator_fc = 0;
 
 static GdvLayerContent *global_content;
 static GdvTwodLayer *global_layer;
-//static gsl_rng *global_rng;
-
 
 static gboolean
 timeout_cb_oned (GdvLayer *layer)
@@ -246,8 +250,8 @@ gdv_inspector_app_window_init (GdvInspectorAppWindow *window)
 	window->priv = gdv_inspector_app_window_get_instance_private (window);
 
 // FIXME: These are essential!
-  gtk_widget_show_all (GTK_WIDGET (window->priv->onedlayer));
-  gtk_widget_show_all (GTK_WIDGET (window->priv->polarlayer));
+  gtk_widget_show_all (GTK_WIDGET (window));
+//  gtk_widget_show_all (GTK_WIDGET (window->priv->polarlayer));
 
   //  g_object_get (window->priv->onedlayer, "axis", &new_axis, NULL);
 //  g_object_set (new_axis,

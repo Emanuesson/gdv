@@ -1,5 +1,5 @@
 /*
- * example-main.c
+ * gdvinspector-test3.c
  * This file is part of gdv
  *
  * Copyright (C) 2013 - Emanuel Schmidt
@@ -24,19 +24,22 @@
 #include <config.h>
 #endif
 
-#include <stdlib.h>
-#include <math.h>
-#include <gtk/gtk.h>
-
 #include <gdv/gdv.h>
 
-static void destroy( GtkWidget *widget,
-                     gpointer   data )
-{
-  gtk_main_quit ();
-}
+#include "gdvinspector-test3.h"
+#include "math.h"
 
-void
+struct _GdvInspectorTest3Private
+{
+  gint placeholder;
+};
+
+G_DEFINE_TYPE_WITH_PRIVATE (
+  GdvInspectorTest3,
+  gdv_inspector_test3,
+  GTK_TYPE_FRAME);
+
+static void
 report_tic_props (GdvTic *tic)
 {
   gdouble value;
@@ -78,7 +81,7 @@ report_tic_props (GdvTic *tic)
   return;
 }
 
-void
+static void
 report_axis_props (GdvAxis *axis)
 {
   gdouble axis_min_val = 0.0, axis_max_val = 0.0, scale_incr = 0.0;
@@ -174,27 +177,22 @@ report_axis_props (GdvAxis *axis)
 static gboolean added;
 
 
-int
-main (int argc, char **argv)
+static void
+gdv_inspector_test3_class_init (GdvInspectorTest3Class *klass)
 {
-  GtkWidget *main_window;
-  GtkWidget *frame;
-//  GdvAxis *test_axis = NULL;
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+}
 
+void
+gdv_inspector_test3_init (GdvInspectorTest3 *frame)
+{
+  GdvInspectorTest3Private *priv;
   GdvTwodLayer *layer;
-
   GdvAxis *tmp_axis;
 
-  gtk_init (&argc, &argv);
+  priv = gdv_inspector_test3_get_instance_private (frame);
 
-  main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-
-  frame = gtk_frame_new (NULL);
-  g_signal_connect (main_window, "destroy",
-	      G_CALLBACK (destroy), NULL);
-  gtk_container_set_border_width (GTK_CONTAINER (main_window), 8);
-  gtk_container_add (GTK_CONTAINER (main_window), GTK_WIDGET (frame));
-
+//  GdvAxis *test_axis = NULL;
   layer = g_object_new (gdv_twod_layer_get_type (), NULL);
 //  g_object_get (layer, "axis", &test_axis, NULL);
 //  g_object_set (test_axis, "scale-min-val", -100.0, NULL);
@@ -205,11 +203,12 @@ main (int argc, char **argv)
 
   gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (layer));
 
-  gtk_widget_show_all (GTK_WIDGET (main_window));
+  gtk_widget_show_all (GTK_WIDGET (frame));
 
   tmp_axis =
     gdv_twod_layer_get_axis (GDV_TWOD_LAYER (layer),
       GDV_Y2_AXIS);
+  
 //  gtk_widget_hide (GTK_WIDGET (tmp_axis));
 //  g_object_set (tmp_axis,
 //    "visible", FALSE,
@@ -367,8 +366,11 @@ main (int argc, char **argv)
   added = FALSE;
 //  g_timeout_add (1000, ((GSourceFunc) timeout_cb), layer);
 
-  gtk_main ();
+}
 
-  return 0;
+GdvInspectorTest3 *
+gdv_inspector_test3_new (void)
+{
+  return g_object_new (GDV_INSPECTOR_TYPE_TEST3, NULL);
 }
 

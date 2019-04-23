@@ -103,3 +103,4 @@ gdv_inspector_app_new (void)
                        "application-id", "net.libgdv.gdvinspector",
                        NULL);
 }
+

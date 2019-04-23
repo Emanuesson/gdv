@@ -1,5 +1,5 @@
 /*
- * example-main.c
+ * gdvinspector-test5a.c
  * This file is part of gdv
  *
  * Copyright (C) 2013 - Emanuel Schmidt
@@ -24,48 +24,54 @@
 #include <config.h>
 #endif
 
-#include <stdlib.h>
-#include <math.h>
-#include <gtk/gtk.h>
-
 #include <gdv/gdv.h>
 
-static void destroy( GtkWidget *widget,
-                     gpointer   data )
+#include "gdvinspector-test5a.h"
+#include "math.h"
+
+struct _GdvInspectorTest5aPrivate
 {
-  gtk_main_quit ();
+  gint placeholder;
+};
+
+G_DEFINE_TYPE_WITH_PRIVATE (
+  GdvInspectorTest5a,
+  gdv_inspector_test5a,
+  GTK_TYPE_FRAME);
+
+static void
+gdv_inspector_test5a_class_init (GdvInspectorTest5aClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 }
 
-int
-main (int argc, char **argv)
+void
+gdv_inspector_test5a_init (GdvInspectorTest5a *frame)
 {
-
-  GtkWidget *main_window;
+  GdvInspectorTest5aPrivate *priv;
   GdvLayer *layer;
   GdvAxis *tmp;
 
-  gtk_init (&argc, &argv);
-
-  main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+  priv = gdv_inspector_test5a_get_instance_private (frame);
 
 //  gtk_widget_set_size_request (main_window, 1800, 1800);
 
-  g_signal_connect (main_window, "destroy",
-	      G_CALLBACK (destroy), NULL);
-//  gtk_container_set_border_width (GTK_CONTAINER (main_window), 80);
-
-//  layer = g_object_new (gdv_twod_layer_get_type (),
   layer = g_object_new (gdv_oned_layer_get_type (),
 //                        "base-orientation", GTK_ORIENTATION_HORIZONTAL, //GTK_ORIENTATION_VERTICAL,
                         NULL);
 
-  gtk_container_add (GTK_CONTAINER (main_window), GTK_WIDGET (layer));
+  gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (layer));
 
   g_object_get (layer, "axis", &tmp, NULL);
   g_object_set (tmp,
 //                "scale-beg-val", -10.0,
 //                "scale-end-val", 10.0,
                 "scale-increment-base", 30.0,
+/* would be 5b */
+//                "scale-increment-base", 10.0,
+//                "scale-beg-val", -10.000001,
+//                "scale-end-val", -9.999990,
+
 /*                "axis-orientation", &orientation,
                 "axis-direction-outside", &direction_outside,
                 "scale-beg-val", &scale_min_val,
@@ -146,16 +152,15 @@ main (int argc, char **argv)
   g_object_set (test_legend, "layer", layer, NULL);
 */
 
-  gtk_widget_show_all (GTK_WIDGET (main_window));
-
-  gtk_main ();
-
-  return 0;
 }
 
-int
-main_BAK (int argc, char **argv)
+GdvInspectorTest5a *
+gdv_inspector_test5a_new (void)
 {
+  return g_object_new (GDV_INSPECTOR_TYPE_TEST5A, NULL);
+}
+
+/*
   GtkWidget *window;
   GdvLinearAxis *lin_axis;
   GdvLayer *layer;
@@ -187,12 +192,5 @@ main_BAK (int argc, char **argv)
   gtk_container_add (GTK_CONTAINER (window), GTK_WIDGET (layer));
   gtk_container_add (GTK_CONTAINER (layer), GTK_WIDGET (lin_axis));
   gtk_container_set_border_width (GTK_CONTAINER (window), 80);
-
-  /* Realizing and Allocating the Layer */
-  gtk_widget_show_all (window);
-
-//  gtk_main ();
-
-  return 0;
-}
+*/
 

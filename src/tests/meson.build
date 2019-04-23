@@ -25,10 +25,6 @@ gdv_test_link_args = [
 
 subdir('gemu_sub')
 subdir('test1basics')
-subdir('test3axes')
-subdir('test4legend')
-subdir('test5overlay')
-subdir('test6gengui')
 subdir('test7retic')
 subdir('test8timeaxis')
 subdir('test9timebar')

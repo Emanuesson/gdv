@@ -148,7 +148,6 @@ libgdv_dep = declare_dependency(
 )
 
 if get_option('with_introspection')
-
   libgdv_gir = gnome.generate_gir(libgdv,
                 sources: libgdv_generated_headers + libgdv_public_headers + libgdv_public_sources,
               nsversion: apiversion,
@@ -164,7 +163,6 @@ if get_option('with_introspection')
   )
 
   if get_option('with_vapi')
-
     libgdv_vapi = gnome.generate_vapi('gdv-' + apiversion,
       sources: libgdv_gir[0],
       packages: [ 'gio-2.0', 'gtk+-3.0' ],
@@ -172,7 +170,6 @@ if get_option('with_introspection')
       install_dir: vapidir,
       metadata_dirs: [ meson.current_source_dir() ],
     )
-
   endif
 endif
 

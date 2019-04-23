@@ -11,6 +11,8 @@ add_global_arguments(['-Wall',
                       '-Wno-unused',
                       '-D_Float128=double',
                       '-Og',
+                      '-fno-omit-frame-pointer',
+                      '-fno-common',
                       ],
                      language: 'c')
 
