@@ -133,4 +133,5 @@ can be found in the file:
 docs/reference/gdv/html/index.html
 ```
 
-Or [online](https://emanuesson.github.io/#gdv)
+Or [online](https://emanuesson.github.io/documentations/gdv/html/index.html)
+

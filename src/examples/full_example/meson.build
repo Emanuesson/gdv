@@ -12,10 +12,15 @@ test1_resources = gnome.compile_resources(
 
 all_sub_test_sources = []
 
-subdir('test6')
-subdir('test7')
-subdir('test8')
-subdir('test9')
+subdir('example2')
+subdir('example3')
+subdir('example4')
+subdir('example5a')
+subdir('example6')
+subdir('example7')
+subdir('example8')
+subdir('example9')
+subdir('example10')
 
 test1_sources = [
   'gdvinspector.c',
@@ -23,12 +28,6 @@ test1_sources = [
   'gdvinspector-app.h',
   'gdvinspector-app-win.c',
   'gdvinspector-app-win.h',
-  'gdvinspector-test3.c',
-  'gdvinspector-test3.h',
-  'gdvinspector-test4.c',
-  'gdvinspector-test4.h',
-  'gdvinspector-test5a.c',
-  'gdvinspector-test5a.h',
   test1_resources,
   all_sub_test_sources,
 ]

@@ -45,11 +45,11 @@
         </child>
 
         <child>
-          <object class="GdvOnedLayer" id="polarlayer">
+          <object class="GdvInspectorTest2" id="test2">
             <property name="visible">True</property>
           </object>
           <packing>
-            <property name="tab-label">Polar Axis</property>
+            <property name="tab-label">PolarAxis</property>
           </packing>
         </child>
 
@@ -116,20 +116,15 @@
           </packing>
         </child>
 
-<!--
         <child>
-          <object class="GdvSpecialDrumDisplay" id="drumlayer">
-            <property name="visible">True</property>
-            <property name="margin">10</property>
-          </object>
-        </child>
-        <child type="tab">
-          <object class="GtkLabel" id="DrumLayer-tab">
-            <property name="label">Drum-display</property>
+          <object class="GdvInspectorTest10" id="test10">
             <property name="visible">True</property>
           </object>
+          <packing>
+            <property name="tab-label">Test10</property>
+          </packing>
         </child>
--->
+
       </object>
     </child>
 

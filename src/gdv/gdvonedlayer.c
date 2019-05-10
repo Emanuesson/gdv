@@ -256,6 +256,7 @@ gdv_oned_layer_init (GdvOnedLayer *layer)
 {
   layer->priv = gdv_oned_layer_get_instance_private (layer);
 
+  /* FIXME: I have a got feeling that neither ORIENTATION nor BASE_ORIENTATION works as expected */
   layer->priv->base_orientation = GTK_ORIENTATION_VERTICAL;
 
   layer->priv->axis_using = 0;

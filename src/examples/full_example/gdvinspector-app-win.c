@@ -30,13 +30,15 @@
 #include <gdv/gdv.h>
 
 #include "gdvinspector-app-win.h"
-#include "gdvinspector-test3.h"
-#include "gdvinspector-test4.h"
-#include "gdvinspector-test5a.h"
-#include "test6/gdvinspector-test6.h"
-#include "test7/gdvinspector-test7.h"
-#include "test8/gdvinspector-test8.h"
-#include "test9/gdvinspector-test9.h"
+#include "example2/gdvinspector-test2.h"
+#include "example3/gdvinspector-test3.h"
+#include "example4/gdvinspector-test4.h"
+#include "example5a/gdvinspector-test5a.h"
+#include "example6/gdvinspector-test6.h"
+#include "example7/gdvinspector-test7.h"
+#include "example8/gdvinspector-test8.h"
+#include "example9/gdvinspector-test9.h"
+#include "example10/gdvinspector-test10.h"
 
 #include "gemu_sub/gemu-glib-util.h"
 #include "gemu_sub/gemu-gtk-util.h"
@@ -63,7 +65,6 @@ struct _GdvInspectorAppWindowPrivate
   GdvOnedLayer *onedlayer;
   GdvOnedLayer *loglayer;
   GdvTwodLayer *twodlayer;
-  GdvOnedLayer *polarlayer;
 
   GdvOnedLayer *consummeter;
   guint         changed_cb;
@@ -115,6 +116,7 @@ gdv_inspector_app_window_class_init (GdvInspectorAppWindowClass *klass)
 
   g_type_ensure (GDV_ONED_LAYER_TYPE);
   g_type_ensure (GDV_TWOD_LAYER_TYPE);
+  g_type_ensure (GDV_INSPECTOR_TYPE_TEST2);
   g_type_ensure (GDV_INSPECTOR_TYPE_TEST3);
   g_type_ensure (GDV_INSPECTOR_TYPE_TEST4);
   g_type_ensure (GDV_INSPECTOR_TYPE_TEST5A);
@@ -122,6 +124,7 @@ gdv_inspector_app_window_class_init (GdvInspectorAppWindowClass *klass)
   g_type_ensure (GDV_INSPECTOR_TYPE_TEST7);
   g_type_ensure (GDV_INSPECTOR_TYPE_TEST8);
   g_type_ensure (GDV_INSPECTOR_TYPE_TEST9);
+  g_type_ensure (GDV_INSPECTOR_TYPE_TEST10);
 
   g_type_ensure (GDV_TYPE_SPECIAL_DRUM_DISPLAY);
 
@@ -135,8 +138,6 @@ gdv_inspector_app_window_class_init (GdvInspectorAppWindowClass *klass)
     GdvInspectorAppWindow, twodlayer);
   gtk_widget_class_bind_template_child_private (GTK_WIDGET_CLASS (klass),
     GdvInspectorAppWindow, onedlayer);
-  gtk_widget_class_bind_template_child_private (GTK_WIDGET_CLASS (klass),
-    GdvInspectorAppWindow, polarlayer);
 }
 
 static gint time_fc = 0;
@@ -259,6 +260,8 @@ gdv_inspector_app_window_init (GdvInspectorAppWindow *window)
   gtk_widget_show_all (GTK_WIDGET (window));
 //  gtk_widget_show_all (GTK_WIDGET (window->priv->polarlayer));
 
+//  return;
+
   //  g_object_get (window->priv->onedlayer, "axis", &new_axis, NULL);
 //  g_object_set (new_axis,
 //    "mtics-beg-val", 0.0,
@@ -304,11 +307,6 @@ gdv_inspector_app_window_init (GdvInspectorAppWindow *window)
 
   window->priv->changed_cb_oned = g_timeout_add (20, ((GSourceFunc) timeout_cb_oned),
                                                  window->priv->onedlayer);
-
-
-  new_axis = (GdvAxis *) gdv_special_polar_axis_new ();
-  gtk_widget_show_all (GTK_WIDGET (new_axis));
-  gdv_oned_layer_replace_axis(window->priv->polarlayer, new_axis);
 
 
 

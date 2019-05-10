@@ -15,6 +15,7 @@ gdv_test_env = [
 gdv_test_cflags = [
   #'-fPIE',
   '-DTEST_DATA_DIR="@0@/data"'.format(meson.current_source_dir()),
+#  '-Db_coverage=true',
 ]
 
 gdv_test_link_args = [
@@ -22,10 +23,6 @@ gdv_test_link_args = [
 ]
 
 #subdir('unittest_axis_test')
-
-gdv_test_deps = [
-  libgdv_dep,
-]
 
 #gtk_tests = [
 #  # testname, optional extra sources
@@ -41,16 +38,65 @@ gdv_test_deps = [
 #             dependencies: [libgtk_dep, libm])
 #endforeach
 
+lib_test_gdv_srcs = [
+  'tgdv-linearaxis.c',
+  'tgdv-linearaxis.h',
+  'tgdv-specialdrumdisplay.c',
+  'tgdv-specialdrumdisplay.h',
+  'tgdv-shared-functions.c',
+  'tgdv-shared-functions.h',
+]
 
-gdv_linearaxis = executable('test-gdv-linearaxis',
-  'test-gdv-linearaxis.c',
+libtestgdv = shared_library(
+  'tgdv',
+  lib_test_gdv_srcs,
   include_directories: [root_inc, src_inc],
   c_args: gdv_test_cflags,
-  dependencies: [
-    gdv_test_deps,
-  ],
+  dependencies: libgdv_dep,
+  install: false,
 )
 
-test('gdv-linearaxis', gdv_linearaxis,
+libtestgdv_dep = declare_dependency(
+  link_with: libtestgdv,
+  include_directories: include_directories('.'),
+)
+
+gdv_test_deps = [
+  libgdv_dep,
+  libtestgdv_dep
+]
+
+test('gdv-linearaxis',
+  executable('tgdv-linearaxis-test', 'tgdv-linearaxis-test.c',
+    include_directories: [root_inc, src_inc],
+    c_args: gdv_test_cflags,
+    dependencies: [
+      gdv_test_deps,
+    ],
+  ),
   env: gdv_test_env,
 )
+
+test('gdv-tic',
+  executable('tgdv-tic-test', 'tgdv-tic-test.c',
+    include_directories: [root_inc, src_inc],
+    c_args: gdv_test_cflags,
+    dependencies: [
+      gdv_test_deps,
+    ],
+  ),
+  env: gdv_test_env,
+)
+
+test('gdv-specialdrumdisplay',
+  executable('tgdv-specialdrumdisplay-test', 'tgdv-specialdrumdisplay-test.c',
+    include_directories: [root_inc, src_inc],
+    c_args: gdv_test_cflags,
+    dependencies: [
+      gdv_test_deps,
+    ],
+  ),
+  env: gdv_test_env,
+)
+
+
