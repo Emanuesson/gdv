@@ -42,3 +42,4 @@ include_directories: [ root_inc, src_inc ],
 )
 #test('test1', test1, env: test_env)
 
+#test('command line test', test1)

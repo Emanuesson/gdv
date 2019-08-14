@@ -105,6 +105,8 @@ GList *gdv_layer_get_content_list (GdvLayer *layer);
 
 GList *gdv_layer_get_axis_list (GdvLayer *layer);
 
+GList *gdv_layer_get_hair_list (GdvLayer *layer);
+
 G_END_DECLS
 
 #endif /* GDV_LAYER_H_INCLUDED */

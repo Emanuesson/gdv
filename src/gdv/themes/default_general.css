@@ -40,6 +40,11 @@ tic {
     -GdvTic-show-label: TRUE;
 }
 
+hair {
+    -GdvHair-color: #000000;
+    -GdvHair-line-color: #000000;
+    -GdvHair-line-width: 0.5px;
+}
 
 layertwod > *#x2-axis > tic {
     -GdvTic-tics-in-length: 6.0;

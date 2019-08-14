@@ -1,4 +1,4 @@
-/* tgdv-specialdrumdisplay.c
+/* tgdv-layer.h
  *
  * Copyright © 2018 Emanuel Schmidt <eschmidt216@gmail.com>
  *
@@ -16,23 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include<math.h>
+#ifndef TGDV_LAYER_H_INCLUDED
+#define TGDV_LAYER_H_INCLUDED
 
-#include<stdio.h>
-#include<gdv/gdv.h>
+#include <gtk/gtk.h>
+#include <gdv.h>
 
-#include "tgdv-shared-functions.h"
-#include "tgdv-layer.h"
+void tgdv_layer_test_integrity (GdvLayer *layer);
 
-/* This file was created to contain special test-conditions for the
- * drum-display. However, as for now it does nothing more than the usual tests
- * for the norhttps://aur.archlinux.org/termshark-git.gitmal GdvLayer
- */
-
-void tgdv_specialdrumdisplay_test_integrity (GdvSpecialDrumDisplay *display)
-{
-  g_return_if_fail(GDV_SPECIAL_DRUM_IS_DISPLAY(display));
-
-  tgdv_layer_test_integrity(GDV_LAYER(display));
-}
-
+#endif /* TGDV_LAYER_H_INCLUDED */

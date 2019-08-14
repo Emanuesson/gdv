@@ -9,6 +9,7 @@ project('libgdv', 'c',
 
 add_global_arguments(['-Wall',
                       '-Wno-unused',
+                      #'-Wextra',
                       '-D_Float128=double',
                       '-O0',
                       '-g',
@@ -51,6 +52,12 @@ config_h.set_quoted('PACKAGE_DOCDIR', join_paths(get_option('prefix'), get_optio
 config_h.set_quoted('PACKAGE_LIBDIR', join_paths(get_option('prefix'), get_option('libdir')))
 config_h.set_quoted('PACKAGE_LOCALE_DIR', join_paths(get_option('prefix'), get_option('datadir'), 'locale'))
 config_h.set_quoted('PACKAGE_LIBEXECDIR', join_paths(get_option('prefix'), get_option('libexecdir')))
+config_h.set('MAJOR_VERSION', version_arr[0])
+config_h.set('MINOR_VERSION', version_arr[1])
+config_h.set('MICRO_VERSION', version_arr[2])
+config_h.set_quoted('PACKAGE_LICENSE', meson.project_license())
+config_h.set_quoted('PACKAGE_ORIGIN', get_option('package-origin'))
+config_h.set_quoted('PACKAGE', 'libgdv')
 
 configure_file(
   output: 'config.h',
@@ -126,8 +133,9 @@ i18n = import('i18n')
 
 subdir('src')
 
-if get_option('enable_gtk_doc')
+if get_option('doc')
   subdir('docs/reference/gdv')
 endif
 
 meson.add_install_script('build-aux/meson/post_install.py')
+

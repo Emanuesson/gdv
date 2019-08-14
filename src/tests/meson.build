@@ -16,6 +16,8 @@ gdv_test_cflags = [
   #'-fPIE',
   '-DTEST_DATA_DIR="@0@/data"'.format(meson.current_source_dir()),
 #  '-Db_coverage=true',
+  '-O0',
+  '-g',
 ]
 
 gdv_test_link_args = [
@@ -39,8 +41,14 @@ gdv_test_link_args = [
 #endforeach
 
 lib_test_gdv_srcs = [
+  'tgdv-axis.c',
+  'tgdv-axis.h',
+  'tgdv-tic.c',
+  'tgdv-tic.h',
   'tgdv-linearaxis.c',
   'tgdv-linearaxis.h',
+  'tgdv-layer.c',
+  'tgdv-layer.h',
   'tgdv-specialdrumdisplay.c',
   'tgdv-specialdrumdisplay.h',
   'tgdv-shared-functions.c',
@@ -66,7 +74,7 @@ gdv_test_deps = [
   libtestgdv_dep
 ]
 
-test('gdv-linearaxis',
+test('tgdv-linearaxis',
   executable('tgdv-linearaxis-test', 'tgdv-linearaxis-test.c',
     include_directories: [root_inc, src_inc],
     c_args: gdv_test_cflags,
@@ -77,7 +85,7 @@ test('gdv-linearaxis',
   env: gdv_test_env,
 )
 
-test('gdv-tic',
+test('tgdv-tic',
   executable('tgdv-tic-test', 'tgdv-tic-test.c',
     include_directories: [root_inc, src_inc],
     c_args: gdv_test_cflags,
@@ -88,8 +96,19 @@ test('gdv-tic',
   env: gdv_test_env,
 )
 
-test('gdv-specialdrumdisplay',
+test('tgdv-specialdrumdisplay',
   executable('tgdv-specialdrumdisplay-test', 'tgdv-specialdrumdisplay-test.c',
+    include_directories: [root_inc, src_inc],
+    c_args: gdv_test_cflags,
+    dependencies: [
+      gdv_test_deps,
+    ],
+  ),
+  env: gdv_test_env,
+)
+
+test('tgdv-twodlayer',
+  executable('tgdv-twodlayer-test', 'tgdv-twodlayer-test.c',
     include_directories: [root_inc, src_inc],
     c_args: gdv_test_cflags,
     dependencies: [

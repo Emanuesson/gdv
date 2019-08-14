@@ -139,6 +139,12 @@ struct _GdvAxisPrivate
   gdouble          axis_end_pix_x;
   gdouble          axis_end_pix_y;
 
+  /* axis properties forced sizing */
+  gdouble          beg_at_screen_x;
+  gdouble          beg_at_screen_y;
+  gdouble          end_at_screen_x;
+  gdouble          end_at_screen_y;
+
   /* tics propterties */
   gdouble           tics_beg_val;
   gdouble           tics_end_val;
@@ -373,30 +379,22 @@ gdv_axis_set_property (GObject      *object,
     break;
 
   case PROP_GDV_AXIS_BEG_AT_SCREEN_X:
-    allocation_dimension = gtk_widget_get_allocated_width (GTK_WIDGET (self));
-    self->priv->axis_beg_pix_x =
-      g_value_get_double (value) * ((gdouble) allocation_dimension);
+    self->priv->beg_at_screen_x = g_value_get_double (value);
     gtk_widget_queue_allocate (GTK_WIDGET (self));
     break;
 
   case PROP_GDV_AXIS_BEG_AT_SCREEN_Y:
-    allocation_dimension = gtk_widget_get_allocated_height (GTK_WIDGET (self));
-    self->priv->axis_beg_pix_y =
-      g_value_get_double (value) * ((gdouble) allocation_dimension);
+    self->priv->beg_at_screen_y = g_value_get_double (value);
     gtk_widget_queue_allocate (GTK_WIDGET (self));
     break;
 
   case PROP_GDV_AXIS_END_AT_SCREEN_X:
-    allocation_dimension = gtk_widget_get_allocated_width (GTK_WIDGET (self));
-    self->priv->axis_end_pix_x =
-      g_value_get_double (value) * ((gdouble) allocation_dimension);
+    self->priv->end_at_screen_x = g_value_get_double (value);
     gtk_widget_queue_allocate (GTK_WIDGET (self));
     break;
 
   case PROP_GDV_AXIS_END_AT_SCREEN_Y:
-    allocation_dimension = gtk_widget_get_allocated_height (GTK_WIDGET (self));
-    self->priv->axis_end_pix_y =
-      g_value_get_double (value) * ((gdouble) allocation_dimension);
+    self->priv->end_at_screen_y = g_value_get_double (value);
     gtk_widget_queue_allocate (GTK_WIDGET (self));
     break;
 
@@ -520,28 +518,19 @@ gdv_axis_get_property (GObject    *object,
     break;
 
   case PROP_GDV_AXIS_BEG_AT_SCREEN_X:
-    /* FIXME: This behaviour should be improved here! */
-    allocation_dimension = gtk_widget_get_allocated_width (GTK_WIDGET (self));
-    g_value_set_double (value,
-      self->priv->axis_beg_pix_x / ((gdouble) allocation_dimension));
+    g_value_set_double (value, self->priv->beg_at_screen_x);
     break;
 
   case PROP_GDV_AXIS_BEG_AT_SCREEN_Y:
-    allocation_dimension = gtk_widget_get_allocated_height (GTK_WIDGET (self));
-    g_value_set_double (value,
-      self->priv->axis_beg_pix_y / ((gdouble) allocation_dimension));
+    g_value_set_double (value, self->priv->beg_at_screen_y);
     break;
 
   case PROP_GDV_AXIS_END_AT_SCREEN_X:
-    allocation_dimension = gtk_widget_get_allocated_width (GTK_WIDGET (self));
-    g_value_set_double (value,
-      self->priv->axis_end_pix_x / ((gdouble) allocation_dimension));
+    g_value_set_double (value, self->priv->end_at_screen_x);
     break;
 
   case PROP_GDV_AXIS_END_AT_SCREEN_Y:
-    allocation_dimension = gtk_widget_get_allocated_height (GTK_WIDGET (self));
-    g_value_set_double (value,
-      self->priv->axis_end_pix_y / ((gdouble) allocation_dimension));
+    g_value_set_double (value, self->priv->end_at_screen_y);
     break;
 
   case PROP_GDV_TICS_BEG_VAL:
@@ -1720,6 +1709,50 @@ GList *gdv_axis_get_indicator_list (GdvAxis *axis)
   return indicator_list_copy;
 }
 
+/* TODO: make this value more transparent and interactive*/
+static const gdouble RESIDUAL_TOLERANCE = 1e-4;
+
+/**
+ * gdv_axis_get_tic_at_value:
+ * @axis: a #GdvAxis
+ * @value: a value that is potentially identical to a Tic-value
+ *
+ * Searches a Tic for a specific value on this axis.
+ *
+ * Returns: (transfer none):
+ *     an already existing Tic on the axis, or NULL.
+ */
+GdvTic *gdv_axis_get_tic_at_value (GdvAxis *axis, gdouble value)
+{
+  GdvAxisPrivate *priv;
+  GList *tics, *tics_copy;
+  GdvTic *returned_tic = NULL;
+
+  g_return_val_if_fail(GDV_IS_AXIS(axis), NULL);
+
+  priv = gdv_axis_get_instance_private (axis);
+
+  tics = gdv_axis_get_indicator_list (axis);
+
+  for (tics_copy = tics; tics_copy; tics_copy = tics_copy->next)
+    {
+      gdouble tic_value;
+      g_object_get(G_OBJECT(tics_copy->data),
+                   "value", &tic_value,
+                   NULL);
+
+      if (value * RESIDUAL_TOLERANCE + tic_value * RESIDUAL_TOLERANCE >
+          value - tic_value)
+        {
+          returned_tic = tics_copy->data;
+          break;
+        }
+    }
+
+  g_list_free(tics);
+  return returned_tic;
+}
+
 /**
  * gdv_axis_title_set_markup:
  * @axis: a #GdvAxis
@@ -2138,6 +2171,15 @@ gdv_axis_size_allocate (GtkWidget     *widget,
 
   axis = GDV_AXIS (widget);
 
+  /* aligning begin and end */
+  if (axis->priv->force_beg_end)
+  {
+    axis->priv->axis_beg_pix_x =  axis->priv->beg_at_screen_x * (gdouble) allocation->width;
+    axis->priv->axis_beg_pix_y =  axis->priv->beg_at_screen_y * (gdouble) allocation->height;
+    axis->priv->axis_end_pix_x =  axis->priv->end_at_screen_x * (gdouble) allocation->width;
+    axis->priv->axis_end_pix_y =  axis->priv->end_at_screen_y * (gdouble) allocation->height;
+  }
+
   /* reallocating axis-indicator */
   local_indicator_list = axis->priv->indicators;
 
@@ -2244,6 +2286,15 @@ gdv_axis_size_allocate (GtkWidget     *widget,
     if (gtk_widget_get_visible(GTK_WIDGET (local_tic)))
       gtk_widget_size_allocate (
         GTK_WIDGET (local_tic), &tic_allocation);
+  }
+
+  /* aligning begin and end */
+  if (!axis->priv->force_beg_end)
+  {
+    axis->priv->beg_at_screen_x = axis->priv->axis_beg_pix_x / (gdouble) allocation->width;
+    axis->priv->end_at_screen_x = axis->priv->axis_end_pix_x / (gdouble) allocation->width;
+    axis->priv->beg_at_screen_y = axis->priv->axis_beg_pix_y / (gdouble) allocation->height;
+    axis->priv->end_at_screen_y = axis->priv->axis_end_pix_y / (gdouble) allocation->height;
   }
 }
 

@@ -58,8 +58,8 @@ enum
 
 struct _GdvLinearAxisPrivate
 {
-  GSList *tics_list;
-  GSList *mtics_list;
+//  GSList *tics_list;
+//  GSList *mtics_list;
 
   gdouble scale_increment_base;
 };
@@ -242,8 +242,9 @@ _is_present_in_approved_list (GdvTic *tic, GList *list)
 }
 
 /*
- * Simply provides the tic for a given Axis, according to the provided value. This scales
- * quadratic, which is not suited for invoking this function multiple times.
+ * Simply provides the tic for a given Axis, according to the provided value.
+ * This scales quadratic, which is not suited for invoking this function
+ * multiple times.
  */
 static void
 _determine_tic_by_val(GdvLinearAxis *linear_axis,
@@ -331,7 +332,7 @@ _determine_tics_by_values(GList *tics_list,
   }
 }
 
-/* Function that is getting the maximum necessay space for any of the given Tics in the
+/* Function that is getting the maximum necessary space for any of the given Tics in the
  * list of GdvTics in the given direcation. */
 static gint _determine_max_border_on_list (GtkPositionType dir, GList *tics_list)
 {
@@ -891,11 +892,12 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
                       "tics-end-val", tics_end_val,
                       NULL);
 
+      /* FIXME: This should be warning usually. Maybe add scale_automatic */
       if (gtk_widget_get_realized (widget) &&
           !scale_auto_increment &&
           (current_diff_pix < (gdouble)scale_min_diff_pix ||
            current_diff_pix > (gdouble)scale_max_diff_pix))
-        g_warning ("Style-property GdvAxis::scale-min-diff-pix or "
+        g_message ("Style-property GdvAxis::scale-min-diff-pix or "
                    "GdvAxis::scale-max-diff-pix cannot be fullfilled. "
                    "Reconsider change of automatic axis-properties");
 
@@ -1292,12 +1294,19 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
   }
 
   /* calculating the free space */
-  space_without_border.x = max_left_border;
-  space_without_border.y = max_top_border;
+  space_without_border.x = (gint) (
+    allocation->width > max_left_border + max_right_border ? max_left_border :
+//    0.5 * allocation->width - 0.5 * (max_left_border + max_right_border));
+    allocation->width * max_left_border / (max_left_border + max_right_border));
+  space_without_border.y =
+    allocation->height > max_top_border + max_bot_border ? max_top_border :
+    allocation->height * max_top_border / (max_top_border + max_bot_border);
   space_without_border.width =
-    allocation->width - max_left_border - max_right_border;
+    allocation->width > max_left_border + max_right_border ?
+    allocation->width - max_left_border - max_right_border : 1;
   space_without_border.height =
-    allocation->height - max_top_border - max_bot_border;
+    allocation->height > max_top_border + max_bot_border ?
+    allocation->height - max_top_border - max_bot_border : 1;
 
   /* binning to zero */
   space_without_border.width =
@@ -1318,18 +1327,25 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
 
     if (!force_beg_end)
     {
-      space_without_border.width -=
-        (gint)(fabs (sin (angle_to_outer_dir)) * (gdouble)title_width);
-      space_without_border.height -=
-        (gint)(fabs (cos (angle_to_outer_dir)) * (gdouble)title_height);
 
-      if (sin (angle_to_outer_dir) < 0.0)
-        space_without_border.x +=
-          (gint)(-1.0 * sin (angle_to_outer_dir) * (gdouble)title_width);
+      if (allocation->width > max_left_border + max_right_border)
+      {
+        space_without_border.width -=
+          (gint)(fabs (sin (angle_to_outer_dir)) * (gdouble)title_width);
+        if (sin (angle_to_outer_dir) < 0.0)
+          space_without_border.x +=
+            (gint)(-1.0 * sin (angle_to_outer_dir) * (gdouble)title_width);
+      }
 
-      if (cos (angle_to_outer_dir) >= 0.0)
-        space_without_border.y +=
-          (gint)(+1.0 * cos (angle_to_outer_dir) * (gdouble)title_height);
+      if (allocation->height > max_top_border + max_bot_border)
+      {
+        space_without_border.height -=
+          (gint)(fabs (cos (angle_to_outer_dir)) * (gdouble)title_height);
+
+        if (cos (angle_to_outer_dir) >= 0.0)
+          space_without_border.y +=
+            (gint)(+1.0 * cos (angle_to_outer_dir) * (gdouble)title_height);
+      }
     }
 
     /* FIXME: This is not the function I intented */
@@ -1478,20 +1494,20 @@ gdv_linear_axis_on_get_point (GdvAxis *axis,
                 "axis-end-pix-y", &end_y,
                 NULL);
 
-  if (begin_x != end_x && begin_val != end_val)
+  if (pos_x && begin_x != end_x && begin_val != end_val)
   {
     tmp_slope_x = (begin_val - end_val) / (begin_x - end_x);
     *pos_x = begin_x + (value - begin_val) / tmp_slope_x;
   }
-  else
+  else if (pos_x)
     *pos_x = begin_x;
 
-  if (begin_y != end_y && begin_val != end_val)
+  if (pos_y && begin_y != end_y && begin_val != end_val)
   {
     tmp_slope_y = (begin_val - end_val) / (begin_y - end_y);
     *pos_y = begin_y + (value - begin_val) / tmp_slope_y;
   }
-  else
+  else if (pos_y)
     *pos_y = begin_y;
 
   return (

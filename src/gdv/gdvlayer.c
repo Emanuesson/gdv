@@ -34,6 +34,7 @@
 
 #include "gdvlayer.h"
 #include "gdvaxis.h"
+#include "gdvhair.h"
 
 /**
  * SECTION:gdvlayer
@@ -215,7 +216,10 @@ gdv_layer_init (GdvLayer *layer)
 static void gdv_layer_add (GtkContainer   *container,
                            GtkWidget      *child)
 {
-  if (GDV_IS_AXIS (child) || GDV_LAYER_IS_CONTENT (child))
+  if (GDV_IS_AXIS (child) ||
+//      GDV_LAYER_IS_CONTENT (child))
+      GDV_LAYER_IS_CONTENT (child) ||
+      GDV_IS_HAIR (child))
   {
     gtk_overlay_add_overlay (GTK_OVERLAY (container), child);
 
@@ -246,12 +250,48 @@ static void gdv_layer_add (GtkContainer   *container,
     GTK_CONTAINER_CLASS (gdv_layer_parent_class)->add (container, child);
 }
 
+static gboolean find_determine_child_in_list (GtkWidget *child,
+                                              GList *child_list,
+                                              GtkWidgetPath * sibling_path,
+                                              gint * position)
+{
+  GList *list, *pos_link = NULL;
+//  gint offset = 0;
+  gboolean found = FALSE;
+
+  for (list = child_list; list; list = list->next)
+  {
+    if (!gtk_widget_get_visible (list->data))
+      continue;
+
+    if (list->data == child)
+      found = TRUE;
+
+    if (!found && position)
+      (*position)++;
+
+    gtk_widget_path_append_for_widget (sibling_path, list->data);
+  }
+
+  pos_link = g_list_find (child_list, child);
+
+//  if (position)
+//    (*position)++;
+
+//  if (pos_link)
+//  {
+//    *position = *offset;
+//  }
+
+  return found;
+}
+
 static GtkWidgetPath *
 gdv_layer_get_path_for_child (GtkContainer *container,
                               GtkWidget    *child)
 {
   GtkWidgetPath *path, *sibling_path;
-  GList *list, *data_list, *axes_list;
+  GList *list, *data_list, *axes_list, *marker_list;
 
   GtkWidget *widget = GTK_WIDGET (container);
   GdvLayer *layer = GDV_LAYER (container);
@@ -292,65 +332,34 @@ gdv_layer_get_path_for_child (GtkContainer *container,
 
   if (gtk_widget_get_visible (child))
   {
-    gint position = -1;
+    gint position = 0;
     GList *pos_link = NULL;
-    gint offset = 0;
     gboolean found = FALSE;
 
     sibling_path = gtk_widget_path_new ();
 
-    /* first use the layer-content */
+    /* First search within the layer-content */
     data_list = gdv_layer_get_content_list (layer);
-
-    for (list = data_list; list; list = list->next)
-    {
-      if (!gtk_widget_get_visible (list->data))
-        continue;
-
-      if (list->data == child)
-        found = TRUE;
-
-      if (!found)
-        offset++;
-
-      gtk_widget_path_append_for_widget (sibling_path, list->data);
-    }
-
-    pos_link = g_list_find (data_list, child);
-
-    if (pos_link)
-    {
-      position = offset;
-    }
-
-    /* then use the layer-axes */
-    axes_list = gdv_layer_get_axis_list(layer);
-
-    for (list = axes_list; list; list = list->next)
-    {
-      if (!gtk_widget_get_visible (list->data))
-        continue;
-
-      if (list->data == child)
-        found = TRUE;
-
-      if (!found)
-        offset++;
-
-      gtk_widget_path_append_for_widget (sibling_path, list->data);
-    }
-
-    pos_link = g_list_find (axes_list, child);
-
-    if (pos_link)
-    {
-      position = offset;
-    }
-
-    g_list_free (axes_list);
+    found = find_determine_child_in_list (child, data_list,
+                                          sibling_path,
+                                          &position);
     g_list_free (data_list);
 
-    if (position >= 0)
+    /* Then search within the layer-axes */
+    axes_list = gdv_layer_get_axis_list(layer);
+    found |= find_determine_child_in_list (child, axes_list,
+                                           sibling_path,
+                                           found ? NULL : &position);
+    g_list_free (axes_list);
+
+    /* Finally search within the markers */
+    marker_list = gdv_layer_get_hair_list (layer);
+    found |= find_determine_child_in_list (child, marker_list,
+                                           sibling_path,
+                                           found ? NULL : &position);
+    g_list_free (marker_list);
+
+    if (found)
       gtk_widget_path_append_with_siblings (path, sibling_path, position);
     else
       gtk_widget_path_append_for_widget (path, child);
@@ -681,6 +690,38 @@ GList *gdv_layer_get_axis_list (GdvLayer *layer)
   while (list_copy)
   {
     if (GDV_IS_AXIS (list_copy->data))
+      return_list = g_list_append (return_list, list_copy->data);
+
+    list_copy = list_copy->next;
+  }
+
+  g_list_free (children);
+
+  return return_list;
+}
+
+/**
+ * gdv_layer_get_hair_list:
+ * @layer: a #GdvLayer
+ *
+ * Lists #GdvHair instances that are used by the @layer.
+ *
+ * Returns: (transfer container) (element-type GdvHair):
+ *     a newly allocated #GList of markers
+ */
+GList *gdv_layer_get_hair_list (GdvLayer *layer)
+{
+  GList *children, *list_copy;
+  GList *return_list = NULL;
+
+  g_return_val_if_fail (GDV_IS_LAYER (layer), NULL);
+
+  children = gtk_container_get_children (GTK_CONTAINER (layer));
+  list_copy = children;
+
+  while (list_copy)
+  {
+    if (GDV_IS_HAIR (list_copy->data))
       return_list = g_list_append (return_list, list_copy->data);
 
     list_copy = list_copy->next;

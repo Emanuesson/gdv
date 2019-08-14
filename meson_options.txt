@@ -1,3 +1,6 @@
+# Plugins
+option('accel3d', type : 'feature', value : 'auto')
+
 # Performance and debugging related options
 option('enable_tracing', type: 'boolean', value: false)
 option('enable_profiling', type: 'boolean', value: false)
@@ -18,15 +21,15 @@ option('package_subdir', type: 'string',
   description: 'Subdirectory to append to all installed files, for use as subproject',
   )
 
-# Build Documentation
-option('enable_gtk_doc',
+# Common options
+option('package-name', type : 'string', yield : true,
+       description : 'package name to use in plugins')
+option('package-origin', type : 'string', value : 'Unknown package origin', yield : true,
+       description : 'package origin URL to use in plugins')
+option('doc', # Build Documentationu
   type: 'boolean', value: true,
-  description: 'Whether to generate the documentation for libgdv',
-  )
-
-# Enable building tests
-option('enable_tests',
+  description: 'Whether to generate the documentation for libgdv')
+option('enable_tests', # Enable building tests
   type: 'boolean', value: true,
-  description: 'Whether to compile unit tests',
-  )
+  description: 'Whether to compile unit tests')
 

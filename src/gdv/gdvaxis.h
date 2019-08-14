@@ -118,6 +118,8 @@ GList *gdv_axis_get_tic_list (GdvAxis *axis);
 GList *gdv_axis_get_mtic_list (GdvAxis *axis);
 GList *gdv_axis_get_indicator_list (GdvAxis *axis);
 
+GdvTic *gdv_axis_get_tic_at_value (GdvAxis *axis, gdouble value);
+
 void gdv_axis_title_set_markup (GdvAxis *axis, gchar *markup);
 const gchar *gdv_axis_get_title (GdvAxis *axis);
 void gdv_axis_set_title_widget (GdvAxis  *axis, GtkWidget *title_widget);

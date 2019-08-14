@@ -1043,7 +1043,7 @@ gdv_log_axis_on_get_point (
     end_val = fmax (end_val, 1e2);
   }
 
-  if (begin_x != end_x && begin_val != end_val)
+  if (pos_x && begin_x != end_x && begin_val != end_val)
   {
     tmp_slope_x =
       (log(begin_val) - log(end_val)) /
@@ -1052,10 +1052,10 @@ gdv_log_axis_on_get_point (
       begin_x + (log(value) -
                  log(begin_val)) / tmp_slope_x;
   }
-  else
+  else if (pos_x)
     *pos_x = (end_x + begin_x) / 2.0;
 
-  if (begin_y != end_y && begin_val != end_val)
+  if (pos_y && begin_y != end_y && begin_val != end_val)
   {
     tmp_slope_y =
       (log(begin_val) - log(end_val)) /
@@ -1064,7 +1064,7 @@ gdv_log_axis_on_get_point (
       begin_y + (log(value) -
                  log(begin_val)) / tmp_slope_y;
   }
-  else
+  else if (pos_y)
     *pos_y = (end_y + begin_y) / 2.0;
 
   return (

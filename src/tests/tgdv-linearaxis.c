@@ -21,6 +21,8 @@
 #include<stdio.h>
 #include<gdv/gdv.h>
 
+#include "tgdv-axis.h"
+#include "tgdv-tic.h"
 #include "tgdv-shared-functions.h"
 
 
@@ -53,6 +55,12 @@ void tgdv_linearaxis_test_integrity (GdvLinearAxis *laxis)
   gboolean scale_auto_increment, scale_limits_auto, tics_auto, mtics_auto;
   guint no_of_mtics;
   gboolean force_beg_end;
+  GtkAllocation allocation = {0};
+
+  g_assert(GDV_LINEAR_IS_AXIS(laxis));
+  tgdv_axis_test_full (GDV_AXIS(laxis));
+
+  gtk_widget_get_allocation(GTK_WIDGET(laxis), &allocation);
 
   g_object_get (laxis,
     "axis-orientation", &orientation,
@@ -83,19 +91,19 @@ void tgdv_linearaxis_test_integrity (GdvLinearAxis *laxis)
   tics = gdv_axis_get_tic_list (GDV_AXIS (laxis));
   mtics = gdv_axis_get_mtic_list (GDV_AXIS (laxis));
 
-  if (gtk_widget_get_realized (GTK_WIDGET(laxis)))
-    g_assert_cmpuint(g_list_length(tics), >=, 2);
-
   for (tics_cpy = tics; tics; tics = tics->next)
   {
     gdouble value;
     gfloat pos_x, pos_y;
 
+    g_assert(GDV_IS_TIC(tics->data));
     g_object_get (tics->data,
                   "value", &value,
                   "pos-x", &pos_x,
                   "pos-y", &pos_y,
                   NULL);
+
+    tgdv_tic_test_full(tics->data);
 
     if (scale_auto_increment)
       tgdv_linearaxis_test_tic_on_regression (value, tic_beg_val, tic_end_val, scale_auto_increment);
@@ -116,12 +124,20 @@ void tgdv_linearaxis_test_integrity (GdvLinearAxis *laxis)
                   "pos-x", &pos_x,
                   "pos-y", &pos_y,
                   NULL);
-    g_assert_true (value > scale_min_val);
-    g_assert_true (value < scale_max_val);
-    g_assert_true (gdv_is_within_range_f (pos_x, (gfloat) axis_beg_pix_x,
-                                          (gfloat) axis_end_pix_x));
-    g_assert_true (gdv_is_within_range_f (pos_y, (gfloat) axis_beg_pix_y,
-                                          (gfloat) axis_end_pix_y));
+
+    if (scale_auto_increment)
+    {
+        g_assert_true (value >= scale_min_val);
+        g_assert_true (value <= scale_max_val);
+        g_assert_true (gdv_is_within_range_f (pos_x,
+                                              (gfloat) (allocation.x + axis_beg_pix_x),
+                                              (gfloat) (allocation.x + axis_end_pix_x)));
+        g_assert_true (gdv_is_within_range_f (pos_y,
+                                              (gfloat) (allocation.y + axis_beg_pix_y),
+                                              (gfloat) (allocation.y + axis_end_pix_y)));
+    }
+
+    tgdv_tic_test_full(mtics->data);
   }
   g_list_free(mtics_cpy);
 }

@@ -42,10 +42,10 @@
     "build-options" : {
         "env" : {
             "V" : "1",
-            "NO_AT_BRIDGE" : "1",
             "BASH_COMPLETIONSDIR" : "/app/share/bash-completion/completions",
             "MOUNT_FUSE_PATH" : "../tmp/",
-            "PKG_CONFIG_PATH" : "/app/lib/pkgconfig:/app/share/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/app/lib/gnome-builder/pkgconfig/"
+            "PKG_CONFIG_PATH" : "/app/lib/pkgconfig:/app/share/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/app/lib/gnome-builder/pkgconfig/",
+            "NO_AT_BRIDGE" : "1"
         }
     },
     "cleanup" : [
@@ -63,16 +63,6 @@
         "*.a"
     ],
     "modules" : [
-        {
-            "name" : "gtksourceview",
-            "sources" : [
-                {
-                    "type" : "git",
-                    "url"
-                    : "https://gitlab.gnome.org/GNOME/gtksourceview.git"
-                }
-            ]
-        },
         {
             "name" : "DataViewer",
             "buildsystem" : "meson",
@@ -92,3 +82,4 @@
         }
     ]
 }
+

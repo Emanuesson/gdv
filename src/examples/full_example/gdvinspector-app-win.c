@@ -163,6 +163,7 @@ timeout_cb_oned (GdvLayer *layer)
       ind_list = gdv_axis_get_indicator_list (axis_list->data);
 
       g_object_set (axis_list->data,
+        "scale-limits-automatic", FALSE,
         "force-beg-end", TRUE,
         "axis-beg-at-screen-x", 0.5,
         "axis-end-at-screen-x", 0.5,

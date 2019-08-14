@@ -42,6 +42,7 @@
 #include "gdvaxis.h"
 #include "gdvlayercontent.h"
 #include "gdv-data-boxed.h"
+#include "gdvhair.h"
 
 /* local minimum-function */
 static gint min (gint a,
@@ -106,6 +107,9 @@ struct _GdvTwodLayerPrivate
   guint upp_left_y;
   guint upp_right_x;
   guint upp_right_y;
+
+  GSList *x_marker_list, *y_marker_list;
+  gboolean marker_mesh;
 };
 
 enum
@@ -243,6 +247,9 @@ gdv_twod_layer_init (GdvTwodLayer *layer)
 
   layer->priv->min_max_refresh_x = TRUE;
   layer->priv->min_max_refresh_y = TRUE;
+  layer->priv->x_marker_list = NULL;
+  layer->priv->y_marker_list = NULL;
+  layer->priv->marker_mesh = TRUE;
 }
 
 static void gdv_twod_layer_remove (
@@ -387,6 +394,114 @@ GdvTwodLayer *gdv_twod_layer_new (void)
 {
   return g_object_new (gdv_twod_layer_get_type (),
                        NULL);
+}
+
+static gint _value_compare_func (GObject *tica, GObject *ticb)
+{
+  gdouble value_a, value_b;
+
+  g_object_get(tica, "value", &value_a, NULL);
+  g_object_get(ticb, "value", &value_b, NULL);
+
+  if (value_a < value_b)
+    return -1;
+  else if (value_a > value_b)
+    return 1;
+
+  return 0;
+}
+
+static GSList * _update_marker_list (
+  GdvTwodLayer *layer,
+  GSList *marker_list,
+  GdvAxis *axis1,
+  GdvAxis *axis2)
+{
+  GList *tic_list1, *tic_list2;
+  GList *tic_list1_sorted, *tic_list2_sorted;
+  GList *tic_list1_cpy, *tic_list2_cpy;
+
+  tic_list1 = gdv_axis_get_tic_list (axis1);
+  tic_list2 = gdv_axis_get_tic_list (axis2);
+
+  tic_list1_sorted = g_list_sort(tic_list1, (GCompareFunc) _value_compare_func);
+  tic_list2_sorted = g_list_sort(tic_list2, (GCompareFunc) _value_compare_func);
+  //g_list_free(tic_list1);
+  //g_list_free(tic_list2);
+
+  for ((tic_list1_cpy = tic_list1_sorted) && (tic_list2_cpy = tic_list2_sorted);
+       tic_list1_cpy && tic_list2_cpy;
+       (tic_list1_cpy = tic_list1_cpy->next) && (tic_list2_cpy = tic_list2_cpy->next))
+    {
+      gdouble tic_value1, tic_value2;
+      GSList *marker_list_cpy;
+
+      if (!G_IS_OBJECT(tic_list1_cpy->data) ||
+          !G_IS_OBJECT(tic_list2_cpy->data))
+        break;
+
+      g_object_get(tic_list1_cpy->data, "value", &tic_value1, NULL);
+      g_object_get(tic_list2_cpy->data, "value", &tic_value2, NULL);
+
+      if (tic_value1 < tic_value2)
+        {
+          g_warning("Tics out of sync - value %e has no counterpart", tic_value1);
+          tic_list1_cpy = tic_list1_cpy->next;
+          continue;
+        }
+      else if (tic_value2 < tic_value1)
+        {
+          g_warning("Tics out of sync - value %e has no counterpart", tic_value2);
+          tic_list2_cpy = tic_list2_cpy->next;
+          continue;
+        }
+
+      marker_list_cpy = g_slist_find_custom (marker_list,
+                                             tic_list1_cpy->data,
+                                             (GCompareFunc) _value_compare_func);
+
+      if (!marker_list_cpy)
+/*        {
+          GdvHair *marker = marker_list_cpy->data;
+          g_object_set(marker,
+                       "from-axis", axis1,
+                       "to-axis", axis2,
+                       NULL);
+        }
+      else*/
+        {
+          GdvHair *marker =  g_object_new(GDV_TYPE_HAIR,
+                                          "halign", GTK_ALIGN_FILL,
+                                          "valign", GTK_ALIGN_FILL,
+                                          "from-axis", axis1,
+                                          "to-axis", axis2,
+                                          "visible", TRUE,
+                                          "value", tic_value1,
+                                          NULL);
+
+          marker_list = g_slist_insert_sorted (marker_list,
+                                               marker,
+                                               (GCompareFunc) _value_compare_func);
+
+//          if (gtk_widget_is_visible(GTK_WIDGET(layer)))
+          gtk_overlay_add_overlay (GTK_OVERLAY (layer),
+                                   GTK_WIDGET (marker));
+
+//          gtk_container_add(GTK_CONTAINER(layer), GTK_WIDGET(marker));
+        }
+
+
+//      for (marker_list_cpy = marker_list;
+//           marker_list_cpy; marker_list_cpy = marker_list_cpy->next)
+//        {
+//        }
+      // TODO: search for marker
+    }
+
+  g_list_free(tic_list1_sorted);
+  g_list_free(tic_list2_sorted);
+
+  return marker_list;
 }
 
 static void
@@ -840,11 +955,24 @@ gdv_twod_layer_size_allocate (
             x2_allocation.y + x2_allocation.height - x2_end_space[1])));
   content_allocation.height  -= content_allocation.y;
 
-  children = gtk_container_get_children (GTK_CONTAINER (layer));
 
+  if (priv->marker_mesh)
+    {
+      priv->x_marker_list = _update_marker_list(layer,
+                                                priv->x_marker_list,
+                                                priv->x1_axis,
+                                                priv->x2_axis);
+      priv->y_marker_list = _update_marker_list(layer,
+                                                priv->y_marker_list,
+                                                priv->y1_axis,
+                                                priv->y2_axis);
+    }
+
+  children = gtk_container_get_children (GTK_CONTAINER (layer));
   for (list = children; list; list = list->next)
   {
-    if (GDV_LAYER_IS_CONTENT (list->data) &&
+    if ((GDV_LAYER_IS_CONTENT (list->data) ||
+         GDV_IS_HAIR (list->data))&&
         gtk_widget_get_realized (list->data))
     {
       GdkRectangle local_allocation;
@@ -865,7 +993,6 @@ gdv_twod_layer_size_allocate (
   }
 
   g_list_free (children);
-
 }
 
 static void

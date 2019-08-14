@@ -176,15 +176,15 @@ gdv_special_drum_display_init (GdvSpecialDrumDisplay *display)
   /* FIXME: The options should be implemented and working! They are essential
    *        for the look and functionality of this widget!
    */
-  if (GDV_IS_AXIS (axis))
-    g_object_set (axis,
-      "scale-limits-automatic", FALSE,
+//  if (GDV_IS_AXIS (axis))
+//    g_object_set (axis,
+//      "scale-limits-automatic", FALSE,
 //      "force-beg-end", TRUE,
 //      "axis-beg-at-screen-x", 0.5,
 //      "axis-end-at-screen-x", 0.5,
 //      "axis-beg-at-screen-y", 0.0,
 //      "axis-end-at-screen-y", 1.0,
-      NULL);
+//      NULL);
 
   display->priv = gdv_special_drum_display_get_instance_private (display);
 
@@ -199,7 +199,6 @@ gdv_special_drum_display_init (GdvSpecialDrumDisplay *display)
   display->priv->notify_center_value_id =
     g_signal_connect (display, "notify::axis", (GCallback) refresh_values, NULL);
 
+  refresh_values(display);
 }
-
-
 

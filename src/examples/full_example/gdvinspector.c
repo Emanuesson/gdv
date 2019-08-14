@@ -31,6 +31,8 @@
 #include <gdv/gdv.h>
 #include "gdvinspector-app.h"
 
+/* TODO: parsing command-line arguments to create a small test from this exe */
+
 int
 main (int argc, char **argv)
 {

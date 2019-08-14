@@ -43,6 +43,7 @@ gdvcore_headers = [
 #  'gdv-data-vector.h',
   'gdv-enums.h',
   'gdvaxis.h',
+  'gdvhair.h',
   'gdvindicator.h',
   'gdvlayer.h',
   'gdvlayercontent.h',
@@ -63,6 +64,7 @@ gdvcore_sources = [
 #  'gdv-data-matrix.c',
 #  'gdv-data-vector.c',
   'gdvaxis.c',
+  'gdvhair.c',
   'gdvindicator.c',
   'gdvlayer.c',
   'gdvlayercontent.c',
@@ -115,7 +117,7 @@ libgdv_deps = [
 #  cc.find_library('hdf5', required: false),
 ]
 
-libgdv_args = []
+libgdv_args = ['-Wall']
 if get_option('enable_rdtscp')
   libgdv_args += '-DGDV_HAVE_RDTSCP'
 endif
@@ -159,7 +161,8 @@ if get_option('with_introspection')
                 install: true,
         install_dir_gir: girdir,
     install_dir_typelib: typelibdir,
-             extra_args: [ '--c-include=gdv.h', '--pkg-export=libgdv-1.0' ],
+             extra_args: [ '--c-include=gdv.h', '--pkg-export=libgdv-1.0',
+                           '--quiet' ],
   )
 
   if get_option('with_vapi')
@@ -176,12 +179,11 @@ endif
 pkgg = import('pkgconfig')
 
 pkgg.generate(
-    libraries: [libgdv],
       subdirs: libgdv_header_subdir,
       version: meson.project_version(),
          name: 'Gdv',
      filebase: 'gdv-@0@'.format(apiversion),
   description: 'Gdv for Gtk+ applications',
-     requires: 'gtk+-3.0',                      #TODO: add all dependencies correctly
+     requires: 'gdv-0.1',
   install_dir: join_paths(libdir, 'pkgconfig'),
 )

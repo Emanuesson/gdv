@@ -27,6 +27,11 @@
 //#include <gtksourceview/gtksourcetypes.h>
 #include <gio/gio.h>
 #include <math.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <inttypes.h>
+#include <errno.h>
 
 #include "gui/gdv-app-win.h"
 
@@ -63,6 +68,9 @@ struct _GdvViewerAppWindowPrivate
 
 //  ViewerFile *file;
   GList *files;
+
+  int open_fd;
+  uint8_t curr;
 
 //  GtkListStore *file_list;
 };
@@ -161,7 +169,8 @@ void
 gdv_viewer_app_window_init (GdvViewerAppWindow *window)
 {
   GtkListStore *new_list;
-  GList * axis_list;
+  GdvAxis *axis;
+//  GList * axis_list;
 //  gint i;
 //  GtkTreePath *path;
 //  GtkTreeIter iter;
@@ -169,7 +178,10 @@ gdv_viewer_app_window_init (GdvViewerAppWindow *window)
   g_type_ensure (gdv_special_drum_display_get_type ());
 
   gtk_widget_init_template (GTK_WIDGET (window));
+
   window->priv = gdv_viewer_app_window_get_instance_private (window);
+
+  gtk_widget_show_all(GTK_WIDGET(window->priv->main_layer));
 
   g_object_set (window->priv->main_layer,
                  "center-value", 0.0,
@@ -177,20 +189,19 @@ gdv_viewer_app_window_init (GdvViewerAppWindow *window)
                 //"center-value", 0.0,
                 NULL);
 
-  axis_list = gdv_layer_get_axis_list (window->priv->main_layer);
-  if (axis_list)
-  {
-    g_object_set (axis_list->data,
-              "force-beg-end", TRUE,
-              "axis-beg-at-screen-x", 0.5,
-              "axis-end-at-screen-x", 0.5,
-              "axis-beg-at-screen-y", 0.0,
-              "axis-end-at-screen-y", 1.0,
-              "scale-auto-increment", FALSE,
-                  NULL);
-  }
+  g_object_get(G_OBJECT(window->priv->main_layer), "axis", &axis, NULL);
+  g_object_set (axis,
+                "scale-limits-automatic", FALSE,
+                "force-beg-end", TRUE,
+                "axis-beg-at-screen-x", 0.5,
+                "axis-end-at-screen-x", 0.5,
+                "axis-beg-at-screen-y", 0.0,
+                "axis-end-at-screen-y", 1.0,
+                "scale-auto-increment", FALSE,
+                NULL);
 
-  gtk_widget_show_all(GTK_WIDGET(window->priv->main_layer));
+  window->priv->open_fd = 0;
+  window->priv->curr = 0;
 
 //  g_object_set (window->priv->main_layer,
 //                "fill", TRUE,
@@ -212,12 +223,42 @@ gdv_viewer_app_window_new (GdvViewerApp *app)
   return g_object_new (GDV_VIEWER_APP_TYPE_WINDOW, "application", app, NULL);
 }
 
+static gboolean
+timeout_cb_opend (GdvViewerAppWindow *win)
+{
+  GdvViewerAppWindowPrivate *priv = gdv_viewer_app_window_get_instance_private (win);
+  uint8_t read_data;
+
+//  g_print("nothing\n");
+
+  if (0 < read(priv->open_fd, &read_data, sizeof(read_data))) {
+    if (errno != 0)
+    {
+      printf("Oh dear, something went wrong with read()! %s\n", strerror(errno));
+      //return TRUE;
+    }
+  }
+
+  if (priv->curr != read_data && read_data != 0) {
+    g_print("REACHED: %u\n", read_data);
+    g_object_set (win->priv->main_layer,
+                  "center-value", (double) read_data,
+                  NULL);
+    priv->curr = read_data;
+  }
+
+  return TRUE;
+}
+
 void gdv_viewer_app_window_open (GdvViewerAppWindow *win,
                                  GFile            *file)
 {
   GdvViewerAppWindowPrivate *priv;
+  int fd;
 
   /* FIXME: Make the actual file-loading in this function and not in selection-changed */
+  /* It should be possible to open and display e.g.
+   * /sys/bus/iio/devices/iio\:device2/in_magn_y_raw */
 
   priv = gdv_viewer_app_window_get_instance_private (win);
 
@@ -228,6 +269,9 @@ void gdv_viewer_app_window_open (GdvViewerAppWindow *win,
                          GError **error);
 */
   g_print("File: %s\n", g_file_get_path(file));
+  priv->open_fd = open(g_file_get_path(file), O_RDONLY | O_NONBLOCK);
+  g_timeout_add (1, ((GSourceFunc) timeout_cb_opend), win);
+
 /*
   {
     GList *menus = gtk_menu_get_for_attach_widget(win);

@@ -23,13 +23,17 @@
 
 #include "tgdv-shared-functions.h"
 #include "tgdv-specialdrumdisplay.h"
+#include "tgdv-linearaxis.h"
+#include "tgdv-layer.h"
+#include "tgdv-axis.h"
 
-static const guint cb_time = 300;
+static const guint cb_time = 500;
 
 struct _tgdv_specialddisplay_data {
   GtkWidget *window;
   GdvSpecialDrumDisplay *layer;
   GdvAxis *axis;
+  guint current_size;
 };
 
 static gboolean
@@ -38,46 +42,6 @@ teardown_cb (GtkWidget *widget)
   gtk_widget_destroy (widget);
   gtk_main_quit();
   return FALSE;
-}
-
-/*
-static gdouble current_orientation = 0;
-
-static gboolean
-timeout_cb_oned (struct _tgdv_linearaxis_data *data)
-{
-  if (!data->window || !GTK_IS_CONTAINER (data->window))
-    return FALSE;
-
-  g_object_set (data->axis,
-                "axis-orientation", current_orientation,
-                "axis-direction-outside", current_orientation + 0.5 * M_PI,
-                NULL);
-  current_orientation += 0.02;
-  tgdv_linearaxis_test_integrity(data->axis);
-
-  return TRUE;
-}
-*/
-
-static guint endless_loop_prevention = 0;
-static gboolean
-teardown_wrapper_cb (GtkWidget *widget)
-{
-//  g_print("REACHED: %e\n", current_orientation);
-/*
-  endless_loop_prevention++;
-
-  if (endless_loop_prevention > 2)
-  {
-    g_assert_not_reached();
-    return FALSE;
-  }
-
-  if (current_orientation > 3.5)
-    return teardown_cb(widget);
-*/
-  return TRUE;
 }
 
 static void
@@ -93,30 +57,166 @@ test_drum_displ_plain (void)
   gtk_container_add (GTK_CONTAINER (data->window), GTK_WIDGET (data->layer));
   gtk_widget_set_size_request (GTK_WIDGET (data->window), 800, 800);
   gtk_window_set_title (GTK_WINDOW (data->window), "Test window");
-  //g_object_unref(data->layer);
   gtk_widget_show_all(data->window);
 
-
   g_object_get(G_OBJECT(data->layer), "axis", &data->axis, NULL);
+  g_assert_nonnull(data->axis);
+  tgdv_specialdrumdisplay_test_integrity(GDV_SPECIAL_DRUM_DISPLAY(data->layer));
+  tgdv_linearaxis_test_integrity(GDV_LINEAR_AXIS(data->axis));
 
-//  g_timeout_add (10, ((GSourceFunc) timeout_cb_oned), data);
-  g_timeout_add (cb_time * 10, ((GSourceFunc) teardown_cb), data->window); // cb_time
+  while (gtk_events_pending ())
+    gtk_main_iteration ();
+
+  g_timeout_add (cb_time, ((GSourceFunc) teardown_cb), data->window); // cb_time
+  tgdv_specialdrumdisplay_test_integrity(GDV_SPECIAL_DRUM_DISPLAY(data->layer));
+  tgdv_linearaxis_test_integrity(GDV_LINEAR_AXIS(data->axis));
 
   gtk_main ();
   data = NULL;
+}
 
+
+static void
+test_drum_displ_pre_set (void)
+{
+  struct _tgdv_specialddisplay_data data_str;
+  struct _tgdv_specialddisplay_data * data = &data_str;
+
+  gtk_init (NULL, 0);
+
+  data->window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  data->layer = g_object_new (GDV_TYPE_SPECIAL_DRUM_DISPLAY, NULL);
+  gtk_container_add (GTK_CONTAINER (data->window), GTK_WIDGET (data->layer));
+  gtk_widget_set_size_request (GTK_WIDGET (data->window), 800, 800);
+  gtk_window_set_title (GTK_WINDOW (data->window), "Test window");
+  gtk_widget_show_all(data->window);
+
+  g_object_get(G_OBJECT(data->layer), "axis", &data->axis, NULL);
+  g_assert_nonnull(data->axis);
+  tgdv_specialdrumdisplay_test_integrity(GDV_SPECIAL_DRUM_DISPLAY(data->layer));
+  tgdv_linearaxis_test_integrity(GDV_LINEAR_AXIS(data->axis));
+
+  /* These settings contain a more common scenario for e.g. Head-Up Displays */
+  g_object_set (data->layer,
+                "center-value", 0.0,
+                "left-right-range", 50.0,
+                //"center-value", 0.0,
+                NULL);
+
+  g_object_set (data->axis,
+                "force-beg-end", TRUE,
+                "axis-beg-at-screen-x", 0.5,
+                "axis-end-at-screen-x", 0.5,
+                "axis-beg-at-screen-y", 0.0,
+                "axis-end-at-screen-y", 1.0,
+                "scale-auto-increment", FALSE,
+                NULL);
+
+  while (gtk_events_pending ())
+    gtk_main_iteration ();
+
+  g_timeout_add (cb_time, ((GSourceFunc) teardown_cb), data->window); // cb_time
+
+  while (gtk_events_pending ())
+    gtk_main_iteration ();
+
+  tgdv_specialdrumdisplay_test_integrity(GDV_SPECIAL_DRUM_DISPLAY(data->layer));
+  tgdv_axis_test_full(GDV_AXIS(data->axis));
+
+  gtk_main ();
+
+  data = NULL;
+}
+
+static gboolean
+sizerequest_cb (struct _tgdv_specialddisplay_data * data)
+{
+
+  if (data->current_size == 800)
+    data->current_size = 1500;
+  else if (data->current_size == 1500)
+    data->current_size = 200;
+
+
+  gtk_widget_set_size_request (GTK_WIDGET (data->window),
+                               data->current_size, data->current_size);
+
+  while (gtk_events_pending ())
+    gtk_main_iteration ();
+
+  tgdv_specialdrumdisplay_test_integrity(GDV_SPECIAL_DRUM_DISPLAY(data->layer));
+  tgdv_axis_test_full(GDV_AXIS(data->axis));
+
+  if (data->current_size == 200)
+  {
+    g_timeout_add (cb_time, ((GSourceFunc) teardown_cb), data->window); // cb_time
+    return FALSE;
+  }
+  else
+    return TRUE;
+}
+
+static void
+test_drum_displ_force_test (void)
+{
+  struct _tgdv_specialddisplay_data data_str;
+  struct _tgdv_specialddisplay_data * data = &data_str;
+
+  gtk_init (NULL, 0);
+
+  data->window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  data->layer = g_object_new (GDV_TYPE_SPECIAL_DRUM_DISPLAY, NULL);
+  gtk_container_add (GTK_CONTAINER (data->window), GTK_WIDGET (data->layer));
+  data->current_size = 800;
+  gtk_widget_set_size_request (GTK_WIDGET (data->window),
+                               data->current_size, data->current_size);
+  gtk_window_set_title (GTK_WINDOW (data->window), "Test window");
+  gtk_widget_show_all(data->window);
+
+  g_object_get(G_OBJECT(data->layer), "axis", &data->axis, NULL);
+  g_assert_nonnull(data->axis);
+  tgdv_specialdrumdisplay_test_integrity(GDV_SPECIAL_DRUM_DISPLAY(data->layer));
+  tgdv_linearaxis_test_integrity(GDV_LINEAR_AXIS(data->axis));
+
+  /* These settings contain a more common scenario for e.g. Head-Up Displays */
+  g_object_set (data->layer,
+                "center-value", 0.0,
+                "left-right-range", 50.0,
+                //"center-value", 0.0,
+                NULL);
+
+  g_object_set (data->axis,
+                "force-beg-end", TRUE,
+                "axis-beg-at-screen-x", 0.5,
+                "axis-end-at-screen-x", 0.5,
+                "axis-beg-at-screen-y", 0.0,
+                "axis-end-at-screen-y", 1.0,
+                "scale-auto-increment", FALSE,
+                NULL);
+
+  while (gtk_events_pending ())
+    gtk_main_iteration ();
+
+  g_timeout_add (cb_time, ((GSourceFunc) sizerequest_cb), data); // cb_time
+
+  while (gtk_events_pending ())
+    gtk_main_iteration ();
+
+  tgdv_specialdrumdisplay_test_integrity(GDV_SPECIAL_DRUM_DISPLAY(data->layer));
+  tgdv_axis_test_full(GDV_AXIS(data->axis));
+
+  gtk_main ();
+
+  data = NULL;
 }
 
 int main(int argc, char* argv[]) {
   g_test_init (&argc, &argv, NULL);
 
-//  g_test_add_func ("/Gdv/LinearAxis/correct_default", test_lin_axis_correct_default);
-//  g_test_add_func ("/Gdv/LinearAxis/horizontal", test_lin_axis_horizontal);
-//  g_test_add_func ("/Gdv/LinearAxis/cross_settings", test_lin_axis_cross_settings);
   g_test_add_func ("/Gdv/Special/DrumDisplay/plain", test_drum_displ_plain);
-/*  g_test_add_data_func_full ("/Gdv/LinearAxis/manual_tics", setting,
-                             test_lin_axis_manual_tics, test_lin_axis_reset_window);
-*/
+  g_test_add_func ("/Gdv/Special/DrumDisplay/preset", test_drum_displ_pre_set);
+  g_test_add_func ("/Gdv/Special/DrumDisplay/force", test_drum_displ_force_test);
+
   return g_test_run ();
 }
 

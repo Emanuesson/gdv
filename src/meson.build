@@ -26,6 +26,7 @@ viewer_resources = gnome.compile_resources(
 
 subdir('application')
 subdir('gui')
+subdir('instrumentation')
 
 viewer_sources = []
 #viewer_sources += viewer_private_sources
@@ -38,7 +39,7 @@ data_viewer_bin_sources = [
 
 builderlibdir_abs = join_paths(get_option('prefix'), get_option('libdir'), 'gnome-builder')
 
-executable('dataviewer', data_viewer_bin_sources,
+dv_exe = executable('dataviewer', data_viewer_bin_sources,
        dependencies: [ libgdv_dep ],
           link_with: libgdv,
        link_depends: libgdv_map,
@@ -46,4 +47,7 @@ executable('dataviewer', data_viewer_bin_sources,
 include_directories: [ root_inc, src_inc ],
             install: true,
 )
+
+#test('command line test', dv_exe, args : ['first', 'second'])
+
 
