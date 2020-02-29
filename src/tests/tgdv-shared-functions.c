@@ -56,7 +56,6 @@ void _st_check_all_properties (GObject * object, gboolean check_for_default, ...
   for (i = 0; i < no_of_props; i++)
     {
       GValue * active_property = values_on_object[i];
-      gpointer active_content = NULL;
       va_list ap;
       gboolean exceptional_value = FALSE;
       const gchar *exceptional_prop_name;

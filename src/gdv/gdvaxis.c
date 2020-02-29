@@ -45,6 +45,7 @@
 /* Welcome to the all-in-one design hell */
 
 #include "gdvaxis.h"
+#include "gdvaxis-private.h"
 #include "gdvtic.h"
 #include "gdvmtic.h"
 #include "gdvindicator.h"
@@ -99,8 +100,6 @@ enum
   PROP_GDV_AXIS_TITLE_WIDGET,
 
   PROP_GDV_AXIS_FORCE_BEG_END,
-
-  PROP_GDV_AXIS_RESIZE_DURING_REDRAW,
 
   N_PROPERTIES
 };
@@ -237,7 +236,7 @@ gdv_axis_get_space_to_end_position_unimplemented (
   int                 *natural,
   gpointer             data);
 
-G_DEFINE_TYPE_WITH_PRIVATE (GdvAxis, gdv_axis, GTK_TYPE_CONTAINER);
+G_DEFINE_TYPE_WITH_PRIVATE (GdvAxis, gdv_axis, GTK_TYPE_CONTAINER)
 
 static void
 gdv_axis_init (GdvAxis *axis)
@@ -316,7 +315,6 @@ gdv_axis_set_property (GObject      *object,
 {
   GdvAxis *self;
   gchar *title_dup;
-  gint allocation_dimension;
 
   self = GDV_AXIS (object);
 
@@ -450,10 +448,6 @@ gdv_axis_set_property (GObject      *object,
     gtk_widget_queue_allocate (GTK_WIDGET (self));
     break;
 
-  case PROP_GDV_AXIS_RESIZE_DURING_REDRAW:
-    self->priv->resize_during_redraw = g_value_get_boolean (value);
-    break;
-
   default:
     /* unknown property */
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -469,7 +463,6 @@ gdv_axis_get_property (GObject    *object,
                        GParamSpec *pspec)
 {
   GdvAxis *self = GDV_AXIS (object);
-  gint allocation_dimension;
 
   switch (property_id)
   {
@@ -575,15 +568,16 @@ gdv_axis_get_property (GObject    *object,
     g_value_set_boolean (value, self->priv->force_beg_end);
     break;
 
-  case PROP_GDV_AXIS_RESIZE_DURING_REDRAW:
-    g_value_set_boolean (value, self->priv->resize_during_redraw);
-    break;
-
   default:
     /* unknown property */
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     break;
   }
+}
+
+G_GNUC_INTERNAL gboolean _gdv_axis_get_resize_during_redraw(GdvAxis *axis)
+{
+  return axis->priv->resize_during_redraw;
 }
 
 static void
@@ -1415,29 +1409,6 @@ gdv_axis_class_init (GdvAxisClass *klass)
                           FALSE,
                           G_PARAM_READWRITE);
 
-  /* FIXME: Seriously rethink this concept */
-  /*
-   * GdvAxis:use-relative-values:
-   *
-   * Determines if the axis should rely on the relative or absolute properties
-   * regarding the begin and end of the .
-   *
-   */
-  /*  axis_properties[PROP_GDV_AXIS_USE_RELATIVE_PROP] =
-      g_param_spec_boolean ("use-relative-values",
-                            "forces the use of manually assigned beg- and end- properties",
-                            "this property forces the axis to use the manually assigned "
-                            "beg- and end-properties",
-                            FALSE,
-                            G_PARAM_READWRITE);
-  */
-  axis_properties[PROP_GDV_AXIS_RESIZE_DURING_REDRAW] =
-    g_param_spec_boolean ("resize-during-redraw",
-                          "*placeholder*",
-                          "*placeholder*",
-                          FALSE,
-                          G_PARAM_PRIVATE | G_PARAM_READABLE);
-
   g_object_class_install_properties (object_class,
                                      N_PROPERTIES,
                                      axis_properties);
@@ -1724,13 +1695,10 @@ static const gdouble RESIDUAL_TOLERANCE = 1e-4;
  */
 GdvTic *gdv_axis_get_tic_at_value (GdvAxis *axis, gdouble value)
 {
-  GdvAxisPrivate *priv;
   GList *tics, *tics_copy;
   GdvTic *returned_tic = NULL;
 
   g_return_val_if_fail(GDV_IS_AXIS(axis), NULL);
-
-  priv = gdv_axis_get_instance_private (axis);
 
   tics = gdv_axis_get_indicator_list (axis);
 

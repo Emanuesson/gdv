@@ -72,7 +72,7 @@ struct _GdvSpecialCheckedIndicatorPrivate
 static GParamSpec *indicator_properties[N_PROPERTIES] = { NULL, };
 
 G_DEFINE_TYPE_WITH_PRIVATE (GdvSpecialCheckedIndicator,
-  gdv_special_checked_indicator, GDV_TYPE_INDICATOR);
+  gdv_special_checked_indicator, GDV_TYPE_INDICATOR)
 
 static void
 gdv_special_checked_indicator_init (GdvSpecialCheckedIndicator *indicator)
@@ -166,8 +166,8 @@ gboolean gdv_special_checked_indicator_draw (
   /* FIXME: Does this even make sense? Look up examples from Gtk+ */
   if (!axis)
   {
-    g_warning ("parent-widget for %s(%p) is not set",
-               g_type_name (G_TYPE_FROM_INSTANCE (widget)), widget);
+    g_warning ("parent-widget for %s is not set",
+               g_type_name (G_TYPE_FROM_INSTANCE (widget)));
     return TRUE;
   }
 
@@ -331,8 +331,8 @@ gdv_special_checked_indicator_class_init (GdvSpecialCheckedIndicatorClass *klass
    */
   gtk_widget_class_install_style_property (widget_class,
       g_param_spec_boxed ("sec-color",
-                          P_("secondary color of indicator"),
-                          P_("Second Color to draw indicator"),
+                          _("secondary color of indicator"),
+                          _("Second Color to draw indicator"),
                           GDK_TYPE_RGBA,
                           G_PARAM_READWRITE));
 

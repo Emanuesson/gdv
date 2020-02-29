@@ -30,7 +30,7 @@
 
 #include <application/gdv-app.h>
 
-G_BEGIN_DECLS;
+G_BEGIN_DECLS
 
 /*
  * Type checking and casting macros
@@ -72,5 +72,5 @@ void gdv_viewer_app_window_open (GdvViewerAppWindow *win,
 
 /* not exported public methods*/
 
-G_END_DECLS;
+G_END_DECLS
 #endif // __GDV_VIEWER_APP_WINDOW_H_INCLUDED

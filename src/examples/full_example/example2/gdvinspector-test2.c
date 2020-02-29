@@ -39,22 +39,18 @@ struct _GdvInspectorTest2Private
 G_DEFINE_TYPE_WITH_PRIVATE (
   GdvInspectorTest2,
   gdv_inspector_test2,
-  GTK_TYPE_FRAME);
+  GTK_TYPE_FRAME)
 
 static void
 gdv_inspector_test2_class_init (GdvInspectorTest2Class *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 }
 
 void
 gdv_inspector_test2_init (GdvInspectorTest2 *frame)
 {
-  GdvInspectorTest2Private *priv;
   GdvLayer *layer;
   GdvAxis *new_axis;
-
-  priv = gdv_inspector_test2_get_instance_private (frame);
 
 //  gtk_widget_set_size_request (main_window, 1800, 1800);
 

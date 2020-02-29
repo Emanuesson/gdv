@@ -60,7 +60,7 @@ static void gdv_special_time_axis_get_property (GObject    *object,
                                                 GParamSpec *pspec);
 
 G_DEFINE_TYPE_WITH_PRIVATE (GdvSpecialTimeAxis, gdv_special_time_axis,
-  gdv_linear_axis_get_type());
+  gdv_linear_axis_get_type())
 
 //static void
 //gdv_special_time_axis_size_allocate (GtkWidget           *widget,

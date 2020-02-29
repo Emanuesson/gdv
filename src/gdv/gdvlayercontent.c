@@ -30,6 +30,7 @@
 #include "gdvlayer.h"
 #include "gdvrender.h"
 #include "gdv-data-boxed.h"
+#include "gdvaxis-private.h"
 
 /**
  * SECTION:gdvlayercontent
@@ -116,7 +117,7 @@ gdv_layer_content_on_draw (GtkWidget    *widget,
 
 G_DEFINE_TYPE_WITH_PRIVATE (GdvLayerContent,
                             gdv_layer_content,
-                            GTK_TYPE_WIDGET);
+                            GTK_TYPE_WIDGET)
 
 /* define the property-setter */
 static void
@@ -315,11 +316,7 @@ gdv_layer_content_on_draw (GtkWidget    *widget,
     for (local_axes_list = orig_axes_list;
          local_axes_list; local_axes_list = local_axes_list->next)
     {
-      gboolean resize_axis;
-
-      g_object_get (G_OBJECT (local_axes_list->data),
-                    "resize-during-redraw", &resize_axis,
-                    NULL);
+      gboolean resize_axis = _gdv_axis_get_resize_during_redraw(local_axes_list->data);
 
       if (resize_axis)
       {
@@ -349,7 +346,6 @@ gdv_layer_content_on_draw (GtkWidget    *widget,
                                    &tmp_x2,
                                    &tmp_y2);
   }
-
 
   for (data_copy = content->priv->data_values;
        data_copy; data_copy = data_copy->next)
@@ -774,6 +770,50 @@ gdv_layer_content_get_content (GdvLayerContent *content)
   copy_list = g_list_copy (content->priv->data_values);
 
   return copy_list;
+}
+
+/**
+ * gdv_layer_content_get_content2:
+ * @content: a #GdvLayerContent
+ *
+ * Returns: (transfer full): The copy of the content.
+ *
+ **/
+GgslMatrix *
+gdv_layer_content_get_content2 (GdvLayerContent *content)
+{
+  GdvLayerContentPrivate *priv = gdv_layer_content_get_instance_private(content);
+  GgslMatrix *return_matrix = NULL;
+  gsize data_points_count, i;
+  GList *current_point_iter;
+
+  g_return_val_if_fail(GDV_LAYER_IS_CONTENT (content), NULL);
+
+  data_points_count = (gsize) g_list_length(priv->data_values);
+  current_point_iter = priv->data_values;
+
+  return_matrix = ggsl_matrix_new(1, data_points_count);
+
+  for (i = 0; i < data_points_count; i++)
+    {
+      GdvDataPoint *current_point = current_point_iter->data;
+      ggsl_matrix_set(return_matrix, 0, i,
+                      gdv_data_point_distance_to_origin(current_point));
+      current_point_iter = current_point_iter->next;
+    }
+
+  return return_matrix;
+}
+
+/**
+ * gdv_layer_content_set_content2:
+ * @content: a #GdvLayerContent
+ * @matrix: a #GgslMatrix
+ **/
+void
+gdv_layer_content_set_content2 (GdvLayerContent *content, GgslMatrix *matrix)
+{
+  g_return_if_fail(GDV_LAYER_IS_CONTENT(content));
 }
 
 /**

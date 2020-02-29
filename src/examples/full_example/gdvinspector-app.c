@@ -32,7 +32,8 @@ struct _GdvInspectorAppPrivate
   gint placeholder;
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (GdvInspectorApp, gdv_inspector_app, GTK_TYPE_APPLICATION);
+G_DEFINE_TYPE_WITH_PRIVATE (GdvInspectorApp, gdv_inspector_app,
+                            GTK_TYPE_APPLICATION)
 
 static void
 gdv_inspector_app_activate (GApplication *application)

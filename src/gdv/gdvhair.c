@@ -92,7 +92,7 @@ gdv_hair_dispose (GObject *object);
 static void
 gdv_hair_finalize (GObject *object);
 
-G_DEFINE_TYPE_WITH_PRIVATE (GdvHair, gdv_hair, GTK_TYPE_CONTAINER);
+G_DEFINE_TYPE_WITH_PRIVATE (GdvHair, gdv_hair, GTK_TYPE_CONTAINER)
 
 static void
 gdv_hair_init (GdvHair *hair)
@@ -248,6 +248,7 @@ static void gdv_hair_get_preferred_width_for_height(
   gint                *natural_width);
 */
 
+/*
 static void
 gdv_hair_realize (GtkWidget *widget)
 {
@@ -264,12 +265,7 @@ gdv_hair_realize (GtkWidget *widget)
   gtk_widget_set_window (widget, window);
   g_object_ref (window);
 }
-
-static void
-gdv_hair_unrealize (GtkWidget *widget)
-{
-  GTK_WIDGET_CLASS (gdv_hair_parent_class)->unrealize (widget);
-}
+*/
 
 static void
 gdv_hair_size_allocate (GtkWidget     *widget,
@@ -285,7 +281,6 @@ gboolean gdv_hair_draw (GtkWidget   *widget,
                         cairo_t     *cr)
 {
   GdvHair *hair = GDV_HAIR (widget);
-  GdvLayer *layer = GDV_LAYER(gtk_widget_get_parent(widget));
   GdvHairPrivate *priv = gdv_hair_get_instance_private (hair);
 //  GdvAxis *axis = GDV_AXIS (gtk_widget_get_parent (widget));
   gboolean on_axis;
@@ -293,8 +288,8 @@ gboolean gdv_hair_draw (GtkWidget   *widget,
   GtkAllocation alloc, layer_alloc;
 
   if (!priv->from_axis)
-    g_warning ("from-axis for %s(%p) is not set",
-               g_type_name (G_TYPE_FROM_INSTANCE (widget)), widget);
+    g_warning ("from-axis for %s is not set",
+               g_type_name (G_TYPE_FROM_INSTANCE (widget)));
 
   gtk_widget_get_allocation (GTK_WIDGET(hair), &layer_alloc);
 
@@ -311,8 +306,8 @@ gboolean gdv_hair_draw (GtkWidget   *widget,
   priv->from_y += alloc.y - layer_alloc.y;
 
   if (!priv->to_axis)
-    g_warning ("to-axis for %s(%p) is not set",
-               g_type_name (G_TYPE_FROM_INSTANCE (widget)), widget);
+    g_warning ("to-axis for %s is not set",
+               g_type_name (G_TYPE_FROM_INSTANCE (widget)));
 
   g_signal_emit_by_name (
     priv->to_axis,

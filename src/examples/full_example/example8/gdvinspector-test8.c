@@ -40,22 +40,18 @@ struct _GdvInspectorTest8Private
 G_DEFINE_TYPE_WITH_PRIVATE (
   GdvInspectorTest8,
   gdv_inspector_test8,
-  GTK_TYPE_FRAME);
+  GTK_TYPE_FRAME)
 
 static void
 gdv_inspector_test8_class_init (GdvInspectorTest8Class *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 }
 
 void
 gdv_inspector_test8_init (GdvInspectorTest8 *frame)
 {
-  GdvInspectorTest8Private *priv;
   GdvAxis *test_axis = NULL;
   GdvLayer *layer;
-
-  priv = gdv_inspector_test8_get_instance_private (frame);
 
   layer = g_object_new (gdv_oned_layer_get_type(), NULL);
   gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (layer));

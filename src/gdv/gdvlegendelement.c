@@ -111,7 +111,8 @@ gdv_legend_element_dispose (GObject *object);
 static void
 gdv_legend_element_finalize (GObject *object);
 
-G_DEFINE_TYPE_WITH_PRIVATE (GdvLegendElement, gdv_legend_element, GTK_TYPE_CONTAINER);
+G_DEFINE_TYPE_WITH_PRIVATE (GdvLegendElement, gdv_legend_element,
+                            GTK_TYPE_CONTAINER)
 
 static void
 gdv_legend_element_init (GdvLegendElement *legend_element)

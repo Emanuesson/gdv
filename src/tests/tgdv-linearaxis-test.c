@@ -25,7 +25,7 @@
 #include "tgdv-linearaxis.h"
 
 /* A function to test if a certain value lies on a linear scale. */
-static void
+/*static void
 test_tic_value_on_regression (gdouble value_under_test,
                               gdouble axis_start, gdouble axis_end,
                               gdouble axis_increment)
@@ -37,7 +37,7 @@ test_tic_value_on_regression (gdouble value_under_test,
   g_assert_cmpfloat (value_under_test, <=, high_border);
   g_assert_cmpfloat (value_under_test, >=, low_border);
   g_assert_cmpfloat_with_epsilon (residuum, 0.0, axis_increment * 1e-20);
-}
+}*/
 
 static const guint cb_time = 300;
 
@@ -72,7 +72,6 @@ test_lin_axis_correct_default (void)
   guint no_of_mtics;
   gboolean force_beg_end;
   gint scale_min_diff_pix = 0, scale_max_diff_pix = 0;
-  gdouble scale_increment_x, scale_increment_y;
 
   gtk_init (NULL, 0);
 

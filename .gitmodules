@@ -1,0 +1,3 @@
+[submodule "subprojects/libggsl"]
+	path = subprojects/libggsl
+	url = /home/emanuel_schmidt/Dokumente/Sourcecode/libggsl

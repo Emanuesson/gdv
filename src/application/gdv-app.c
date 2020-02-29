@@ -38,7 +38,7 @@ struct _GdvViewerAppPrivate
   GtkStyleContext   *style_context;
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (GdvViewerApp, gdv_viewer_app, GTK_TYPE_APPLICATION);
+G_DEFINE_TYPE_WITH_PRIVATE (GdvViewerApp, gdv_viewer_app, GTK_TYPE_APPLICATION)
 
 static void
 gdv_viewer_app_activate (GApplication *application)
@@ -161,14 +161,6 @@ close_window_activated (GSimpleAction *action,
 
   g_object_get (app, "active-window", &current_window, NULL);
   gtk_widget_destroy (GTK_WIDGET (current_window));
-}
-
-static void
-configuration_activated (GSimpleAction *action,
-                         GVariant      *parameter,
-                         gpointer       app)
-{
-
 }
 
 static void

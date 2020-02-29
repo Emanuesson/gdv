@@ -28,7 +28,7 @@
 
 #include "gdvinspector-app.h"
 
-G_BEGIN_DECLS;
+G_BEGIN_DECLS
 
 /*
  * Type checking and casting macros
@@ -67,5 +67,5 @@ GdvInspectorAppWindow *gdv_inspector_app_window_new (GdvInspectorApp *app);
 
 /* not exported public methods*/
 
-G_END_DECLS;
+G_END_DECLS
 #endif // __GDV_INSPECTOR_APP_WINDOW_H_INCLUDED

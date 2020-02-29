@@ -37,142 +37,7 @@ struct _GdvInspectorTest3Private
 G_DEFINE_TYPE_WITH_PRIVATE (
   GdvInspectorTest3,
   gdv_inspector_test3,
-  GTK_TYPE_FRAME);
-
-static void
-report_tic_props (GdvTic *tic)
-{
-  gdouble value;
-  gdouble pos_x, pos_y, axis_dir_x, axis_dir_y, axis_inner_dir_x, axis_inner_dir_y;
-  gdouble tics_in_length, tics_out_length;
-  gchar *tic_format;
-  gboolean tic_label;
-
-  g_object_get (tic,
-    "value", &value,
-    "pos-x", &pos_x,
-    "pos-y", &pos_y,
-    "axis-dir-x", &axis_dir_x,
-    "axis-dir-y", &axis_dir_y,
-    "axis-inner-dir-x", &axis_inner_dir_x,
-    "axis-inner-dir-y", &axis_inner_dir_y,
-    NULL);
-
-  gtk_widget_style_get (GTK_WIDGET (tic),
-    "tics-in-length", &tics_in_length,
-    "tics-out-length", &tics_out_length,
-    "show-label", &tic_label,
-    "tic-format", &tic_format,
-    NULL);
-
-  g_printerr ("\n---------------------------------------<\n");
-  g_printerr ("Tic-Object: %p of type: %s\n",
-    tic, g_type_name (G_TYPE_FROM_INSTANCE(tic)));
-  g_printerr ("---------------------------------------|\n");
-  g_printerr ("value: %e\n", value);
-  g_printerr ("Position: %e;%e\n", pos_x, pos_y);
-  g_printerr ("Axis-dir: %e;%e\n", axis_dir_x, axis_dir_y);
-  g_printerr ("Inner-dir: %e;%e\n", axis_inner_dir_x, axis_inner_dir_y);
-  g_printerr ("In-length: %e - Out-length: %e\n", tics_in_length, tics_out_length);
-  if (!tic_label)
-    g_printerr ("don't ");
-  g_printerr ("plot a label with format: \"%s\"\n", tic_format);
-  g_printerr ("--------------------------------------->\n\n");
-  return;
-}
-
-static void
-report_axis_props (GdvAxis *axis)
-{
-  gdouble axis_min_val = 0.0, axis_max_val = 0.0, scale_incr = 0.0;
-  guint axis_beg_pix_x = 0, axis_end_pix_x = 0, axis_beg_pix_y = 0, axis_end_pix_y = 0;
-  gdouble axis_beg_screen_x = 0.0, axis_end_screen_x = 0.0,
-          axis_beg_screen_y = 0.0, axis_end_screen_y = 0.0;
-  gdouble tic_beg_val = 0.0, tic_end_val = 0.0, mtics_beg_val = 0.0, mtics_end_val = 0.0;
-  gint scale_min_diff_pix = 0, scale_max_diff_pix = 0;
-  gboolean tic_labels, scale_auto_increment, scale_limits_auto, tics_auto, mtics_auto;
-  guint no_of_mtics;
-
-  g_object_get (axis,
-    "scale-min-val", &axis_min_val,
-    "scale-max-val", &axis_max_val,
-    "scale-increment-val", &scale_incr,
-    "axis-beg-pix-x", &axis_beg_pix_x,
-    "axis-beg-pix-y", &axis_beg_pix_y,
-    "axis-end-pix-x", &axis_end_pix_x,
-    "axis-end-pix-y", &axis_end_pix_y,
-    "axis-beg-at-screen-x", &axis_beg_screen_x,
-    "axis-end-at-screen-x", &axis_end_screen_x,
-    "axis-beg-at-screen-y", &axis_beg_screen_y,
-    "axis-end-at-screen-y", &axis_end_screen_y,
-    "tics-beg-val", &tic_beg_val,
-    "tics-end-val", &tic_end_val,
-    "mtics-beg-val", &mtics_beg_val,
-    "mtics-end-val", &mtics_end_val,
-    "tic-labels", &tic_labels,
-//    "scale-auto-increment", &scale_auto_increment,
-//    "scale-min-diff-pix", &scale_min_diff_pix,
-//    "scale-max-diff-pix", &scale_max_diff_pix,
-//    "scale-limits-automatic", &scale_limits_auto,
-//    "tics-automatic", &tics_auto,
-//    "mtics-automatic", &mtics_auto,
-//    "mtics-number",  &no_of_mtics,
-    NULL);
-
-  gtk_widget_style_get (GTK_WIDGET (axis),
-    "scale-auto-increment", &scale_auto_increment,
-    "scale-min-diff-pix", &scale_min_diff_pix,
-    "scale-max-diff-pix", &scale_max_diff_pix,
-    "scale-limits-automatic", &scale_limits_auto,
-    "tics-automatic", &tics_auto,
-    "mtics-automatic", &mtics_auto,
-    "mtics-number",  &no_of_mtics,
-//                  "axis-line-width", &axis_line_width,
-//                "axis-line-source", &axis_line_source,
-//                "tics-color", &tics_lc,
-//                "tics-line-width", &tics_line_width,
-//                "tics-in-length", &tics_inner_length,
-//                "tics-out-length", &tics_outer_length,
-//                "mtics-color", &mtics_lc,
-//                "mtics-line-width", &mtics_line_width,
-//                "mtics-in-length", &mtics_inner_length,
-//                "mtics-out-length", &mtics_outer_length,
-    NULL);
-
-  g_printerr ("\n---------------------------------------<\n");
-  g_printerr ("Axis-Object: %p of type: %s\n",
-    axis, g_type_name (G_TYPE_FROM_INSTANCE(axis)));
-  g_printerr ("---------------------------------------|\n");
-  g_printerr ("scale: %e:%e:%e\n",
-    axis_min_val, scale_incr, axis_max_val);
-  g_printerr ("plot from (%u:%u) to (%u:%u)\n",
-    axis_beg_pix_x, axis_beg_pix_y, axis_end_pix_x, axis_end_pix_y);
-  g_printerr ("plot @screen from (%.2e:%.2e) to (%.2e:%.2e)\n",
-    axis_beg_screen_x, axis_beg_screen_y, axis_end_screen_x, axis_end_screen_y);
-  g_printerr ("tics from %e to %e\n", tic_beg_val, tic_end_val);
-  g_printerr ("mtics from %e to %e\n", mtics_beg_val, mtics_end_val);
-  if (!tic_labels)
-    g_printerr ("don't ");
-  g_printerr ("print show-label\n");
-  g_printerr ("Scale diff Minimum Pixel: %d, Maximum Pixel: %d\n",
-    scale_min_diff_pix, scale_max_diff_pix);
-  if (!scale_auto_increment)
-    g_printerr ("don't ");
-  g_printerr ("recalculate the scale\n");
-  if (!scale_limits_auto)
-    g_printerr ("don't ");
-  g_printerr ("recalculate the scale-limits\n");
-  if (!tics_auto)
-    g_printerr ("don't ");
-  g_printerr ("calculate the tics automatically\n");
-  if (!mtics_auto)
-    g_printerr ("don't ");
-  g_printerr ("calculate the mtics automatically\n");
-  g_printerr ("number of mtics: %d\n", no_of_mtics);
-  g_printerr ("--------------------------------------->\n\n");
-
-  return;
-}
+  GTK_TYPE_FRAME)
 
 static gboolean added;
 
@@ -180,17 +45,13 @@ static gboolean added;
 static void
 gdv_inspector_test3_class_init (GdvInspectorTest3Class *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 }
 
 void
 gdv_inspector_test3_init (GdvInspectorTest3 *frame)
 {
-  GdvInspectorTest3Private *priv;
   GdvTwodLayer *layer;
   GdvAxis *tmp_axis;
-
-  priv = gdv_inspector_test3_get_instance_private (frame);
 
 //  GdvAxis *test_axis = NULL;
   layer = g_object_new (gdv_twod_layer_get_type (), NULL);

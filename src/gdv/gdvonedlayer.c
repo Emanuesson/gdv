@@ -116,7 +116,7 @@ gdv_oned_layer_remove (GtkContainer *container, GtkWidget *child);
 
 G_DEFINE_TYPE_WITH_PRIVATE (GdvOnedLayer,
                             gdv_oned_layer,
-                            GDV_TYPE_LAYER);
+                            GDV_TYPE_LAYER)
 
 static void
 gdv_oned_layer_set_property (GObject      *object,

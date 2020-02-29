@@ -134,7 +134,7 @@ gdv_layer_eval_inner_point_unimplemented (GdvLayer      *layer,
 G_DEFINE_TYPE_WITH_CODE (GdvLayer,
                          gdv_layer,
                          GTK_TYPE_OVERLAY,
-                         G_ADD_PRIVATE (GdvLayer));
+                         G_ADD_PRIVATE (GdvLayer))
 
 static void
 gdv_layer_class_init (GdvLayerClass *klass)
@@ -255,7 +255,7 @@ static gboolean find_determine_child_in_list (GtkWidget *child,
                                               GtkWidgetPath * sibling_path,
                                               gint * position)
 {
-  GList *list, *pos_link = NULL;
+  GList *list;
 //  gint offset = 0;
   gboolean found = FALSE;
 
@@ -273,8 +273,6 @@ static gboolean find_determine_child_in_list (GtkWidget *child,
     gtk_widget_path_append_for_widget (sibling_path, list->data);
   }
 
-  pos_link = g_list_find (child_list, child);
-
 //  if (position)
 //    (*position)++;
 
@@ -291,7 +289,7 @@ gdv_layer_get_path_for_child (GtkContainer *container,
                               GtkWidget    *child)
 {
   GtkWidgetPath *path, *sibling_path;
-  GList *list, *data_list, *axes_list, *marker_list;
+  GList *data_list, *axes_list, *marker_list;
 
   GtkWidget *widget = GTK_WIDGET (container);
   GdvLayer *layer = GDV_LAYER (container);
@@ -333,7 +331,6 @@ gdv_layer_get_path_for_child (GtkContainer *container,
   if (gtk_widget_get_visible (child))
   {
     gint position = 0;
-    GList *pos_link = NULL;
     gboolean found = FALSE;
 
     sibling_path = gtk_widget_path_new ();

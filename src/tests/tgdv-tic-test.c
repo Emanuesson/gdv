@@ -79,7 +79,6 @@ test_tic_plain (void)
   struct _test_gdv_tic_proeprty_container properties;
 
   /* inherited properties */
-  GtkAllocation label_allocation = {0};
   GtkAllocation tic_allocation = {0};
 
   gtk_init (NULL, 0);

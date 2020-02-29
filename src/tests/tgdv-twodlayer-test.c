@@ -95,7 +95,6 @@ test_twodlayer_log_legend (void)
 {
   struct _tgdv_twodlayer_data data_str;
   struct _tgdv_twodlayer_data * data = &data_str;
-  GList *laxis, *laxis_cpy;
 
   GtkWidget *left_box, *right_box, *main_box;
   GdvLayer *layer;

@@ -59,7 +59,7 @@ struct _GdvSpecialPolarAxisPrivate
   gboolean resize_during_redraw;
 };
 
-static gboolean
+/*static gboolean
 gdv_polar_axis_on_evaluate (GdvAxis *axis,
                             gdouble value,
                             gdouble *pos_x,
@@ -70,7 +70,7 @@ gdv_polar_axis_on_evaluate_inndir (GdvAxis *axis,
                                    gdouble value,
                                    gdouble *pos_x,
                                    gdouble *pos_y);
-
+*/
 static void
 gdv_polar_axis_size_allocate (GtkWidget     *widget,
                               GtkAllocation *allocation);
@@ -83,7 +83,7 @@ static void
 gdv_polar_axis_get_preferred_width (GtkWidget           *widget,
                                     gint                *minimum_size,
                                     gint                *natural_size);
-
+/*
 static void
 gdv_polar_axis_get_preferred_height (GtkWidget           *widget,
                                      gint                *minimum_size,
@@ -100,7 +100,7 @@ gdv_polar_axis_get_preferred_width_for_height (GtkWidget           *layout,
                                                gint                 width,
                                                gint                *minimum_height,
                                                gint                *natural_height);
-
+*/
 /* Method declaration */
 //static void gdv_special_polar_axis_dispose (GObject *object);
 //static void gdv_special_polar_axis_finalize (GObject *object);
@@ -126,7 +126,7 @@ static gboolean gdv_special_polar_axis_get_inner_dir(
   gdouble            *pos_y);
 
 G_DEFINE_TYPE_WITH_PRIVATE (GdvSpecialPolarAxis, gdv_special_polar_axis,
-  gdv_linear_axis_get_type());
+  gdv_linear_axis_get_type())
 
 //static void
 //gdv_special_polar_axis_size_allocate (GtkWidget           *widget,
@@ -241,24 +241,6 @@ gdv_special_polar_axis_init (GdvSpecialPolarAxis *polar_axis)
 
 }
 
-static gboolean
-gdv_polar_axis_on_evaluate (GdvAxis *axis,
-                            gdouble value,
-                            gdouble *pos_x,
-                            gdouble *pos_y)
-{
-  return TRUE;
-}
-
-static gboolean
-gdv_polar_axis_on_evaluate_inndir (GdvAxis *axis,
-                                   gdouble value,
-                                   gdouble *pos_x,
-                                   gdouble *pos_y)
-{
-  return TRUE;
-}
-
 static void
 gdv_polar_axis_size_allocate (GtkWidget     *widget,
                               GtkAllocation *allocation)
@@ -267,7 +249,7 @@ gdv_polar_axis_size_allocate (GtkWidget     *widget,
   GdvSpecialPolarAxisPrivate *priv = gdv_special_polar_axis_get_instance_private(polar_axis);
 
   GdvLinearAxis *linear_axis = GDV_LINEAR_AXIS (widget);
-  GtkAllocation axis_allocation = *allocation;
+//  GtkAllocation axis_allocation = *allocation;
 
   gboolean scale_automatic;
 
@@ -275,52 +257,52 @@ gdv_polar_axis_size_allocate (GtkWidget     *widget,
   gdouble scale_beg_val,
           scale_end_val;
   gdouble scale_increment_val;
-  gdouble signed_scale_increment_val;
+//  gdouble signed_scale_increment_val;
   gdouble scale_increment_base;
-  gdouble init_scale_beg_val, init_scale_end_val;
+//  gdouble init_scale_beg_val, init_scale_end_val;
 
-  gint scale_min_diff_pix;
-  gint scale_max_diff_pix;
-  gboolean first_iteration = TRUE;
+//  gint scale_min_diff_pix;
+//  gint scale_max_diff_pix;
+//  gboolean first_iteration = TRUE;
 
   gdouble angle_to_outer_dir, angle_to_start;
 
-  gdouble init_increment_val;
+//  gdouble init_increment_val;
 //  gdouble   init_tic_beg_val, init_tic_end_val;
 
-  gdouble inner_dir_x = 0.0, inner_dir_y = 0.0;
+//  gdouble inner_dir_x = 0.0, inner_dir_y = 0.0;
 //  gdouble   axis_dir_x = 0.0, axis_dir_y = 0.0;
 
   gboolean force_beg_end;
 
   gboolean tics_automatic;
-  gdouble tmp_tics_val_beg, tmp_tics_val_end;
+//  gdouble tmp_tics_val_beg, tmp_tics_val_end;
   gdouble tics_beg_val,
           tics_end_val;
-  gboolean beg_is_new = FALSE, end_is_new = FALSE;
+//  gboolean beg_is_new = FALSE, end_is_new = FALSE;
 
-  gdouble tic_label_halign, tic_label_valign;
+//  gdouble tic_label_halign, tic_label_valign;
 
   gboolean mtics_automatic;
   gdouble mtics_beg_val,
           mtics_end_val;
   guint mtics_number;
-  gdouble current_diff_pix = G_MAXDOUBLE;
-  gint max_top_border, max_bot_border, max_left_border, max_right_border;
+//  gdouble current_diff_pix = G_MAXDOUBLE;
+//  gint max_top_border, max_bot_border, max_left_border, max_right_border;
 
-  gboolean set_tics = TRUE;
+//  gboolean set_tics = TRUE;
 
   GList *tics_copy, *previouse_tics;
-  GList *tics_approved_list = NULL;
-  GList *mtics_copy, *previouse_mtics;
-  gdouble actual_pos_val;
+//  GList *tics_approved_list = NULL;
+//  GList *mtics_copy, *previouse_mtics;
+//  gdouble actual_pos_val;
 
-  gdouble line_height, line_width, line_length;
+//  gdouble line_height, line_width, line_length;
   GtkWidget *title_widget;
 
   /* needed for the autoadjustment of scale- and tic-values */
-  GList *tic_list, *tic_list_start;
-  GtkAllocation space_without_border;
+//  GList *tic_list, *tic_list_start;
+//  GtkAllocation space_without_border;
 
   gboolean visible;
 
@@ -411,16 +393,16 @@ gdv_polar_axis_measure (
   gpointer             data)
 {
   GtkWidget * title_widget;
-  GList *tics_list;
-  gint glob_tic_min_start = 0, glob_tic_nat_start = 0,
-       glob_tic_min_stop = 0, glob_tic_nat_stop = 0;
-  gint scale_min_diff, projected_min_diff = 0;
+//  GList *tics_list;
+//  gint glob_tic_min_start = 0, glob_tic_nat_start = 0,
+//       glob_tic_min_stop = 0, glob_tic_nat_stop = 0;
+  gint scale_min_diff;
   gdouble axis_line_width;
 //  gdouble axis_direction = axis->priv->direction_start;
-  gboolean axis_title_on;
-  gint title_height = 0, title_width = 0;
-  gint title_height_nat = 0, title_width_nat = 0;
-  gdouble outside_dir;
+//  gboolean axis_title_on;
+//  gint title_height = 0, title_width = 0;
+//  gint title_height_nat = 0, title_width_nat = 0;
+//  gdouble outside_dir;
 
 /*
   *minimum = 200;
@@ -455,6 +437,7 @@ gdv_polar_axis_get_preferred_width (GtkWidget           *widget,
                     NULL, NULL, NULL);
 }
 
+/*
 static void
 gdv_polar_axis_get_preferred_height (GtkWidget           *widget,
                                gint                *minimum_size,
@@ -466,7 +449,9 @@ gdv_polar_axis_get_preferred_height (GtkWidget           *widget,
                     minimum_size, natural_size,
                     NULL, NULL, NULL);
 }
+*/
 
+/*
 static void
 gdv_polar_axis_get_preferred_height_for_width (GtkWidget           *widget,
     gint                 width,
@@ -478,9 +463,9 @@ gdv_polar_axis_get_preferred_height_for_width (GtkWidget           *widget,
                     width,
                     minimum_height, natural_height,
                     NULL, NULL, NULL);
-}
+}*/
 
-
+/*
 static void
 gdv_polar_axis_get_preferred_width_for_height (GtkWidget           *widget,
     gint                 height,
@@ -493,6 +478,7 @@ gdv_polar_axis_get_preferred_width_for_height (GtkWidget           *widget,
                     minimum_width, natural_width,
                     NULL, NULL, NULL);
 }
+*/
 
 static void gdv_special_polar_axis_set_property (GObject      *object,
                                       guint         property_id,
@@ -645,40 +631,6 @@ gdv_special_polar_axis_size_allocate (GtkWidget           *widget,
     size_allocate (widget, allocation);
 }
 */
-
-static const gchar *
-_get_month_name (gint month)
-{
-    switch (month)
-    {
-    case 1:
-      return "Jan";
-    case 2:
-      return "Feb";
-    case 3:
-      return "Mar";
-    case 4:
-      return "Apr";
-    case 5:
-      return "May";
-    case 6:
-      return "Jun";
-    case 7:
-      return "Jul";
-    case 8:
-      return "Aug";
-    case 9:
-      return "Sep";
-    case 10:
-      return "Oct";
-    case 11:
-      return "Nov";
-    case 12:
-      return "Dec";
-    default:
-      return "UKN";
-    }
-}
 
 /**
  * gdv_special_polar_axis_new:

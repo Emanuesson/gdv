@@ -28,7 +28,7 @@
 
 #include "gdvinspector-app.h"
 
-G_BEGIN_DECLS;
+G_BEGIN_DECLS
 
 /*
 * Type checking and casting macros
@@ -66,6 +66,6 @@ GdvInspectorTest7 *gdv_inspector_test7_new (void);
 
 /* not exported public methods*/
 
-G_END_DECLS;
+G_END_DECLS
 #endif /* __GDV_INSPECTOR_TEST7_H_INCLUDED */
 

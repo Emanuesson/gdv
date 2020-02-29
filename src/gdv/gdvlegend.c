@@ -83,7 +83,7 @@ static void
 gdv_legend_set_layer (GdvLegend *legend,
                       GdvLayer  *layer);
 
-G_DEFINE_TYPE_WITH_PRIVATE (GdvLegend, gdv_legend, GTK_TYPE_FRAME);
+G_DEFINE_TYPE_WITH_PRIVATE (GdvLegend, gdv_legend, GTK_TYPE_FRAME)
 
 static void
 gdv_legend_init (GdvLegend *legend)

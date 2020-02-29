@@ -83,9 +83,12 @@ gdv_data_point_distance_to_origin (const GdvDataPoint *point)
               );
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
 G_DEFINE_BOXED_TYPE (GdvDataPoint, gdv_data_point,
-                     gdv_data_point_copy,
-                     g_free)
+                     (GBoxedCopyFunc) gdv_data_point_copy,
+                     (GBoxedFreeFunc) g_free)
+#pragma GCC diagnostic pop
 
 /**
  * gdv_data_point_single_extended_equal:
@@ -119,9 +122,12 @@ gdv_data_point_single_extended_copy (const GdvDataPointSingleExtended *point)
   return result;
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
 G_DEFINE_BOXED_TYPE (GdvDataPointSingleExtended, gdv_data_point_single_extended,
                      gdv_data_point_single_extended_copy,
                      g_free)
+#pragma GCC diagnostic pop
 
 /**
  * gdv_data_point_double_extended_equal:
@@ -155,9 +161,12 @@ gdv_data_point_double_extended_copy (const GdvDataPointDoubleExtended *point)
   return result;
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
 G_DEFINE_BOXED_TYPE (GdvDataPointDoubleExtended, gdv_data_point_double_extended,
                      gdv_data_point_double_extended_copy,
                      g_free)
+#pragma GCC diagnostic pop
 
 /* n-dimensional point element */
 /**
@@ -286,9 +295,12 @@ gdv_data_n_point_distance_to_origin (const GdvDataNPoint *point)
   return return_val;
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
 G_DEFINE_BOXED_TYPE (GdvDataNPoint, gdv_data_n_point,
                      gdv_data_n_point_copy,
                      g_free)
+#pragma GCC diagnostic pop
 
 /* Directional element */
 /**
@@ -329,9 +341,12 @@ gdv_data_direction_copy (const GdvDataDirection *direction)
   return result;
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
 G_DEFINE_BOXED_TYPE (GdvDataDirection, gdv_data_direction,
                      gdv_data_direction_copy,
                      g_free)
+#pragma GCC diagnostic pop
 
 /* Polygons */
 gboolean
@@ -367,9 +382,12 @@ gdv_data_polygon_copy (const GdvDataPolygon *polygon)
   return result;
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
 G_DEFINE_BOXED_TYPE (GdvDataPolygon, gdv_data_polygon,
                      gdv_data_polygon_copy,
                      g_free)
+#pragma GCC diagnostic pop
 
 /* Pixel */
 gboolean
@@ -391,6 +409,9 @@ gdv_data_pixel_copy (const GdvDataPixel *pixel)
   return result;
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
 G_DEFINE_BOXED_TYPE (GdvDataPixel, gdv_data_pixel,
                      gdv_data_pixel_copy,
                      g_free)
+#pragma GCC diagnostic pop

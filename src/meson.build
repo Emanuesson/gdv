@@ -6,10 +6,6 @@ src_inc = include_directories('gdv')
 
 subdir('gdv')
 
-if get_option('enable_tests')
-  subdir('tests')
-endif
-
 subdir('examples')
 
 viewer_public_sources = [
@@ -26,7 +22,6 @@ viewer_resources = gnome.compile_resources(
 
 subdir('application')
 subdir('gui')
-subdir('instrumentation')
 
 viewer_sources = []
 #viewer_sources += viewer_private_sources
@@ -47,6 +42,10 @@ dv_exe = executable('dataviewer', data_viewer_bin_sources,
 include_directories: [ root_inc, src_inc ],
             install: true,
 )
+
+if get_option('enable_tests')
+  subdir('tests')
+endif
 
 #test('command line test', dv_exe, args : ['first', 'second'])
 

@@ -104,7 +104,7 @@ gdv_indicator_dispose (GObject *object);
 static void
 gdv_indicator_finalize (GObject *object);
 
-G_DEFINE_TYPE_WITH_PRIVATE (GdvIndicator, gdv_indicator, GTK_TYPE_CONTAINER);
+G_DEFINE_TYPE_WITH_PRIVATE (GdvIndicator, gdv_indicator, GTK_TYPE_CONTAINER)
 
 static void
 gdv_indicator_init (GdvIndicator *indicator)
@@ -312,8 +312,8 @@ gboolean gdv_indicator_draw (GtkWidget   *widget,
   GtkStyleContext *context;
 
   if (!axis)
-    g_warning ("parent-widget for %s(%p) is not set",
-               g_type_name (G_TYPE_FROM_INSTANCE (widget)), widget);
+    g_warning ("parent-widget for %s is not set",
+               g_type_name (G_TYPE_FROM_INSTANCE (widget)));
 
   g_signal_emit_by_name (
     axis,

@@ -39,12 +39,11 @@ struct _GdvInspectorTest10Private
 G_DEFINE_TYPE_WITH_PRIVATE (
   GdvInspectorTest10,
   gdv_inspector_test10,
-  GTK_TYPE_FRAME);
+  GTK_TYPE_FRAME)
 
 static void
 gdv_inspector_test10_class_init (GdvInspectorTest10Class *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 }
 
 static gdouble current_orientation = 0;
@@ -87,12 +86,8 @@ timeout_cb_oned (GtkFrame *main_window)
 void
 gdv_inspector_test10_init (GdvInspectorTest10 *frame)
 {
-  GdvInspectorTest10Private *priv;
   GdvAxis *test_axis = NULL;
   GdvLayer *layer;
-  guint callback_source_id;
-
-  priv = gdv_inspector_test10_get_instance_private (frame);
 
   layer = g_object_new (gdv_oned_layer_get_type(), NULL);
   gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (layer));
@@ -117,11 +112,9 @@ gdv_inspector_test10_init (GdvInspectorTest10 *frame)
                 NULL);
 
   /* Do it with 100 and everything seems to break */
-  callback_source_id = 0;
 //  callback_source_id = g_timeout_add (400, ((GSourceFunc)timeout_cb_oned),
 //                                      frame);
-  callback_source_id = g_timeout_add (20, ((GSourceFunc)timeout_cb_oned),
-                                      frame);
+  g_timeout_add (20, ((GSourceFunc)timeout_cb_oned), frame);
 
 }
 

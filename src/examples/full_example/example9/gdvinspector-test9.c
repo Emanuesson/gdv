@@ -37,22 +37,18 @@ struct _GdvInspectorTest9Private
 G_DEFINE_TYPE_WITH_PRIVATE (
   GdvInspectorTest9,
   gdv_inspector_test9,
-  GTK_TYPE_FRAME);
+  GTK_TYPE_FRAME)
 
 static void
 gdv_inspector_test9_class_init (GdvInspectorTest9Class *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 }
 
 void
 gdv_inspector_test9_init (GdvInspectorTest9 *frame)
 {
-  GdvInspectorTest9Private *priv;
   GdvAxis *test_axis = NULL;
   GdvLayer *layer;
-
-  priv = gdv_inspector_test9_get_instance_private (frame);
 
   layer = g_object_new (gdv_oned_layer_get_type(), NULL);
   gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (layer));

@@ -40,6 +40,7 @@
 #include "gdvtwodlayer.h"
 #include "gdvlinearaxis.h"
 #include "gdvaxis.h"
+#include "gdvaxis-private.h"
 #include "gdvlayercontent.h"
 #include "gdv-data-boxed.h"
 #include "gdvhair.h"
@@ -164,7 +165,7 @@ static void gdv_twod_layer_remove (
 
 G_DEFINE_TYPE_WITH_PRIVATE (GdvTwodLayer,
                             gdv_twod_layer,
-                            GDV_TYPE_LAYER);
+                            GDV_TYPE_LAYER)
 
 static void
 gdv_twod_layer_class_init (GdvTwodLayerClass *klass)
@@ -429,9 +430,10 @@ static GSList * _update_marker_list (
   //g_list_free(tic_list1);
   //g_list_free(tic_list2);
 
-  for ((tic_list1_cpy = tic_list1_sorted) && (tic_list2_cpy = tic_list2_sorted);
-       tic_list1_cpy && tic_list2_cpy;
-       (tic_list1_cpy = tic_list1_cpy->next) && (tic_list2_cpy = tic_list2_cpy->next))
+  tic_list1_cpy = tic_list1_sorted;
+  tic_list2_cpy = tic_list2_sorted;
+
+  while(tic_list1_cpy && tic_list2_cpy)
     {
       gdouble tic_value1, tic_value2;
       GSList *marker_list_cpy;
@@ -496,6 +498,9 @@ static GSList * _update_marker_list (
 //        {
 //        }
       // TODO: search for marker
+
+      tic_list1_cpy = tic_list1_cpy->next;
+      tic_list2_cpy = tic_list2_cpy->next;
     }
 
   g_list_free(tic_list1_sorted);
@@ -883,8 +888,7 @@ gdv_twod_layer_size_allocate (
 
       if (GDV_IS_AXIS (children_copy->data))
       {
-        g_object_get (children_copy->data,
-                      "resize-during-redraw", &resize_axis, NULL);
+        resize_axis = _gdv_axis_get_resize_during_redraw(children_copy->data);
 
         if (resize_axis)// && !gtk_widget_get_visible (GTK_WIDGET (children_copy->next)))
         {

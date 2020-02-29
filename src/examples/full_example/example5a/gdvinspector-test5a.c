@@ -37,22 +37,18 @@ struct _GdvInspectorTest5aPrivate
 G_DEFINE_TYPE_WITH_PRIVATE (
   GdvInspectorTest5a,
   gdv_inspector_test5a,
-  GTK_TYPE_FRAME);
+  GTK_TYPE_FRAME)
 
 static void
 gdv_inspector_test5a_class_init (GdvInspectorTest5aClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 }
 
 void
 gdv_inspector_test5a_init (GdvInspectorTest5a *frame)
 {
-  GdvInspectorTest5aPrivate *priv;
   GdvLayer *layer;
   GdvAxis *tmp;
-
-  priv = gdv_inspector_test5a_get_instance_private (frame);
 
 //  gtk_widget_set_size_request (main_window, 1800, 1800);
 

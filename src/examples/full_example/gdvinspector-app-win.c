@@ -74,7 +74,7 @@ struct _GdvInspectorAppWindowPrivate
 G_DEFINE_TYPE_WITH_PRIVATE (
   GdvInspectorAppWindow,
   gdv_inspector_app_window,
-  GTK_TYPE_APPLICATION_WINDOW);
+  GTK_TYPE_APPLICATION_WINDOW)
 
 static void
 gdv_inspector_app_window_dispose (GObject *object)

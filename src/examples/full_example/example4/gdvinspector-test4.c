@@ -37,12 +37,11 @@ struct _GdvInspectorTest4Private
 G_DEFINE_TYPE_WITH_PRIVATE (
   GdvInspectorTest4,
   gdv_inspector_test4,
-  GTK_TYPE_FRAME);
+  GTK_TYPE_FRAME)
 
 static void
 gdv_inspector_test4_class_init (GdvInspectorTest4Class *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 }
 
 static gboolean rename_content (GdvLayerContent *content)
@@ -54,15 +53,11 @@ static gboolean rename_content (GdvLayerContent *content)
 void
 gdv_inspector_test4_init (GdvInspectorTest4 *frame)
 {
-  GdvInspectorTest4Private *priv;
-
   GtkWidget *main_box;
   GdvLegend *test_legend;
   GdvTwodLayer *layer;
   GdvLayerContent *content1, *content2;
   gint i;
-
-  priv = gdv_inspector_test4_get_instance_private (frame);
 
   main_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 

@@ -134,7 +134,7 @@ gdv_tic_dispose (GObject *object);
 static void
 gdv_tic_finalize (GObject *object);
 
-G_DEFINE_TYPE_WITH_PRIVATE (GdvTic, gdv_tic, GTK_TYPE_BIN);
+G_DEFINE_TYPE_WITH_PRIVATE (GdvTic, gdv_tic, GTK_TYPE_BIN)
 
 static void
 gdv_tic_init (GdvTic *tic)
@@ -602,8 +602,8 @@ gdv_tic_class_init (GdvTicClass *klass)
    */
   tic_properties[PROP_GDV_TIC_LABEL_XALIGN] =
     g_param_spec_double ("label-xalign",
-                         P_("Label xalign"),
-                         P_("The horizontal alignment of the label"),
+                         _("Label xalign"),
+                         _("The horizontal alignment of the label"),
                          -G_MAXDOUBLE, G_MAXDOUBLE,
                          0.0,
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
@@ -617,8 +617,8 @@ gdv_tic_class_init (GdvTicClass *klass)
    */
   tic_properties[PROP_GDV_TIC_LABEL_YALIGN] =
     g_param_spec_double ("label-yalign",
-                         P_("Label yalign"),
-                         P_("The vertical alignment of the label"),
+                         _("Label yalign"),
+                         _("The vertical alignment of the label"),
                          -G_MAXDOUBLE, G_MAXDOUBLE,
                          -0.5,
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);

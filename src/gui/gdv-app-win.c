@@ -75,7 +75,8 @@ struct _GdvViewerAppWindowPrivate
 //  GtkListStore *file_list;
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (GdvViewerAppWindow, gdv_viewer_app_window, GTK_TYPE_APPLICATION_WINDOW);
+G_DEFINE_TYPE_WITH_PRIVATE (GdvViewerAppWindow, gdv_viewer_app_window,
+                            GTK_TYPE_APPLICATION_WINDOW)
 
 static void
 gdv_viewer_app_window_dispose (GObject *object)
@@ -108,67 +109,9 @@ gdv_viewer_app_window_class_init (GdvViewerAppWindowClass *klass)
                                                 main_layer);
 }
 
-static gint indicator_fc = 0;
-
-static gboolean
-timeout_cb_oned (GdvLayer *layer)
-{
-//  if (indicator_fc > 0)
-//    return FALSE;
-
-  if (layer && GDV_IS_LAYER (layer))
-  {
-    GList *ind_list, *axis_list;
-
-//    g_object_set (layer, "center-value",
-//      0.0 + 100.0 * sin(0.01 * M_PI * ((gdouble) indicator_fc)),NULL);
-    g_object_set (layer, "center-value",
-      0.0 + 100.0 * sin(0.01 * M_PI * ((gdouble) indicator_fc)),NULL);
-
-    axis_list = gdv_layer_get_axis_list (layer);
-
-    if (axis_list)
-    {
-//      ind_list = gdv_axis_get_indicator_list (axis_list->data);
-
-      g_object_set (axis_list->data,
-        "force-beg-end", TRUE,
-        "axis-beg-at-screen-x", 0.5,
-        "axis-end-at-screen-x", 0.5,
-        "axis-beg-at-screen-y", 0.0,
-        "axis-end-at-screen-y", 1.0,
-        "scale-increment-val", 20.0,
-        "scale-auto-increment", FALSE,
-        NULL);
-
-//      if (ind_list)
-//      {
-//        g_object_set (ind_list->data,
-//          "value",0.0 + 100.0 * sin(0.01 * M_PI * ((gdouble) indicator_fc)),
-//          NULL);
-//      }
-//      g_list_free (ind_list);
-
-    }
-    g_list_free (axis_list);
-  }
-
-  /*
-  if (indicator_fc >= G_MAXINT * 0.5)
-    indicator_fc = 0;
-  else
-    indicator_fc++;
-*/
-
-  indicator_fc++;
-
-  return TRUE;
-}
-
 void
 gdv_viewer_app_window_init (GdvViewerAppWindow *window)
 {
-  GtkListStore *new_list;
   GdvAxis *axis;
 //  GList * axis_list;
 //  gint i;
@@ -212,9 +155,6 @@ gdv_viewer_app_window_init (GdvViewerAppWindow *window)
 
 //  g_object_set(window, "show-menubar", TRUE, NULL);
 
-//  timeout_cb_oned(window->priv->main_layer);
-  //g_timeout_add (20, ((GSourceFunc) timeout_cb_oned), window->priv->main_layer);
-
 }
 
 GdvViewerAppWindow *
@@ -254,7 +194,6 @@ void gdv_viewer_app_window_open (GdvViewerAppWindow *win,
                                  GFile            *file)
 {
   GdvViewerAppWindowPrivate *priv;
-  int fd;
 
   /* FIXME: Make the actual file-loading in this function and not in selection-changed */
   /* It should be possible to open and display e.g.

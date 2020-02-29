@@ -84,7 +84,7 @@ gdv_log_axis_get_space_to_end_position (
   int                 *natural,
   gpointer             data);
 
-G_DEFINE_TYPE_WITH_PRIVATE (GdvLogAxis, gdv_log_axis, GDV_TYPE_AXIS);
+G_DEFINE_TYPE_WITH_PRIVATE (GdvLogAxis, gdv_log_axis, GDV_TYPE_AXIS)
 
 static void
 gdv_log_axis_init (GdvLogAxis *axis)

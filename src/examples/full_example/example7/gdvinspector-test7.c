@@ -31,8 +31,8 @@
 #include "gdvinspector-test7.h"
 #include "math.h"
 
-#include "gemu_sub/gemu-glib-util.h"
-#include "gemu_sub/gemu-gtk-util.h"
+//#include "gemu_sub/gemu-glib-util.h"
+//#include "gemu_sub/gemu-gtk-util.h"
 
 struct _GdvInspectorTest7Private
 {
@@ -42,12 +42,11 @@ struct _GdvInspectorTest7Private
 G_DEFINE_TYPE_WITH_PRIVATE (
   GdvInspectorTest7,
   gdv_inspector_test7,
-  GTK_TYPE_FRAME);
+  GTK_TYPE_FRAME)
 
 static void
 gdv_inspector_test7_class_init (GdvInspectorTest7Class *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 }
 
 static gboolean
@@ -100,12 +99,8 @@ timeout_cb_oned (GtkFrame *main_window)
 void
 gdv_inspector_test7_init (GdvInspectorTest7 *frame)
 {
-  GdvInspectorTest7Private *priv;
   GdvLayer *layer;
   GList *axis_list;
-  guint callback_source_id;
-
-  priv = gdv_inspector_test7_get_instance_private (frame);
 
   layer = g_object_new (gdv_oned_layer_get_type (), NULL);
   gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (layer));
@@ -122,11 +117,11 @@ gdv_inspector_test7_init (GdvInspectorTest7 *frame)
 //    gemu_glib_util_show_details,
 //    NULL, NULL);
 
-  gemu_glib_util_connect_to_all_signals (
-   G_OBJECT (axis_list->data),
-   gemu_glib_util_show_details,
-   NULL,
-   NULL);
+//  gemu_glib_util_connect_to_all_signals (
+//   G_OBJECT (axis_list->data),
+//   gemu_glib_util_show_details,
+//   NULL,
+//   NULL);
 
 
   if (axis_list)
@@ -137,9 +132,7 @@ gdv_inspector_test7_init (GdvInspectorTest7 *frame)
   g_list_free (axis_list);
 
   /* Do it with 100 and everything seems to break */
-  callback_source_id = 0;
-  callback_source_id = g_timeout_add (400, ((GSourceFunc)timeout_cb_oned),
-                                      frame);
+  g_timeout_add (400, ((GSourceFunc)timeout_cb_oned), frame);
 
 }
 

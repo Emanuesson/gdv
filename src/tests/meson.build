@@ -60,7 +60,7 @@ libtestgdv = shared_library(
   lib_test_gdv_srcs,
   include_directories: [root_inc, src_inc],
   c_args: gdv_test_cflags,
-  dependencies: libgdv_dep,
+  dependencies: [libgdv_dep],
   install: false,
 )
 
@@ -118,4 +118,4 @@ test('tgdv-twodlayer',
   env: gdv_test_env,
 )
 
-
+subdir('test-content')

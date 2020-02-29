@@ -118,11 +118,7 @@ void tgdv_axis_test_tic_distance (GdvAxis *axis)
   g_list_free(mtics_cpy);
 }
 
-static gdouble _dmax(gdouble a, gdouble b)
-{
-  return 0.5 * (a + b + fabs(a - b));
-}
-
+/*
 static gdouble _determine_dist_to_border (gdouble x_pos, gdouble y_pos,
                                           GtkAllocation *allocation)
 {
@@ -133,15 +129,14 @@ static gdouble _determine_dist_to_border (gdouble x_pos, gdouble y_pos,
 
   return _dmax(_dmax(dist_x_neg, dist_x_pos), _dmax(dist_y_neg, dist_y_pos));
 }
+*/
 
 /* Tests if the axis is using the allocated area properly */
 void tgdv_axis_test_alloc_usage (GdvAxis *axis)
 {
   gdouble axis_beg_pix_x = 0.0, axis_end_pix_x = 0.0;
   gdouble axis_beg_pix_y = 0.0, axis_end_pix_y = 0.0;
-  gdouble distance_beg_en = 0;
   GtkAllocation allocation = {0};
-  gdouble tmp_val;
 
   g_assert(GDV_IS_AXIS(axis));
 
@@ -179,7 +174,7 @@ void tgdv_axis_test_integrity (GdvAxis *axis)
   gdouble tic_beg_val = 0.0, tic_end_val = 0.0, mtic_beg_val = 0.0, mtic_end_val = 0.0;
   gboolean scale_auto_increment, scale_limits_auto, tics_auto, mtics_auto;
   guint no_of_mtics;
-  gboolean force_beg_end, resize_during_redraw;
+  gboolean force_beg_end;
 
   GtkAllocation allocation = {0};
 
@@ -214,7 +209,6 @@ void tgdv_axis_test_integrity (GdvAxis *axis)
     "mtics-automatic", &mtics_auto,
     "mtics", &no_of_mtics,
     "force-beg-end", &force_beg_end,
-    "resize-during-redraw", &resize_during_redraw,
     // title-widget
     "title", &title,
     // resize-during-redraw

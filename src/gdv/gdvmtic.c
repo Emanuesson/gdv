@@ -49,7 +49,7 @@ struct _GdvMticPrivate
   gdouble          placeholder;
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (GdvMtic, gdv_mtic, GDV_TYPE_TIC);
+G_DEFINE_TYPE_WITH_PRIVATE (GdvMtic, gdv_mtic, GDV_TYPE_TIC)
 
 static void
 gdv_mtic_init (GdvMtic *mtic)

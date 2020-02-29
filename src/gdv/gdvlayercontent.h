@@ -26,6 +26,8 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
 
+#include <libggsl/matrix/libggsl-matrix.h>
+
 G_BEGIN_DECLS
 
 #define GDV_LAYER_TYPE_CONTENT\
@@ -90,6 +92,12 @@ gdv_layer_content_remove_data_point_by_index (
 
 GList *
 gdv_layer_content_get_content (GdvLayerContent *content);
+
+GgslMatrix *
+gdv_layer_content_get_content2 (GdvLayerContent *content);
+
+void
+gdv_layer_content_set_content2 (GdvLayerContent *content, GgslMatrix *matrix);
 
 void
 gdv_layer_content_get_min_max_x (GdvLayerContent *content,

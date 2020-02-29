@@ -43,6 +43,7 @@ gdvcore_headers = [
 #  'gdv-data-vector.h',
   'gdv-enums.h',
   'gdvaxis.h',
+  'gdvcontent.h',
   'gdvhair.h',
   'gdvindicator.h',
   'gdvlayer.h',
@@ -59,11 +60,16 @@ gdvcore_headers = [
   'gdvcentral.h',
 ]
 
+libgedit_private_h = [
+  'gdvaxis-private.h',
+]
+
 gdvcore_sources = [
   'gdv-data-boxed.c',
 #  'gdv-data-matrix.c',
 #  'gdv-data-vector.c',
   'gdvaxis.c',
+  'gdvcontent.c',
   'gdvhair.c',
   'gdvindicator.c',
   'gdvlayer.c',
@@ -110,6 +116,7 @@ libgdv_deps = [
   dependency('gio-2.0'),
   dependency('gmodule-2.0'),
   dependency('gtk+-3.0'),
+  libggsl_dep,
 #  dependency('gtksourceview-3.0'),
 #  dependency('gsl'),
   cc.find_library('m', required: false),
@@ -157,23 +164,26 @@ if get_option('with_introspection')
           symbol_prefix: 'gdv',
       identifier_prefix: 'Gdv',
 #              link_with: libgdv,
-               includes: ['Gio-2.0', 'Gtk-3.0'],
+               includes: ['Gio-2.0',
+                          'Gtk-3.0',
+                          libggsl_proj.get_variable('libggsl_gir')[0]],
+#               includes: ['Gio-2.0', 'Gtk-3.0', 'LibGgsl-1.0'],
                 install: true,
         install_dir_gir: girdir,
     install_dir_typelib: typelibdir,
              extra_args: [ '--c-include=gdv.h', '--pkg-export=libgdv-1.0',
-                           '--quiet' ],
+                           '--quiet', '--warn-error' ],
   )
 
-  if get_option('with_vapi')
-    libgdv_vapi = gnome.generate_vapi('gdv-' + apiversion,
-      sources: libgdv_gir[0],
-      packages: [ 'gio-2.0', 'gtk+-3.0' ],
-      install: true,
-      install_dir: vapidir,
-      metadata_dirs: [ meson.current_source_dir() ],
-    )
-  endif
+#  if get_option('with_vapi')
+#    libgdv_vapi = gnome.generate_vapi('gdv-' + apiversion,
+#      sources: libgdv_gir[0],
+#      packages: [ 'gio-2.0', 'gtk+-3.0' ],
+#      install: true,
+#      install_dir: vapidir,
+#      metadata_dirs: [ meson.current_source_dir() ],
+#    )
+#  endif
 endif
 
 pkgg = import('pkgconfig')

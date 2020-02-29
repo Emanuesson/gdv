@@ -28,15 +28,7 @@
 
 #include <glib.h>
 #include <gio/gio.h>
-
-/* gettext-premade-functions */
-#define _(String) (String)
-#define N_(String) String
-#define I_(String) String
-#define P_(String) String
-#define textdomain(Domain)
-#define bindtextdomain(Package, Directory)
-/* #define GETTEXT_PACKAGE NULL */
+#include <glib/gi18n.h>
 
 gboolean gdv_is_within_range (gdouble value, gdouble upper, gdouble lower);
 gboolean gdv_is_within_range_f (gfloat value, gfloat upper, gfloat lower);

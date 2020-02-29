@@ -107,7 +107,7 @@ gdv_linear_axis_get_property (GObject    *object,
                               GValue     *value,
                               GParamSpec *pspec);
 
-G_DEFINE_TYPE_WITH_PRIVATE (GdvLinearAxis, gdv_linear_axis, GDV_TYPE_AXIS);
+G_DEFINE_TYPE_WITH_PRIVATE (GdvLinearAxis, gdv_linear_axis, GDV_TYPE_AXIS)
 
 static void
 gdv_linear_axis_init (GdvLinearAxis *axis)
@@ -278,60 +278,6 @@ struct _linear_axis_scale_definition {
   gdouble increment;
 };
 
-static gboolean comp_equal_values (gdouble value_to_compare,
-                                   gdouble tic_value,
-                                   struct _linear_axis_scale_definition *scale)
-{
-  gdouble local_val_resid =
-    fmod ((tic_value - scale->beg_val) / scale->increment, 1.0);
-
-  if (tic_value < fmin (scale->beg_val, scale->end_val) ||
-      tic_value > fmax (scale->beg_val, scale->end_val) ||
-      !((fabs(local_val_resid) * fabs(scale->increment) < 1e-10) ||
-        (fabs(1.0 - local_val_resid) * fabs(scale->increment) < 1e-10)))
-      //_is_present_in_approved_list (tics_copy->data, tics_approved_list))
-    /* TODO: separate the round-off problems to own function */
-    return FALSE;
-  else
-    return TRUE;
-
-}
-
-/*
- * Simply provides the tic for a given Axis, according to the provided value. This scales
- * quadratic, which is not suited for invoking this function multiple times.
- */
-//static GdvTic **
-static void
-_determine_tics_by_values(GList *tics_list,
-                          gsize no_of_vals,
-                          gdouble tics_val[],
-                          GdvTic *tics[],
-                          struct _linear_axis_scale_definition *scale)
-{
-//  GdvTic *returned_array[] = (GdvTic *) g_new0(gpointer, no_of_vals);
-  GList * copy_list;
-
-  for (copy_list = tics_list;
-       copy_list != NULL;
-       copy_list = copy_list->next)
-  {
-    GdvTic *local_tic = GDV_TIC(copy_list->data);
-    gdouble local_tic_value;
-    gsize i;
-
-    g_object_get (local_tic, "value", &local_tic_value, NULL);
-
-    for (i = 0; i < no_of_vals; i++)
-    {
-      if (comp_equal_values(local_tic_value, tics_val[i],
-                            scale) == TRUE)
-        tics[i] = local_tic;
-    }
-
-  }
-}
-
 /* Function that is getting the maximum necessary space for any of the given Tics in the
  * list of GdvTics in the given direcation. */
 static gint _determine_max_border_on_list (GtkPositionType dir, GList *tics_list)
@@ -441,7 +387,6 @@ gdv_linear_axis_size_allocate (GtkWidget     *widget,
   gdouble exponent = 0.0; /* 1, 2, 3, 4, 5, 6,...*/
   gdouble sign = -1.0; /* -1.0, +1.0 */
   GdvTic *beg_tic = NULL, *end_tic = NULL;
-  GList *tic_list, *tic_list_start;
   GtkAllocation space_without_border;
 
   /* final begin- and end-values of the axis */

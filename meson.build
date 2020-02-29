@@ -2,17 +2,18 @@ project('libgdv', 'c',
           version: '0.1.2',
           license: 'GPLv2+',
     meson_version: '>= 0.50',
-  default_options: [ 'warning_level=1',
+  default_options: [ 'warning_level=3',
                      'buildtype=debugoptimized',
-                     'c_std=gnu11' ],
+                     'c_std=gnu11',
+                     'optimization=g' ],
 )
 
-add_global_arguments(['-Wall',
-                      '-Wno-unused',
+add_global_arguments([#'-Wall',
+                      #'-Wno-unused',
                       #'-Wextra',
                       '-D_Float128=double',
-                      '-O0',
-                      '-g',
+#                      '-O0',
+#                      '-g',
                       '-fno-omit-frame-pointer',
                       '-fno-common',
                       ],
@@ -70,6 +71,7 @@ add_project_arguments([
   '-I' + meson.build_root(),
 ], language: 'c')
 
+warning_level=3
 cc = meson.get_compiler('c')
 
 global_c_args = []
@@ -92,7 +94,7 @@ gdv_test_c_args = [
   '-Wswitch-default',
   '-Wswitch-enum',
   '-Wundef',
-  '-Wall',
+#  '-Wall',
 ]
 if get_option('buildtype') != 'plain'
   gdv_test_c_args += '-fstack-protector-strong'
@@ -100,6 +102,9 @@ endif
 if get_option('enable_profiling')
   gdv_test_c_args += '-pg'
 endif
+
+libggsl_proj = subproject('libggsl')
+libggsl_dep = libggsl_proj.get_variable('libggsl_dep')
 
 foreach arg: gdv_test_c_args
   if cc.has_multi_arguments(arg)
@@ -132,6 +137,7 @@ gnome = import('gnome')
 i18n = import('i18n')
 
 subdir('src')
+subdir('po')
 
 if get_option('doc')
   subdir('docs/reference/gdv')
