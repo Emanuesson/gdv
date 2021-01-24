@@ -1,6 +1,6 @@
 
-test('tgdv-layercontent-test',
-  executable('tgdv-layercontent-test', 'tgdv-layercontent-test.c',
+test('tgdv-layercontent',
+  executable('tgdv-layercontent', 'tgdv-layercontent.c',
     include_directories: [root_inc, src_inc],
     c_args: gdv_test_cflags,
     dependencies: [

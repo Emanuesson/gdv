@@ -43,7 +43,6 @@ gdvcore_headers = [
 #  'gdv-data-vector.h',
   'gdv-enums.h',
   'gdvaxis.h',
-  'gdvcontent.h',
   'gdvhair.h',
   'gdvindicator.h',
   'gdvlayer.h',
@@ -69,7 +68,6 @@ gdvcore_sources = [
 #  'gdv-data-matrix.c',
 #  'gdv-data-vector.c',
   'gdvaxis.c',
-  'gdvcontent.c',
   'gdvhair.c',
   'gdvindicator.c',
   'gdvlayer.c',
@@ -100,10 +98,11 @@ libgdv_public_sources += files(gdvcore_sources)
 libgdv_private_sources += files(gdvcore_private)
 
 install_headers(gdvcore_headers, subdir: libgdv_header_subdir)
-message('OBSERVE:')
-message(libgdv_header_subdir)
+#message('OBSERVE:')
+#message(libgdv_header_subdir)
 
 subdir('specialized_widgets')
+#subdir('content')
 
 libgdv_sources = [
   libgdv_generated_headers,
@@ -116,10 +115,11 @@ libgdv_deps = [
   dependency('gio-2.0'),
   dependency('gmodule-2.0'),
   dependency('gtk+-3.0'),
-  libggsl_dep,
+#  libggsl_dep,
 #  dependency('gtksourceview-3.0'),
 #  dependency('gsl'),
   cc.find_library('m', required: false),
+  gigsl_dep,
 #  cc.find_library('rt', required: false),
 #  cc.find_library('hdf5', required: false),
 ]
@@ -156,23 +156,26 @@ libgdv_dep = declare_dependency(
   include_directories: include_directories('.'),
 )
 
-if get_option('with_introspection')
+if dependency('gigsl', required : false).found() and get_option('with_introspection')
+  warning('Gigsl not installed on the system, but GObject Introspection with libgdv requires this dependency')
+elif get_option('with_introspection')
   libgdv_gir = gnome.generate_gir(libgdv,
                 sources: libgdv_generated_headers + libgdv_public_headers + libgdv_public_sources,
               nsversion: apiversion,
               namespace: 'Gdv',
           symbol_prefix: 'gdv',
       identifier_prefix: 'Gdv',
-#              link_with: libgdv,
                includes: ['Gio-2.0',
                           'Gtk-3.0',
-                          libggsl_proj.get_variable('libggsl_gir')[0]],
-#               includes: ['Gio-2.0', 'Gtk-3.0', 'LibGgsl-1.0'],
+                          'LibGsl-0.2',
+                          ],
                 install: true,
         install_dir_gir: girdir,
     install_dir_typelib: typelibdir,
+         fatal_warnings: true,
              extra_args: [ '--c-include=gdv.h', '--pkg-export=libgdv-1.0',
-                           '--quiet', '--warn-error' ],
+                  '-DGIR_SCANNER',
+                           '--quiet' ],
   )
 
 #  if get_option('with_vapi')

@@ -186,12 +186,12 @@ gdv_data_n_point_equal(const GdvDataNPoint *point1,
 {
   gint i;
 
-  if ((point1->N != point2->N) ||
+  if ((point1->length != point2->length) ||
       !point1->x ||
       !point2->x)
     return FALSE;
 
-  for (i = 0; i < point1->N; i++)
+  for (i = 0; i < point1->length; i++)
     {
       if (point1->x [i] != point2->x [i])
         return FALSE;
@@ -205,10 +205,10 @@ gdv_data_n_point_copy (const GdvDataNPoint *point)
 {
   GdvDataNPoint *result = g_new (GdvDataNPoint, 1);
 
-  result->x = g_new (gdouble, point->N);
+  result->x = g_new (gdouble, point->length);
 
   *result->x = *point->x;
-  result->N = point->N;
+  result->length = point->length;
 
   return result;
 }
@@ -223,11 +223,11 @@ gdv_data_n_point_metric (const GdvDataNPoint *point1,
   g_return_val_if_fail (point1->x, 0.0);
   g_return_val_if_fail (point2->x, 0.0);
 
-  g_return_val_if_fail ((point1->N != point2->N) ||
+  g_return_val_if_fail ((point1->length != point2->length) ||
                         !point1->x ||
                         !point2->x, 0.0);
 
-  for (i = 0; i < point1->N; i++)
+  for (i = 0; i < point1->length; i++)
     {
       metric += SQUARE (point1->x [i] - point2->x [i]);
     }
@@ -239,7 +239,7 @@ gdouble
 gdv_data_n_point_get (const GdvDataNPoint *point1,
                       const guint          n)
 {
-  g_return_val_if_fail (n < point1->N, 0.0);
+  g_return_val_if_fail (n < point1->length, 0.0);
   g_return_val_if_fail (point1->x, 0.0);
 
   return point1->x [n];
@@ -250,7 +250,7 @@ gdv_data_n_point_set (GdvDataNPoint *point1,
                       const guint    n,
                       gdouble        x)
 {
-  g_return_if_fail (n < point1->N);
+  g_return_if_fail (n < point1->length);
   g_return_if_fail (point1->x);
 
   point1->x [n] = x;
@@ -263,7 +263,7 @@ gdv_data_n_point_set_and_expand (GdvDataNPoint *point1,
 {
   GdvDataNPoint *result;
 
-  if (n <= point1->N)
+  if (n <= point1->length)
     {
       gdv_data_n_point_set (point1, n, x);
       return point1;
@@ -272,7 +272,7 @@ gdv_data_n_point_set_and_expand (GdvDataNPoint *point1,
   result = g_new (GdvDataNPoint, 1);
   result->x = g_new (gdouble, n);
   *result->x = *point1->x;
-  result->N = n;
+  result->length = n;
   result->x [n] = x;
 
   g_free (point1);
@@ -287,7 +287,7 @@ gdv_data_n_point_distance_to_origin (const GdvDataNPoint *point)
 
   g_return_val_if_fail (point->x, 0.0);
 
-  for (i = 0; i < point->N; i++)
+  for (i = 0; i < point->length; i++)
     {
       return_val += SQUARE (point->x [i]);
     }

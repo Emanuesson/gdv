@@ -1,7 +1,7 @@
 project('libgdv', 'c',
           version: '0.1.2',
           license: 'GPLv2+',
-    meson_version: '>= 0.50',
+    meson_version: '>= 0.55',
   default_options: [ 'warning_level=3',
                      'buildtype=debugoptimized',
                      'c_std=gnu11',
@@ -103,8 +103,12 @@ if get_option('enable_profiling')
   gdv_test_c_args += '-pg'
 endif
 
-libggsl_proj = subproject('libggsl')
-libggsl_dep = libggsl_proj.get_variable('libggsl_dep')
+libggsl_proj = subproject('gigsl')
+#libggsl_dep = libggsl_proj.get_variable('libgigsl_dep')
+#libggsl_inc = libggsl_proj.get_variable('gigslinc')
+#message(string(libggsl_inc))
+
+gigsl_dep = dependency('gigsl', fallback : ['gigsl', 'libgigsl_dep'])
 
 foreach arg: gdv_test_c_args
   if cc.has_multi_arguments(arg)

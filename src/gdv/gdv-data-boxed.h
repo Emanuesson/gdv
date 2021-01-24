@@ -50,6 +50,19 @@ struct _GdvDataPoint
 typedef struct _GdvDataPoint GdvDataPoint;
 
 /**
+ * GdvDataNPoint:
+ * @length: Length of the array (dimension)
+ * @x: A single value in the 1st cartesion coordinate
+ */
+struct _GdvDataNPoint
+{
+  gsize length;
+  gdouble * x;
+};
+
+typedef struct _GdvDataNPoint GdvDataNPoint;
+
+/**
  * GdvDataPointSingleExtended:
  * @point: A single cartesion coordinate
  * @neg_range_1: The lower range
@@ -79,14 +92,6 @@ struct _GdvDataPointDoubleExtended
 };
 
 typedef struct _GdvDataPointDoubleExtended GdvDataPointDoubleExtended;
-
-struct _GdvDataNPoint
-{
-  guint N;
-  gdouble *x;
-};
-
-typedef struct _GdvDataNPoint GdvDataNPoint;
 
 struct _GdvDataDirection
 {

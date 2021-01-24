@@ -25,6 +25,7 @@
 
 #include <gtk/gtk.h>
 #include <libggsl/libggsl.h>
+#include <gdv/gdv-data-boxed.h>
 
 G_BEGIN_DECLS
 
@@ -42,11 +43,19 @@ struct _GdvContentInterface
   GTypeInterface g_iface;
 
   /*< public >*/
-  /* draw to 0,0 with the given width and height */
-//  void                  (* snapshot)                    (GdkPaintable           *paintable,
-//                                                         GdkSnapshot            *snapshot,
-//                                                         double                  width,
-//                                                         double                  height);
+  /* Get the minimum and maximum of the internal data */
+  void                (* get_min_max)     (GdvContent  *content,
+                                           gsize        n,
+                                           gdouble     *min,
+                                           gdouble     *max);
+
+  gsize               (* get_dimension)   (GdvContent     *content);
+
+  void                (* add_data_point)  (GdvContent     *content,
+                                           GdvDataNPoint   point);
+
+  GdvDataNPoint       (* get_data_point)  (GdvContent *content,
+                                           gsize       n);
 };
 
 G_END_DECLS

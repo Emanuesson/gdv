@@ -57,3 +57,7 @@ configure
 .buildconfig
 .editorconfig
 **tags.*
+
+# Meson logs
+_bu/*
+

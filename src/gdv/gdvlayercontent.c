@@ -48,6 +48,7 @@ enum
   PROP_0,
 
   PROP_DATA_POINT,
+  PROP_CONTENT_MATRIX,
 
   PROP_POINT_LINE_WIDTH,
   PROP_POINT_TYPE,
@@ -92,7 +93,7 @@ struct _GdvLayerContentPrivate
   gboolean fill_below;
   gboolean fill_above;
 
-  GList *data_values;
+  GslMatrix * content;
 };
 
 static void
@@ -131,9 +132,26 @@ gdv_layer_content_set_property (GObject      *object,
   switch (property_id)
   {
   case PROP_DATA_POINT:
-    self->priv->data_values =
-      g_list_append (self->priv->data_values, g_value_get_boxed (value));
+      {
+        gsize rows;
+        GdvDataPoint * dp;
+
+        if (self->priv->content == NULL)
+          {
+            self->priv->content = gsl_matrix_alloc(3, 1);
+            g_object_notify (G_OBJECT (self), "content-matrix");
+          }
+
+        dp = g_value_get_boxed (value);
+        rows = self->priv->content->size2;
+        gsl_matrix_set_and_expand(self->priv->content, 0, rows, dp->x);
+        gsl_matrix_set_and_expand(self->priv->content, 1, rows, dp->y);
+        gsl_matrix_set_and_expand(self->priv->content, 2, rows, dp->z);
+      }
     break;
+
+//  case PROP_CONTENT_MATRIX:
+//    break;
 
   case PROP_POINT_LINE_WIDTH:
     self->priv->point_line_width = g_value_get_double (value);
@@ -185,9 +203,21 @@ gdv_layer_content_get_property (GObject    *object,
   switch (property_id)
   {
   case PROP_DATA_POINT:
-    if (self->priv->data_values)
-      g_value_set_boxed (value, ((GSList *)g_list_last (self->priv->data_values))->data);
-
+      {
+        GdvDataPoint dp;
+        if (self->priv->content != NULL)
+          {
+            gsize last_row = self->priv->content->size2 - 1;
+            dp.x = gsl_matrix_get(self->priv->content, 0, last_row);
+            dp.y = gsl_matrix_get(self->priv->content, 1, last_row);
+            dp.z = gsl_matrix_get(self->priv->content, 2, last_row);
+          }
+        else
+          {
+            memset(&dp, 0, sizeof(dp));
+          }
+        g_value_set_boxed (value, &dp);
+      }
     break;
 
   case PROP_POINT_LINE_WIDTH:
@@ -283,6 +313,7 @@ gdv_layer_content_init (GdvLayerContent *content)
   content->priv->layer_min->x = NAN;
   content->priv->layer_min->y = NAN;
   content->priv->layer_min->z = NAN;
+  content->priv->content = NULL;
 }
 
 static gboolean
@@ -295,7 +326,7 @@ gdv_layer_content_on_draw (GtkWidget    *widget,
   GtkAllocation allocation;
 
   GdvLayerContent *content;
-  GList *data_copy = NULL;
+  gsize i;
 
   first_point = TRUE;
 
@@ -328,6 +359,8 @@ gdv_layer_content_on_draw (GtkWidget    *widget,
     g_list_free (orig_axes_list);
   }
 
+  if (content->priv->content == NULL)
+    return TRUE;
 
   {
     gdouble tmp_x, tmp_y;
@@ -347,20 +380,19 @@ gdv_layer_content_on_draw (GtkWidget    *widget,
                                    &tmp_y2);
   }
 
-  for (data_copy = content->priv->data_values;
-       data_copy; data_copy = data_copy->next)
+  for (i = 0;
+       i < content->priv->content->size2;
+       i++)
   {
     GdvLayer *layer = GDV_LAYER (gtk_widget_get_parent (widget));
     gboolean paint_point;
     gdouble pixel_x, pixel_y;
 
-    GdvDataPoint *actual_value = data_copy->data;
-
     paint_point =
       gdv_layer_evaluate_data_point (layer,
-                                     actual_value->x,
-                                     actual_value->y,
-                                     actual_value->z,
+                                     gsl_matrix_get(content->priv->content, 0, i),
+                                     gsl_matrix_get(content->priv->content, 1, i),
+                                     gsl_matrix_get(content->priv->content, 2, i),
                                      &pixel_x,
                                      &pixel_y);
 
@@ -439,6 +471,21 @@ gdv_layer_content_class_init (GdvLayerContentClass *klass)
                         "data-point",
                         "property, to access the containing data points",
                         GDV_TYPE_DATA_POINT,
+                        G_PARAM_READWRITE);
+
+  /**
+   * GdvLayerContent:content-matrix:
+   *
+   * Gives the data-point that was added last to the layer-content or makes it
+   * possible to add a new data-point.
+   */
+  layer_content_properties[PROP_CONTENT_MATRIX] =
+    g_param_spec_boxed ("content-matrix",
+                        "Content Matrix",
+                        "property, to access the content matrix directly. The "
+                        "returned object may loose it's validity. E.g. if the "
+                        "layer coontent gets reset.",
+                        GSL_TYPE_MATRIX,
                         G_PARAM_READWRITE);
 
   /**
@@ -673,14 +720,9 @@ gdv_layer_content_add_data_point (GdvLayerContent *layer_content,
                                   gdouble          y_value,
                                   gdouble          z_value)
 {
-  GdvDataPoint *new_value;
+  gsize rows;
 
   g_return_if_fail (GDV_LAYER_IS_CONTENT (layer_content));
-
-  new_value = g_new(GdvDataPoint, 1);
-  new_value->x = x_value;
-  new_value->y = y_value;
-  new_value->z = z_value;
 
   layer_content->priv->layer_max->x =
     fmax (layer_content->priv->layer_max->x, x_value);
@@ -696,13 +738,19 @@ gdv_layer_content_add_data_point (GdvLayerContent *layer_content,
   layer_content->priv->layer_min->z =
     fmin (layer_content->priv->layer_min->z, z_value);
 
-  layer_content->priv->data_values =
-    g_list_append (layer_content->priv->data_values, new_value);
+  if (layer_content->priv->content == NULL)
+    layer_content->priv->content = gsl_matrix_calloc(3, 1);
+
+  rows = layer_content->priv->content->size2;
+  gsl_matrix_set_and_expand(layer_content->priv->content, 0, rows, x_value);
+  gsl_matrix_set_and_expand(layer_content->priv->content, 1, rows, y_value);
+  gsl_matrix_set_and_expand(layer_content->priv->content, 2, rows, z_value);
+
   g_object_notify (G_OBJECT (layer_content), "data-point");
 }
 
 /* FIXME: Update the minimum and maximum values! */
-/**
+/*
  * gdv_layer_content_remove_data_point_by_index:
  * @layer_content: a #GdvLayerContent
  * @index: The index of the point that should be removed
@@ -713,8 +761,8 @@ gdv_layer_content_add_data_point (GdvLayerContent *layer_content,
  * A negative #index removes the point that was added first to the layer.
  *
  * Returns: %TRUE if the data-point could be removed and %FALSE otherwise.
- **/
-gboolean
+ */
+/*gboolean
 gdv_layer_content_remove_data_point_by_index (
   GdvLayerContent *layer_content,
   gint             index)
@@ -746,72 +794,31 @@ gdv_layer_content_remove_data_point_by_index (
 
   else
     return FALSE;
-
-}
+}*/
 
 /* FIXME: determine (element-type GdvDataPoint) */
 /**
  * gdv_layer_content_get_content:
  * @content: a #GdvLayerContent
  *
- * Returns a newly allocated list of the content of the gdvlayercontent-object
- *
- * Returns: (element-type GdvDataPoint) (transfer container): a newly allocated
- *  copy of the content-list.
- *
- **/
-GList *
-gdv_layer_content_get_content (GdvLayerContent *content)
-{
-  GList *copy_list = NULL;
-
-  g_return_val_if_fail (GDV_LAYER_IS_CONTENT (content), NULL);
-
-  copy_list = g_list_copy (content->priv->data_values);
-
-  return copy_list;
-}
-
-/**
- * gdv_layer_content_get_content2:
- * @content: a #GdvLayerContent
- *
  * Returns: (transfer full): The copy of the content.
  *
  **/
-GgslMatrix *
-gdv_layer_content_get_content2 (GdvLayerContent *content)
+GslMatrix *
+gdv_layer_content_get_content (GdvLayerContent *content)
 {
-  GdvLayerContentPrivate *priv = gdv_layer_content_get_instance_private(content);
-  GgslMatrix *return_matrix = NULL;
-  gsize data_points_count, i;
-  GList *current_point_iter;
+  g_return_val_if_fail (GDV_LAYER_IS_CONTENT (content), NULL);
 
-  g_return_val_if_fail(GDV_LAYER_IS_CONTENT (content), NULL);
-
-  data_points_count = (gsize) g_list_length(priv->data_values);
-  current_point_iter = priv->data_values;
-
-  return_matrix = ggsl_matrix_new(1, data_points_count);
-
-  for (i = 0; i < data_points_count; i++)
-    {
-      GdvDataPoint *current_point = current_point_iter->data;
-      ggsl_matrix_set(return_matrix, 0, i,
-                      gdv_data_point_distance_to_origin(current_point));
-      current_point_iter = current_point_iter->next;
-    }
-
-  return return_matrix;
+  return content->priv->content;
 }
 
 /**
  * gdv_layer_content_set_content2:
  * @content: a #GdvLayerContent
- * @matrix: a #GgslMatrix
+ * @matrix: a #GslMatrix
  **/
 void
-gdv_layer_content_set_content2 (GdvLayerContent *content, GgslMatrix *matrix)
+gdv_layer_content_set_content2 (GdvLayerContent *content, GslMatrix *matrix)
 {
   g_return_if_fail(GDV_LAYER_IS_CONTENT(content));
 }
@@ -897,19 +904,19 @@ gdv_layer_content_reset (GdvLayerContent *layer_content)
 {
   g_return_if_fail (GDV_LAYER_IS_CONTENT (layer_content));
 
-  if (layer_content->priv->data_values)
-  {
-    g_list_free_full (layer_content->priv->data_values, g_free);
-    layer_content->priv->data_values = NULL;
-    g_object_notify (G_OBJECT (layer_content), "data-point");
+  if (layer_content->priv->content == NULL)
+    g_object_unref(layer_content->priv->content);
 
-    layer_content->priv->layer_max->x = -G_MAXDOUBLE;
-    layer_content->priv->layer_max->y = -G_MAXDOUBLE;
-    layer_content->priv->layer_max->z = -G_MAXDOUBLE;
+  layer_content->priv->content = NULL;
 
-    layer_content->priv->layer_min->x = G_MAXDOUBLE;
-    layer_content->priv->layer_min->y = G_MAXDOUBLE;
-    layer_content->priv->layer_min->z = G_MAXDOUBLE;
-  }
+  g_object_notify (G_OBJECT (layer_content), "content-matrix");
+
+  layer_content->priv->layer_max->x = -G_MAXDOUBLE;
+  layer_content->priv->layer_max->y = -G_MAXDOUBLE;
+  layer_content->priv->layer_max->z = -G_MAXDOUBLE;
+
+  layer_content->priv->layer_min->x = G_MAXDOUBLE;
+  layer_content->priv->layer_min->y = G_MAXDOUBLE;
+  layer_content->priv->layer_min->z = G_MAXDOUBLE;
 }
 

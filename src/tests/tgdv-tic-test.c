@@ -23,7 +23,7 @@
 
 #include "tgdv-shared-functions.h"
 
-struct _test_gdv_tic_proeprty_container {
+struct _test_gdv_tic_property_container {
   /* instance properties */
   gdouble value;
   gfloat  curr_pos_in_x;
@@ -45,7 +45,7 @@ struct _test_gdv_tic_proeprty_container {
 };
 
 static void poll_all_properties (GdvTic *tic,
-                                 struct _test_gdv_tic_proeprty_container *props)
+                                 struct _test_gdv_tic_property_container *props)
 {
   g_object_get (G_OBJECT (tic),
                 "value", &props->value,
@@ -76,7 +76,7 @@ test_tic_plain (void)
   GdvTic *tic;
   GObjectClass *tic_oclass;
 
-  struct _test_gdv_tic_proeprty_container properties;
+  struct _test_gdv_tic_property_container properties;
 
   /* inherited properties */
   GtkAllocation tic_allocation = {0};

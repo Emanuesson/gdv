@@ -8,7 +8,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
@@ -54,9 +54,27 @@ struct _GdvEmptyContentClass
   GtkWidgetClass parent_class;
 };
 
+static void gdv_content_default_get_min_max (GdvContent  *content,
+                                             gsize        n,
+                                             gdouble     *min,
+                                             gdouble     *max)
+{
+//  if (*min)
+}
+
 static void
 gdv_content_default_init (GdvContentInterface *iface)
 {
+  iface->get_min_max = gdv_content_default_get_min_max;
+
+//  gsize               (* get_dimension)   (GdvContent     *content);
+//
+//  void                (* add_data_point)  (GdvContent     *content,
+//                                           GdvDataNPoint   point);
+//
+//  GdvDataNPoint       (* get_data_point)  (GdvContent *content,
+//                                           gsize       n);
+
 }
 
 static void

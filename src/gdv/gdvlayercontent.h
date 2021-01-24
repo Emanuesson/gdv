@@ -26,7 +26,8 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
 
-#include <libggsl/matrix/libggsl-matrix.h>
+//#include <libggsl/matrix/libggsl-matrix.h>
+#include<gigsl/gigsl.h>
 
 G_BEGIN_DECLS
 
@@ -85,19 +86,16 @@ gdv_layer_content_add_data_point (GdvLayerContent *layer_content,
                                   gdouble          y_value,
                                   gdouble          z_value);
 
-gboolean
-gdv_layer_content_remove_data_point_by_index (
-  GdvLayerContent *layer_content,
-  gint             index);
+//gboolean
+//gdv_layer_content_remove_data_point_by_index (
+//  GdvLayerContent *layer_content,
+//  gint             index);
 
-GList *
+GslMatrix *
 gdv_layer_content_get_content (GdvLayerContent *content);
 
-GgslMatrix *
-gdv_layer_content_get_content2 (GdvLayerContent *content);
-
 void
-gdv_layer_content_set_content2 (GdvLayerContent *content, GgslMatrix *matrix);
+gdv_layer_content_set_content2 (GdvLayerContent *content, GslMatrix *matrix);
 
 void
 gdv_layer_content_get_min_max_x (GdvLayerContent *content,
