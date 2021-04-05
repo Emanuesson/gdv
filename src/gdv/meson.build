@@ -102,7 +102,6 @@ install_headers(gdvcore_headers, subdir: libgdv_header_subdir)
 #message(libgdv_header_subdir)
 
 subdir('specialized_widgets')
-#subdir('content')
 
 libgdv_sources = [
   libgdv_generated_headers,

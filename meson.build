@@ -3,9 +3,12 @@ project('libgdv', 'c',
           license: 'GPLv2+',
     meson_version: '>= 0.55',
   default_options: [ 'warning_level=3',
+                     'werror=true',
                      'buildtype=debugoptimized',
                      'c_std=gnu11',
-                     'optimization=g' ],
+                     'optimization=g',
+                     'b_ndebug=if-release',
+                     ],
 )
 
 add_global_arguments([#'-Wall',
