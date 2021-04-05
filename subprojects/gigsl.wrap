@@ -1,0 +1,4 @@
+[wrap-git]
+directory=gigsl
+url=https://github.com/Emanuesson/gigsl.git
+revision=master

@@ -33,3 +33,13 @@ option('enable_tests', # Enable building tests
   type: 'boolean', value: true,
   description: 'Whether to compile unit tests')
 
+option('gtk4',
+  type: 'boolean', value: false,
+  description: 'Whether to use GTK4, instead of Gtk+-3.0')
+
+option('python',
+  type: 'string',
+  value: 'python3',
+  description: 'Path or name of the Python interpreter to build for'
+)
+

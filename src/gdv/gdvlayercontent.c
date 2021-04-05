@@ -220,6 +220,9 @@ gdv_layer_content_get_property (GObject    *object,
       }
     break;
 
+//  case PROP_CONTENT_MATRIX:
+//    break;
+
   case PROP_POINT_LINE_WIDTH:
     g_value_set_double (value, self->priv->point_line_width);
     break;
@@ -813,14 +816,20 @@ gdv_layer_content_get_content (GdvLayerContent *content)
 }
 
 /**
- * gdv_layer_content_set_content2:
+ * gdv_layer_content_set_content:
  * @content: a #GdvLayerContent
  * @matrix: a #GslMatrix
  **/
 void
-gdv_layer_content_set_content2 (GdvLayerContent *content, GslMatrix *matrix)
+gdv_layer_content_set_content (GdvLayerContent *content, GslMatrix *matrix)
 {
   g_return_if_fail(GDV_LAYER_IS_CONTENT(content));
+
+  if (content->priv->content != NULL) {
+    gsl_matrix_free(content->priv->content);
+  }
+
+  content->priv->content = matrix;
 }
 
 /**

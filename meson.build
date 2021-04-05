@@ -1,5 +1,5 @@
 project('libgdv', 'c',
-          version: '0.1.2',
+          version: '0.1.3',
           license: 'GPLv2+',
     meson_version: '>= 0.55',
   default_options: [ 'warning_level=3',
@@ -104,10 +104,6 @@ if get_option('enable_profiling')
 endif
 
 libggsl_proj = subproject('gigsl')
-#libggsl_dep = libggsl_proj.get_variable('libgigsl_dep')
-#libggsl_inc = libggsl_proj.get_variable('gigslinc')
-#message(string(libggsl_inc))
-
 gigsl_dep = dependency('gigsl', fallback : ['gigsl', 'libgigsl_dep'])
 
 foreach arg: gdv_test_c_args
@@ -136,6 +132,12 @@ if package_subdir != ''
 else
   vapidir = join_paths(get_option('datadir'), 'vala', 'vapi')
 endif
+
+gir = find_program('g-ir-scanner', required: false)
+introspection_available = gir.found() and get_option('with_introspection') and dependency('gigsl', required : false).found()
+
+pymod = import('python')
+python = pymod.find_installation(get_option('python'))
 
 gnome = import('gnome')
 i18n = import('i18n')

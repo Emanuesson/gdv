@@ -95,7 +95,7 @@ GslMatrix *
 gdv_layer_content_get_content (GdvLayerContent *content);
 
 void
-gdv_layer_content_set_content2 (GdvLayerContent *content, GslMatrix *matrix);
+gdv_layer_content_set_content (GdvLayerContent *content, GslMatrix *matrix);
 
 void
 gdv_layer_content_get_min_max_x (GdvLayerContent *content,

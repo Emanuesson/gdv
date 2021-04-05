@@ -402,34 +402,14 @@ gdv_legend_element_realize (GtkWidget *widget)
 {
   GtkAllocation allocation;
   GdkWindow *window;
-  GdkWindowAttr attributes;
 
   gtk_widget_get_allocation (widget, &allocation);
 
   gtk_widget_set_realized (widget, TRUE);
 
-  attributes.window_type = GDK_WINDOW_CHILD;
-  attributes.x = (gint) allocation.x;
-  attributes.y = (gint) allocation.y;
-  attributes.width = (gint) (allocation.width * 1.0);
-  attributes.height = (gint) (allocation.height * 1.0);
-
-  attributes.wclass = GDK_INPUT_OUTPUT;
-  attributes.visual = gtk_widget_get_visual (widget);
-  attributes.event_mask = gtk_widget_get_events (widget);
-  attributes.event_mask |= (GDK_EXPOSURE_MASK |
-                            GDK_BUTTON_MOTION_MASK |
-                            GDK_BUTTON_PRESS_MASK |
-                            GDK_BUTTON_RELEASE_MASK |
-                            GDK_ENTER_NOTIFY_MASK |
-                            GDK_LEAVE_NOTIFY_MASK);
-
   window = gtk_widget_get_parent_window (widget);
   gtk_widget_set_window (widget, window);
   g_object_ref (window);
-
-
-  attributes.wclass = GDK_INPUT_ONLY;
 }
 
 static void

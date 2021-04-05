@@ -34,7 +34,7 @@ data_viewer_bin_sources = [
 
 builderlibdir_abs = join_paths(get_option('prefix'), get_option('libdir'), 'gnome-builder')
 
-dv_exe = executable('dataviewer', data_viewer_bin_sources,
+gdv_exe = executable('dataviewer', data_viewer_bin_sources,
        dependencies: [ libgdv_dep ],
           link_with: libgdv,
        link_depends: libgdv_map,

@@ -114,7 +114,6 @@ libgdv_sources = [
 libgdv_deps = [
   dependency('gio-2.0'),
   dependency('gmodule-2.0'),
-  dependency('gtk+-3.0'),
 #  libggsl_dep,
 #  dependency('gtksourceview-3.0'),
 #  dependency('gsl'),
@@ -123,6 +122,12 @@ libgdv_deps = [
 #  cc.find_library('rt', required: false),
 #  cc.find_library('hdf5', required: false),
 ]
+
+if get_option('gtk4')
+  libgdv_deps += dependency('gtk4-wayland')
+else
+  libgdv_deps += dependency('gtk+-3.0')
+endif
 
 libgdv_args = ['-Wall']
 if get_option('enable_rdtscp')
